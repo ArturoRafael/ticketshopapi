@@ -64,8 +64,10 @@ class Usuario extends Model implements AuthenticatableContract
 		'ciudad',
 		'departamento',
 		'telefono',
-		'id_rol',
-		'active', 
+		'id_rol',		
+		'active',
+		'provider',
+		'provider_id', 
 		'activation_token'
 	];
 

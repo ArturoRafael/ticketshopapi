@@ -58,8 +58,6 @@ Route::middleware('auth:api')->group( function () {
 	
 	//Route::resource('products', 'API\ProductController');
 });*/
-Route::post('login', 'UsuarioController@login');
-Route::post('register', 'UsuarioController@register');
 
 Route::get('listausuarios', 'UsuarioController@listausuarios');
 
@@ -67,13 +65,30 @@ Route::get('comprasrealizadas/{comprasrealizadas}', 'UsuarioController@comprasre
 Route::get('temporadascompradas/{temporadascompradas}', 'UsuarioController@temporadascompradas');
 Route::get('reservas/{reservas}', 'UsuarioController@reservas');
 
+
+Route::post('login', 'UsuarioController@login');
+Route::post('register', 'UsuarioController@register');
+
 Route::delete('destroy', 'UsuarioController@destroy');
 
 Route::get('signup/activate/{token}', 'UsuarioController@signupActivate');
+
+Route::get('auth/{provider}', 'UsuarioController@redirectToProvider');
+Route::get('auth/{provider}/callback', 'UsuarioController@handleProviderCallback');
 
 Route::group(['middleware' => 'auth:api'], function () { 
 	Route::post('detailsuser', 'UsuarioController@detailsuser');
 	Route::put('updateprofile/{updateprofile}', 'UsuarioController@updateprofile');
 	Route::post('cambioclave', 'UsuarioController@cambioclave');
 	Route::post('logout', 'UsuarioController@logout');
+});
+
+Route::group([    
+    'namespace' => 'Auth',    
+    'middleware' => 'api',    
+    'prefix' => 'password'
+], function () {    
+    Route::post('create', 'PasswordResetController@create');
+    Route::get('find/{token}', 'PasswordResetController@find');
+    Route::post('reset', 'PasswordResetController@reset');
 });

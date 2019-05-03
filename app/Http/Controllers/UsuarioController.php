@@ -9,6 +9,7 @@ use Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash; 
 use App\Notifications\SignupActivate;
+use Socialite;
 
 class UsuarioController extends BaseController 
 {
@@ -76,11 +77,12 @@ class UsuarioController extends BaseController
             return response()->json(['error'=>$validator->errors()], 401);            
         }
         $datos = $request->all();
-        if(Hash::check($datos['mypassword'], Auth::user()->password )){
-            $user = new Usuario;
-            $user->where('email', '=', Auth::user()->email)
-                ->update('password' => bcrypt($datos['password']));
-            
+        if(Hash::check($datos['mypassword'], Auth::user()->password)){
+            $passhash = bcrypt($datos['password']); 
+            \DB::table('usuario')
+                 ->where('email', '=', Auth::user()->email)
+                 ->update(['password' => $passhash]);
+            $user = Usuario::find(Auth::user()->email);
             return $this->sendResponse($user->toArray(), 'Clave del usuario actualizada con éxito');
 
         }else{
@@ -167,22 +169,93 @@ class UsuarioController extends BaseController
         $user->notify(new SignupActivate($user));
         $success['token'] =  $user->createToken('MyApi')-> accessToken; 
         $success['nombre'] =  $user->nombre;
+        $success['token_type'] = 'Bearer';
         return response()->json(['success'=>$success], $this-> successStatus); 
+    }
+
+
+    /**
+     * Redirect the user to the GitHub authentication page.
+     *
+     * @return Response
+     */
+    public function redirectToProvider($provider)
+    {
+        return Socialite::driver($provider)->redirect();
+    }
+
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return Response
+     */
+    public function handleProviderCallback($provider)
+    {
+        try {
+            $user = Socialite::driver($provider)->stateless()->user();
+        } catch (\Exception $e) {
+            return $this->sendError('Ocurrio un error al validar el provider');
+        }        
+        
+        $authUser = Usuario::find($user->email); 
+        if($authUser){
+
+            $userdata = [
+                'email'   => $authUser['email'],
+                'password' => $authUser['password'],
+                'active' => 1,
+                'deleted_at' => null,
+            ]; 
+
+            if(Auth::attempt($userdata)){ 
+                $usuario = Auth::user(); 
+                $success['token'] =  $usuario->createToken('MyApi')-> accessToken; 
+                $success['token_type'] = 'Bearer';
+                return response()->json(['success' => $success], $this-> successStatus); 
+            }else{ 
+                return response()->json(['error'=>'Unauthorised'], 401); 
+            } 
+
+        }else{
+
+            $usuario = Usuario::create([
+                'nombre' => $user->name, 
+                'email' => $user->email, 
+                'password' => bcrypt(123456789);,            
+                'identificacion' => " ",
+                'tipo_identificacion' => 1,
+                'direccion' => " ",
+                'ciudad' => " ",
+                'departamento' => " ",
+                'telefono' => " ",
+                'id_rol' => 1,
+                'active' => 1,
+                'provider' => strtoupper($provider),
+                'provider_id' => $user->id, 
+            ]); 
+
+            $success['token'] =  $usuario->createToken('MyApi')-> accessToken; 
+            $success['nombre'] =  $usuario->nombre;
+            $success['token_type'] = 'Bearer';
+            return response()->json(['success'=>$success], $this-> successStatus);
+        }
+
+        
+
+
     }
 
 
     public function signupActivate($token)
     {
-        $user = User::where('activation_token', $token)->first();
+        $user = Usuario::where('activation_token', $token)->first();
         if (!$user) {
-            return response()->json([
-                'message' => 'This activation token is invalid.'
-            ], 404);
+            return $this->sendError('Este token de activación no es válido.');            
         }
         $user->active = true;
         $user->activation_token = '';
         $user->save();
-        return $user;
+        return $this->sendResponse($user->toArray(), 'Cuenta activada con éxito');
     }
     
     /** 
