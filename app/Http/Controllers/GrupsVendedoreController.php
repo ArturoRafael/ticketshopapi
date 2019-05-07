@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\GrupsVendedore;
 use Validator;
-
+/**
+ * @group Administración de Grupos Vendedores
+ *
+ * APIs para la gestion de la tabla grups_vendedores
+ */
 class GrupsVendedoreController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Listado de los grupos de vendedores.
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,8 +26,13 @@ class GrupsVendedoreController extends BaseController
 
 
     /**
-     * Store a newly created resource in storage.
+     * Agrega un nuevo elemento a la tabla grups_vendedores 
      *
+     * [Se filtra por el ID]  
+     * @response {
+     *  "nombre": "Grupo 1",
+     *  "caracteristica": "Grupo vendedor 1",      
+     * }   
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -42,8 +51,8 @@ class GrupsVendedoreController extends BaseController
     }
 
     /**
-     * Display the specified resource.
-     *
+     * Lista un grupo de vendedor en especifico
+     * [Se filtra por el ID]
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -58,7 +67,9 @@ class GrupsVendedoreController extends BaseController
 
   
     /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla grups_vendedores 
+     *
+     * [Se filtra por el ID]
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -90,7 +101,9 @@ class GrupsVendedoreController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un elemento de la tabla grups_vendedores
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

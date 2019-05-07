@@ -7,11 +7,15 @@ use App\Models\Fila;
 use App\Models\Localidad;
 use Validator;
 use Illuminate\Support\Facades\Input;
-
+/**
+ * @group Administración de Fila
+ *
+ * APIs para la gestion de fila
+ */
 class FilaController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Lista de la tabla fila.
      *
      * @return \Illuminate\Http\Response
      */
@@ -25,9 +29,13 @@ class FilaController extends BaseController
 
     
 
-    /**
-     * Store a newly created resource in storage.
-     *
+     /**
+     * Agrega un nuevo elemento a la tabla fila
+     * @response {
+     *  "id_localidad": 1,
+     *  "nombre": "Fila 1",
+     *  "numero": 1
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -51,7 +59,9 @@ class FilaController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista un fila en especifico 
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -71,8 +81,15 @@ class FilaController extends BaseController
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla fila 
      *
+     * [Se filtra por el ID]
+     *
+     * @response {
+     *  "id_localidad": 1,
+     *  "nombre": "Fila 1",
+     *  "numero": 1
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -109,7 +126,9 @@ class FilaController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un elemento de la tabla fila
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

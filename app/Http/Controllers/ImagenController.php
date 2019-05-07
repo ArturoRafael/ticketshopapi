@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Imagen;
 use Validator;
+
+/**
+ * @group Administración de Imagen
+ *
+ * APIs para la gestion de la tabla imagen
+ */
 class ImagenController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Lista de la tabla imagen.
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,8 +27,8 @@ class ImagenController extends BaseController
 
 
     /**
-     * Store a newly created resource in storage.
-     *
+     * Agrega un nuevo elemento a la tabla imagen
+     * [Debe enviarse en el request un elemento tipo file que contenga como key="imagen" y el value="archivo tipo file"]
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -57,7 +63,8 @@ class ImagenController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista una imagen en especifico
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -75,7 +82,9 @@ class ImagenController extends BaseController
 
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla imagen
+     * [Debe enviarse en el request un elemento tipo file que contenga como key="imagen" y el value="archivo tipo file"] 
+     * [Se filtra por el ID]
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -114,7 +123,9 @@ class ImagenController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina los elemento de la tabla imagen
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

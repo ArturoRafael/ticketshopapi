@@ -10,11 +10,15 @@ use App\Models\Temporada;
 use App\Models\TipoEvento;
 use Validator;
 use Illuminate\Support\Facades\Input;
-
+/**
+ * @group Administración de Evento
+ *
+ * APIs para la gestion del evento
+ */
 class EventoController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Lista de la tabla evento.
      *
      * @return \Illuminate\Http\Response
      */
@@ -24,7 +28,11 @@ class EventoController extends BaseController
         return $this->sendResponse($evento->toArray(), 'Eventos devueltos con éxito');
     }
 
-  
+    /**
+     * Agrega un nuevo elemento a la tabla evento
+     *
+     * @return \Illuminate\Http\Response
+     */
     /**
      * Store a newly created resource in storage.
      *
@@ -120,8 +128,10 @@ class EventoController extends BaseController
         return $this->sendResponse($evento->toArray(), 'Evento creado con éxito');
     }
 
-    /**
-     * Display the specified resource.
+     /**
+     * Lista un evento en especifico 
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -136,7 +146,9 @@ class EventoController extends BaseController
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla evento 
+     *
+     * [Se filtra por el ID]
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -251,8 +263,10 @@ class EventoController extends BaseController
 
     }
 
-    /**
-     * Remove the specified resource from storage.
+     /**
+     * Elimina un elemento de la tabla evento
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -274,7 +288,12 @@ class EventoController extends BaseController
     }
 
 
-
+    /**
+     * Listado de los eventos por tipo
+     *
+     * [Se filtra por el ID del tipo de evento]
+     *
+     */
     public function listeventipo($id){
 
         $tipoEvento = TipoEvento::find($id);
@@ -304,34 +323,37 @@ class EventoController extends BaseController
     }
 
 
-    public function buscar_evento(Request $request){
 
-        /*
-        {
-            "precio_inicio" : null,
-            "precio_fin" : null,
-            "artistas" : [
+    /**
+     * Buscar evento con filtros
+     *
+     * [Filtros por rango de precios, artista, tipo de evento. rango de fechas, (opcionales los parámetros de búsqueda)]
+     *
+     * @response {
+     *  "precio_inicio": 100,
+     *  "precio_fin": null,
+     *  "artistas": [
                             {
                                "id_artist" : 1  
                             },
                             {
                                "id_artist" : 2  
                             }
-                        ],
-            "tipos_evento" : [
+                    ],
+        "tipos_evento" : [
                             {
                                "id_tipo_evento" : 1  
                             },
                             {
                                "id_tipo_evento" : 2  
                             }
-                        ],
-            "fecha_inicio" : null,
-            "fecha_fin" : null
-        }
-        */
+                    ],
+        "fecha_inicio" : null,
+        "fecha_fin" : null
+     * }
+     */
+    public function buscar_evento(Request $request){
 
-        
         $input = $request->all();
         if(count($input) > 0){
             $eventos = Evento::with('artists')
@@ -438,7 +460,12 @@ class EventoController extends BaseController
         
     }
 
-
+    /**
+     * Detalle del evento
+     *
+     * [Se filtra por el ID del evento]
+     *
+     */
     public function detalle_evento($id){
 
         $evento = Evento::find($id);

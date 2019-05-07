@@ -8,11 +8,15 @@ use App\Models\Genero;
 use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\Input;
-
+/**
+ * @group Administración de Artista
+ *
+ * APIs para la gestion de artista
+ */
 class ArtistController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Lista de la tabla artista.
      *
      * @return \Illuminate\Http\Response
      */
@@ -24,15 +28,8 @@ class ArtistController extends BaseController
         return $this->sendResponse($artist->toArray(), 'Artistas devueltos con éxito');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
- 
-
-    /**
-     * Store a newly created resource in storage.
+   /**
+     * Agrega un nuevo elemento a la tabla artista
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -58,7 +55,9 @@ class ArtistController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista un artista en especifico 
+     *
+     * [Se filtra por el ID]
      *
      * @param  \App\Models\Artist  $artist
      * @return \Illuminate\Http\Response
@@ -77,16 +76,12 @@ class ArtistController extends BaseController
         return $this->sendResponse($artist->toArray(), 'Artista devuelto con éxito');
     }
 
-    /**
-     * Show the form for editing the specified resource.
+ 
+     /**
+     * Actualiza un elemeto de la tabla artista 
      *
-     * @param  \App\Models\Artist  $artist
-     * @return \Illuminate\Http\Response
-     */
-    
-
-    /**
-     * Update the specified resource in storage.
+     * [Se filtra por el ID]
+     *
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Artist  $artist
@@ -121,14 +116,16 @@ class ArtistController extends BaseController
         $artist2->manager = $input['manager'];
         $artist2->id_genero = $input['id_genero'];         
          $artist2->save();
-         //$artist->update($input);
+        
 
         return $this->sendResponse($artist2->toArray(), 'Artista actualizado con éxito');
 
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un elemento de la tabla artista
+     *
+     * [Se filtra por el ID]
      *
      * @param  \App\Models\Artist  $artist
      * @return \Illuminate\Http\Response
@@ -143,6 +140,14 @@ class ArtistController extends BaseController
         return $this->sendResponse($artist->toArray(), 'Artista eliminado con éxito');
     }
 
+
+    /**
+     * Listado de artistas por evento
+     *
+     * [Solo se mostrarán aquellos artistas que posean un evento asociado]
+     *
+     *
+    */
     public function listadoartistevento(){
 
         $artist_event = ArtistaEvento::all();

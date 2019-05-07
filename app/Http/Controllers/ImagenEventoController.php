@@ -7,11 +7,15 @@ use App\Models\Imagen;
 use App\Models\Evento;
 use App\Models\ImagenEvento;
 use Validator;
-
+/**
+ * @group Administración de Imagenes Evento
+ *
+ * APIs para la gestion de la tabla imagen_evento
+ */
 class ImagenEventoController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Listado de las imagenes por eventos.
      *
      * @return \Illuminate\Http\Response
      */
@@ -24,8 +28,12 @@ class ImagenEventoController extends BaseController
 
 
     /**
-     * Store a newly created resource in storage.
-     *
+     * Agrega un nuevo elemento a la tabla imagen_evento 
+     * 
+     * @response {
+     *  "id_imagen": 1,
+     *  "id_evento": 1,      
+     * } 
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -62,7 +70,8 @@ class ImagenEventoController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista de imagenes por evento en especifico
+     * [Se filtra por el ID del evento]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -78,8 +87,14 @@ class ImagenEventoController extends BaseController
 
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla imagen_evento 
      *
+     * [Se filtra por el ID del evento]
+     *
+     * @response {
+     *  "id_imagen_old": 1,
+     *  "id_imagen_new": 2,      
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -128,7 +143,9 @@ class ImagenEventoController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina todos los elemento de la tabla imagen_evento
+     *
+     * [Se filtra por el ID del evento]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

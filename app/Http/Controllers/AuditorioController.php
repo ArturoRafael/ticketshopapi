@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Auditorio;
 use Illuminate\Http\Request;
 use Validator;
-
+/**
+ * @group Administración de Auditorio
+ *
+ * APIs para la gestion de auditorio
+ */
 class AuditorioController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
+     /**
+     * Lista de la tabla auditorio.
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,13 +26,7 @@ class AuditorioController extends BaseController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
- 
-    /**
-     * Store a newly created resource in storage.
+     * Agrega un nuevo elemento a la tabla auditorio
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -39,12 +37,12 @@ class AuditorioController extends BaseController
          $validator = Validator::make($request->all(), [
             'nombre' => 'required',   
             'ciudad' => 'required',
-        'departamento' => 'required',
-        'pais' => 'required',
-        'direccion' => 'required',
-        'longitud' => 'numeric',
-        'latitud' => 'numeric',
-        'aforo' => 'integer'
+            'departamento' => 'required',
+            'pais' => 'required',
+            'direccion' => 'required',
+            'longitud' => 'numeric',
+            'latitud' => 'numeric',
+            'aforo' => 'integer'
         ]);
         if($validator->fails()){
             return $this->sendError('Error de validación.', $validator->errors());       
@@ -55,7 +53,9 @@ class AuditorioController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista un auditorio en especifico 
+     *
+     * [Se filtra por el ID]
      *
      * @param  \App\Models\Auditorio  $auditorio
      * @return \Illuminate\Http\Response
@@ -74,15 +74,12 @@ class AuditorioController extends BaseController
         return $this->sendResponse($auditorio->toArray(), 'Auditorio devuelto con éxito');
     }
 
-    /**
-     * Show the form for editing the specified resource.
+  
+   /**
+     * Actualiza un elemeto de la tabla auditorio 
      *
-     * @param  \App\Models\Auditorio  $auditorio
-     * @return \Illuminate\Http\Response
-     */
- 
-    /**
-     * Update the specified resource in storage.
+     * [Se filtra por el ID]
+     *
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Auditorio  $auditorio
@@ -128,7 +125,9 @@ class AuditorioController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un elemento de la tabla auditorio
+     *
+     * [Se filtra por el ID]
      *
      * @param  \App\Models\Auditorio  $auditorio
      * @return \Illuminate\Http\Response

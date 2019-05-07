@@ -10,34 +10,52 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash; 
 use App\Notifications\SignupActivate;
 use Socialite;
-
+/**
+ * @group Administración de Usuario
+ *
+ * APIs para la gestion de la tabla usuario
+ */
 class UsuarioController extends BaseController 
 {
 
     public $successStatus = 200;
    
     /**
-     * Update the specified resource in storage.
+     * Actualiza el perfil del usuario.
+     * [Se filtra por el ID]
+     * @response {      
+     *  "nombre": "Gold User", 
+     *  "password": "1234567890",
+     *  "c_password" : "1234567890"
+     *  "identificacion" : "Manager",
+     *  "tipo_identificacion" : 1,
+     *  "direccion" : "Address 11",
+     *  "ciudad" : "Ciudad",
+     *  "departamento" : "Departamento",
+     *  "telefono" : "311565634"
+     *  "id_rol" : 1 
+     * }
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Usuario  $user
+     * @param  \App\Models\Usuario  $id
      * @return \Illuminate\Http\Response
      **/
     public function updateprofile($id, Request $request)
     {
-        //
-         $input = $request->all();
+        
+        $input = $request->all();
 
-         $validator = Validator::make($input, [ 
+        $validator = Validator::make($input, [ 
             'nombre' => 'required',             
-            'clave' => 'required|min:3',
-            'c_clave' => 'required|min:3|same:password', 
+            'password' => 'required|min:3',
+            'c_password' => 'required|min:3|same:password', 
             'identificacion' => 'required',
             'tipo_identificacion' => 'required',
             'direccion' => 'required',
             'ciudad' => 'required',
             'departamento' => 'required',
-            'telefono' => 'required', 
+            'telefono' => 'required',
+            'id_rol' => 'required',
         ]);
 
         if($validator->fails()){
@@ -50,7 +68,7 @@ class UsuarioController extends BaseController
         }
 
         $users->nombre = $input['nombre'];
-        $users->clave = $input['clave'];
+        $users->password = $input['password'];
         $users->identificacion = $input['identificacion'];
         $users->tipo_identificacion = $input['tipo_identificacion'];    
         $users->direccion = $input['direccion'];
@@ -65,12 +83,23 @@ class UsuarioController extends BaseController
     }
 
 
+    /**
+     * Cambio de clave del usuario.
+     * [El usuario debe estar logeado (Headers => Authorization => Bearer Token)]
+     * @response {      
+     *  "mypassword": "Temporada Gold", 
+     *  "password": "1234567890",
+     *  "c_password" : "1234567890"     
+     * }
+     *
+     * @param  \Illuminate\Http\Request  $request
+     **/
     public function cambioclave(Request $request)
     {
         $validator  = Validator::make($request->all(), [
-             'mypassword' => 'required|min:6',
-             'password' => 'required|min:6',
-             'c_password' => 'required|min:6|same:password',
+             'mypassword' => 'required|min:3',
+             'password' => 'required|min:3',
+             'c_password' => 'required|min:3|same:password',
         ]);
 
         if ($validator->fails()) { 
@@ -90,9 +119,12 @@ class UsuarioController extends BaseController
         }
     }
 
-/** 
-     * login api 
-     * 
+     /** 
+     * Inicio de sesion del usuario 
+     * @response {      
+     *  "email": "email@example.com", 
+     *  "password": "1234567890"    
+     * }
      * @return \Illuminate\Http\Response 
      */ 
     public function login(Request $request){ 
@@ -100,7 +132,7 @@ class UsuarioController extends BaseController
         
         $validator  = Validator::make($request->all(), [
              'email' => 'email|required|string',
-             'password' => 'required|min:6|string'
+             'password' => 'required|min:3|string'
         ]);
 
         if ($validator->fails()) { 
@@ -126,9 +158,23 @@ class UsuarioController extends BaseController
         } 
     }
     
-    /** 
-     * Register api 
-     * 
+    /**
+     * Actualiza el perfil del usuario.
+     * [Se filtra por el ID]
+     * @response {      
+     *  "nombre": "Gold Gold",
+     *  "email" : "mail@example.com" 
+     *  "password": "1234567890",
+     *  "c_password" : "1234567890"
+     *  "identificacion" : "Manager",
+     *  "tipo_identificacion" : 1,
+     *  "direccion" : "Address 11",
+     *  "ciudad" : "Ciudad",
+     *  "departamento" : "Departamento",
+     *  "telefono" : "311565634",
+     *  "id_rol" : 1 
+     * }
+     *
      * @return \Illuminate\Http\Response 
      */ 
     public function register(Request $request) 
@@ -136,8 +182,8 @@ class UsuarioController extends BaseController
        $validator = Validator::make($request->all(), [ 
             'nombre' => 'required', 
             'email' => 'required|email', 
-            'password' => 'required|min:6',
-            'c_password' => 'required|min:6|same:password', 
+            'password' => 'required|min:3',
+            'c_password' => 'required|min:3|same:password', 
             'identificacion' => 'required',
             'tipo_identificacion' => 'required',
             'direccion' => 'required',
@@ -175,7 +221,7 @@ class UsuarioController extends BaseController
 
 
     /**
-     * Redirect the user to the GitHub authentication page.
+     * Redirigir al usuario a la página de autenticación de Google
      *
      * @return Response
      */
@@ -185,7 +231,8 @@ class UsuarioController extends BaseController
     }
 
     /**
-     * Obtain the user information from GitHub.
+     * 
+     *  Obtener la información de usuario de Google.
      *
      * @return Response
      */
@@ -221,7 +268,7 @@ class UsuarioController extends BaseController
             $usuario = Usuario::create([
                 'nombre' => $user->name, 
                 'email' => $user->email, 
-                'password' => bcrypt(123456789);,            
+                'password' => bcrypt(123456789),            
                 'identificacion' => " ",
                 'tipo_identificacion' => 1,
                 'direccion' => " ",
@@ -246,6 +293,12 @@ class UsuarioController extends BaseController
     }
 
 
+    /**
+     * 
+     *  Activar la cuenta del usuario
+     * [Se requiere Token enviado al correo]
+     * @return Response
+     */
     public function signupActivate($token)
     {
         $user = Usuario::where('activation_token', $token)->first();
@@ -259,8 +312,8 @@ class UsuarioController extends BaseController
     }
     
     /** 
-     * details api 
-     * 
+     * Detalles del usuario logeado 
+     * [El usuario debe estar logeado (Headers => Authorization => Bearer Token)]
      * @return \Illuminate\Http\Response 
      */ 
     public function detailsuser() 
@@ -271,8 +324,7 @@ class UsuarioController extends BaseController
 
 
     /** 
-     * lista usuarios api 
-     * 
+     * Lista de los usuarios     
      * @return \Illuminate\Http\Response 
      */ 
     public function listausuarios(){
@@ -285,9 +337,8 @@ class UsuarioController extends BaseController
 
 
     /** 
-     * compras realizadas usuarios api 
-     * 
-     * @return \Illuminate\Http\Response 
+     * Compras realizadas por usuario 
+     * [Se filtra por el ID del usuario]
      */ 
     public function comprasrealizadas($id){
 
@@ -309,8 +360,8 @@ class UsuarioController extends BaseController
 
 
      /** 
-     * temporadas compradas usuarios api 
-     * 
+     * Temporadas compradas por usuario 
+     * [Se filtra por el ID del usuario]
      * @return \Illuminate\Http\Response 
      */ 
     public function temporadascompradas($id){
@@ -319,7 +370,6 @@ class UsuarioController extends BaseController
         if (is_null($users)) {
             return $this->sendError('Usuario no encontrado');
         }
-
 
         $temporadas = Usuario::with('venta_temporadas')
                         ->where('usuario.email',$id)->get();
@@ -331,8 +381,8 @@ class UsuarioController extends BaseController
 
 
      /** 
-     * reservas realizadas usuarios api 
-     * 
+     * Reservas realizadas por usuario 
+     * [Se filtra por el ID del usuario] 
      * @return \Illuminate\Http\Response 
      */ 
     public function reservas($id){
@@ -354,10 +404,14 @@ class UsuarioController extends BaseController
     }
 
 
-
-    public function logout(Request $request)
-    {
-       /*Logout all devices */ 
+    /** 
+     * Cierre de sesion del usuario 
+     * [Logout all devices]
+     * [El usuario debe estar logeado (Headers => Authorization => Bearer Token)]
+     * @return \Illuminate\Http\Response 
+     */  
+    public function logout()
+    {       
        $accessToken = Auth::user()->token();
         
        \DB::table('oauth_access_tokens')
@@ -370,17 +424,37 @@ class UsuarioController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un elemento de la tabla usuario
+     *
+     * [Se filtra por el ID]
      *
      * @param  \App\Models\Usuario  $usuario
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
     {
-        //
-        $usuario = Usuario::find($request->input('email'));
-        $usuario->delete();
-        return $this->sendResponse($usuario->toArray(), 'Usuario eliminado con éxito');
+        try {
+
+            $validator  = Validator::make($request->all(), [
+             'email' => 'email|required|string',            
+            ]);
+
+            if ($validator->fails()) { 
+                return response()->json(['error'=>$validator->errors()], 401);            
+            }
+
+            $usuario = Usuario::find($request->input('email'));
+            if (is_null($tribuna)) {
+                return $this->sendError('Usuario no encontrado');
+            }            
+            $usuario->delete();
+            return $this->sendResponse($usuario->toArray(), 'Usuario eliminado con éxito');
+
+        }catch (\Illuminate\Database\QueryException $e){
+            return response()->json(['error' => 'El registro del usuario no se puedo eliminar, es usado en otra tabla', 'exception' => $e->errorInfo], 400);
+        }
+        
+        
     } 
 
 }

@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\TipoCupon;
 use Illuminate\Http\Request;
 use Validator;
-
+/**
+ * @group Administración de Tipo de Cupon
+ *
+ * APIs para la gestion de la tabla tipo_cupon
+ */
 class TipoCuponController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Lista de la tabla tipo_cupon.
      *
      * @return \Illuminate\Http\Response
      */
@@ -20,16 +24,12 @@ class TipoCuponController extends BaseController
         return $this->sendResponse($tipoCupon->toArray(), 'Tipos de cupones devueltos con éxito');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
    
-
     /**
-     * Store a newly created resource in storage.
-     *
+     * Agrega un nuevo elemento a la tabla tipo_cupon
+     * @response {      
+     *  "nombre": "Tipo 1"            
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -45,8 +45,10 @@ class TipoCuponController extends BaseController
          return $this->sendResponse($tipoCupon->toArray(), 'Tipo de Cupón  creado con éxito');
     }
 
-    /**
-     * Display the specified resource.
+     /**
+     * Lista de un tipo de cupon en especifico 
+     *
+     * [Se filtra por el ID]
      *
      * @param  \App\Models\TipoCupon  $tipoCupon
      * @return \Illuminate\Http\Response
@@ -64,16 +66,14 @@ class TipoCuponController extends BaseController
         return $this->sendResponse($tipoCupon->toArray(), 'Tipo de Cupón  devuelto con éxito');
     }
 
+    
     /**
-     * Show the form for editing the specified resource.
+     * Actualiza un elemeto de la tabla tipo_cupon 
      *
-     * @param  \App\Models\TipoCupon  $tipoCupon
-     * @return \Illuminate\Http\Response
-     */
-   
-    /**
-     * Update the specified resource in storage.
-     *
+     * [Se filtra por el ID]
+     * @response {
+     *  "nombre": "Tipo Cupon 1"
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\TipoCupon  $tipoCupon
      * @return \Illuminate\Http\Response
@@ -106,7 +106,9 @@ class TipoCuponController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un elemento de la tabla tipo_cupon
+     *
+     * [Se filtra por el ID]
      *
      * @param  \App\Models\TipoCupon  $tipoCupon
      * @return \Illuminate\Http\Response

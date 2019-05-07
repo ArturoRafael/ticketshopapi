@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Genero;
 use Illuminate\Http\Request;
 use Validator;
-
+/**
+ * @group Administración de Genero 
+ *
+ * APIs para la gestion de genero
+ */
 class GeneroController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Lista de la tabla genero.
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,15 +25,10 @@ class GeneroController extends BaseController
         return $this->sendResponse($genero->toArray(), 'Géneros devueltos con éxito');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
- 
+   
 
     /**
-     * Store a newly created resource in storage.
+     * Agrega un nuevo elemento a la tabla genero
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -48,7 +47,9 @@ class GeneroController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista un genero en especifico 
+     *
+     * [Se filtra por el ID]
      *
      * @param  \App\Models\Genero  $genero
      * @return \Illuminate\Http\Response
@@ -67,16 +68,12 @@ class GeneroController extends BaseController
         return $this->sendResponse($genero->toArray(), 'Género devuelto con éxito');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Genero  $genero
-     * @return \Illuminate\Http\Response
-     */
-   
+    
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla Genero 
+     *
+     * [Se filtra por el ID]
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Genero  $genero
@@ -105,7 +102,9 @@ class GeneroController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un elemento de la tabla Genero
+     *
+     * [Se filtra por el ID]
      *
      * @param  \App\Models\Genero  $genero
      * @return \Illuminate\Http\Response

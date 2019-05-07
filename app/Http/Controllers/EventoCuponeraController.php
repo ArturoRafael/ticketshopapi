@@ -8,11 +8,15 @@ use App\Models\Cuponera;
 use App\Models\EventoCuponera;
 use Illuminate\Support\Facades\Input;
 use Validator;
-
+/**
+ * @group Administración de Evento - Cuponera
+ *
+ * APIs para la gestion de la tabla asociativa evento_cuponera
+ */
 class EventoCuponeraController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Listado de los cupones por eventos.
      *
      * @return \Illuminate\Http\Response
      */
@@ -24,8 +28,12 @@ class EventoCuponeraController extends BaseController
 
 
     /**
-     * Store a newly created resource in storage.
+     * Agrega un nuevo elemento a la tabla evento_cuponera
      *
+     * @response {
+     *  "id_evento": 1,
+     *  "id_cuponera": 1,      
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -60,7 +68,9 @@ class EventoCuponeraController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista las cuponeras por evento en especifico 
+     *
+     * [Se filtra por el ID del evento]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -76,8 +86,14 @@ class EventoCuponeraController extends BaseController
 
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla evento_cuponera 
      *
+     * [Se filtra por el ID del evento]
+     * 
+     * @response {
+     *  "id_cuponera_old": 1,
+     *  "id_cuponera_new": 2,      
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -126,7 +142,9 @@ class EventoCuponeraController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina todos los elemento de la tabla evento_cuponera
+     *
+     * [Se filtra por el ID del evento]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

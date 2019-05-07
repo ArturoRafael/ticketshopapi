@@ -7,10 +7,15 @@ use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\Input;
 
+/**
+ * @group Administración de Cliente
+ *
+ * APIs para la gestion de cliente
+ */
 class ClienteController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Lista de la tabla cliente.
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,13 +27,7 @@ class ClienteController extends BaseController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-   
-    /**
-     * Store a newly created resource in storage.
+     * Agrega un nuevo elemento a la tabla cliente
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -54,7 +53,9 @@ class ClienteController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista un cliente en especifico 
+     *
+     * [Se filtra por el ID]
      *
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
@@ -69,14 +70,10 @@ class ClienteController extends BaseController
         return $this->sendResponse($cliente->toArray(), 'Cliente devuelto con éxito');
     }
 
-    /**
-     * Show the form for editing the specified resource.
+     /**
+     * Actualiza un elemeto de la tabla cliente 
      *
-     * @param  \App\Models\Cliente  $cliente
-     * @return \Illuminate\Http\Response
-     */
-       /**
-     * Update the specified resource in storage.
+     * [Se filtra por el ID]
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Cliente  $cliente
@@ -120,7 +117,9 @@ class ClienteController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un elemento de la tabla cliente
+     *
+     * [Se filtra por el ID]
      *
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response

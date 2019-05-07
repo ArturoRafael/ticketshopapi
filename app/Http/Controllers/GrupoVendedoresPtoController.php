@@ -8,11 +8,15 @@ use App\Models\GrupsVendedore;
 use App\Models\PuntoVentum;
 use Validator;
 use Illuminate\Support\Facades\Input;
-
+/**
+ * @group Administración de GrupoVendedoresPto
+ *
+ * APIs para la gestion de grupo de vendedores por punto de venta
+ */
 class GrupoVendedoresPtoController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Listado de los grupo de vendedores por punto de venta
      *
      * @return \Illuminate\Http\Response
      */
@@ -24,8 +28,12 @@ class GrupoVendedoresPtoController extends BaseController
 
   
     /**
-     * Store a newly created resource in storage.
+     * Agrega un nuevo elemento a la tabla grupovendedorespto
      *
+     * @response {
+     *  "id_grupo_vendedores": 1,
+     *  "id_punto_venta": 1,      
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -61,7 +69,9 @@ class GrupoVendedoresPtoController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista los puntos de venta por grupo de vendedores en especifico 
+     *
+     * [Se filtra por el ID del grupo del vendedor]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -78,8 +88,14 @@ class GrupoVendedoresPtoController extends BaseController
 
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla grupovendedorespto 
      *
+     * [Se filtra por el ID del grupo del vendedor]
+     * 
+     * @response {
+     *  "id_punto_venta_old": 1,
+     *  "id_punto_venta_new": 2,      
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -131,7 +147,9 @@ class GrupoVendedoresPtoController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina todos los elemento de la tabla grupovendedorespto
+     *
+     * [Se filtra por el ID del grupo del vendedor]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

@@ -6,15 +6,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Notifications\PasswordResetRequest;
-use App\Notifications\PasswordResetSuccess;
 use App\Usuario;
 use App\PasswordReset;
-
+/**
+ * @group Restablecimiento de contraseña
+ *
+ * APIs para la gestion del restablecimiento de la contraseña del usuario
+ */
 class PasswordResetController extends BaseController
 {
     /**
-     * Create token password reset
-     *
+     * Creación del token para restablecer la contraseña
+     *@response {
+     *  "email": "email@example.com"            
+     * }
      * @param  [string] email
      * @return [string] message
      */
@@ -46,7 +51,7 @@ class PasswordResetController extends BaseController
     }
 
     /**
-     * Find token password reset
+     * Buscar token para restablecer contraseña
      *
      * @param  [string] $token
      * @return [string] message
@@ -70,8 +75,12 @@ class PasswordResetController extends BaseController
 
 
     /**
-     * Reset password
-     *
+     * Restablecer la contraseña
+     *@response {
+     *  "email": "email@example.com",
+     *  "password": "123456789",
+     *  "token": "kghkvnñskrnslnv34433GGHGthfhfndtlkfvlknvlvnlnvlvnl8688",                
+     * }
      * @param  [string] email
      * @param  [string] password
      * @param  [string] password_confirmation

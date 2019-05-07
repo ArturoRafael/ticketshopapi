@@ -9,10 +9,15 @@ use App\Models\Cuponera;
 use Validator;
 use Illuminate\Support\Facades\Input;
 
+/**
+ * @group Administración de Cupon
+ *
+ * APIs para la gestion de cupon
+ */
 class CuponController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Lista de la tabla cupon.
      *
      * @return \Illuminate\Http\Response
      */
@@ -23,8 +28,8 @@ class CuponController extends BaseController
     }
 
   
-    /**
-     * Store a newly created resource in storage.
+   /**
+     * Agrega un nuevo elemento a la tabla cupon
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -78,7 +83,9 @@ class CuponController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista un cupon en especifico 
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -94,8 +101,10 @@ class CuponController extends BaseController
     }
 
 
-    /**
-     * Update the specified resource in storage.
+     /**
+     * Actualiza un elemeto de la tabla cupon 
+     *
+     * [Se filtra por el ID]
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -165,7 +174,9 @@ class CuponController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un elemento de la tabla cupon
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

@@ -7,11 +7,15 @@ use App\Models\Puesto;
 use App\Models\Palco;
 use App\Models\PuestosPalco;
 use Validator;
-
+/**
+ * @group Administración de Puestos - Palco
+ *
+ * APIs para la gestion de la tabla asociativa puestos_palco
+ */
 class PuestosPalcoController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
+     /**
+     * Listado de los Puestos por Palcos.
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,9 +25,13 @@ class PuestosPalcoController extends BaseController
         return $this->sendResponse($puesto_palco->toArray(), 'Puestos por palco devueltos con éxito');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
+   /**
+     * Agrega un nuevo elemento a la tabla puestos_palco 
+     * 
+     * @response {
+     *  "id_palco": 1,
+     *  "id_puesto": 1,      
+     * }  
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -58,7 +66,8 @@ class PuestosPalcoController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista de los puestos por palco en especifico
+     * [Se filtra por el ID del palco]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -74,8 +83,14 @@ class PuestosPalcoController extends BaseController
 
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla puestos_palco 
      *
+     * [Se filtra por el ID del palco]
+     *
+     * @response {
+     *  "id_puesto_old": 1,
+     *  "id_puesto_new": 2,      
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -124,7 +139,9 @@ class PuestosPalcoController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina todos los elemento de la tabla puestos_palco
+     *
+     * [Se filtra por el ID del palco]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

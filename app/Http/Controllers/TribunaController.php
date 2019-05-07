@@ -7,11 +7,15 @@ use Validator;
 use App\Models\Tribuna;
 use App\Models\Auditorio;
 use Illuminate\Support\Facades\Input;
-
+/**
+ * @group Administración de Tribuna
+ *
+ * APIs para la gestion de la tabla tribuna
+ */
 class TribunaController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
+     /**
+     * Lista de la tabla tribuna.
      *
      * @return \Illuminate\Http\Response
      */
@@ -24,8 +28,11 @@ class TribunaController extends BaseController
     
 
     /**
-     * Store a newly created resource in storage.
-     *
+     * Agrega un nuevo elemento a la tabla tribuna
+     * @response {      
+     *  "nombre": "Tribuna Gold", 
+     *  "id_auditorio": 1    
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -50,7 +57,9 @@ class TribunaController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista una tribuna en especifico 
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -69,8 +78,13 @@ class TribunaController extends BaseController
   
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla tribuna 
      *
+     * [Se filtra por el ID]
+     * @response {
+     *  "nombre": "Tribuna Gold New", 
+     *  "id_auditorio": 2    
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -104,7 +118,9 @@ class TribunaController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un elemento de la tabla tribuna
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

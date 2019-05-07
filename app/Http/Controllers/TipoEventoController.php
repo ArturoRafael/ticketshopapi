@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\TipoEvento;
 use Illuminate\Http\Request;
 use Validator;
+
+/**
+ * @group Administración de Tipo Evento
+ *
+ * APIs para la gestion de la tabla tipo_evento
+ */
 class TipoEventoController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Lista de la tabla tipo_evento.
      *
      * @return \Illuminate\Http\Response
      */
@@ -20,8 +26,10 @@ class TipoEventoController extends BaseController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
+     * Agrega un nuevo elemento a la tabla tipo_evento
+     * @response {      
+     *  "nombre": "Tipo 1"            
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -38,7 +46,9 @@ class TipoEventoController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista de un tipo de evento en especifico 
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -58,8 +68,12 @@ class TipoEventoController extends BaseController
  
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla tipo_evento 
      *
+     * [Se filtra por el ID]
+     * @response {
+     *  "nombre": "Tipo Evento 1"
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -89,7 +103,9 @@ class TipoEventoController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un elemento de la tabla tipo_evento
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

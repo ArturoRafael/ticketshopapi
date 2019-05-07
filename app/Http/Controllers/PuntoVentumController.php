@@ -6,11 +6,15 @@ use Illuminate\Http\Request;
 use App\Models\PuntoVentum;
 use Validator;
 use Illuminate\Support\Facades\Input;
-
+/**
+ * @group Administración de Puntos de Venta
+ *
+ * APIs para la gestion de la tabla punto_venta
+ */
 class PuntoVentumController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Lista de la tabla punto_venta.
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,8 +25,14 @@ class PuntoVentumController extends BaseController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
+     * Agrega un nuevo elemento a la tabla punto_venta
+     * @response {      
+     *  "nombre_razon": "BBV", 
+     *  "identificacion": "BBV",
+     *  "tipo_identificacion": 1,
+     *  "direccion" : "Address One"
+     *  "telefono" : "311998333"     
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -42,7 +52,9 @@ class PuntoVentumController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista de un punto de venta en especifico 
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -59,8 +71,16 @@ class PuntoVentumController extends BaseController
 
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla punto_venta 
      *
+     * [Se filtra por el ID]
+     * @response {
+     *  "nombre_razon": "BBV", 
+     *  "identificacion": "BBV",
+     *  "tipo_identificacion": 0,
+     *  "direccion" : "Address Two"
+     *  "telefono" : "311998333"   
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -91,7 +111,9 @@ class PuntoVentumController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un elemento de la tabla punto_venta
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

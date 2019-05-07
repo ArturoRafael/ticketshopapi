@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\TipoDescuento;
 use Illuminate\Http\Request;
 use Validator;
-
+/**
+ * @group Administración de Tipo Descuento
+ *
+ * APIs para la gestion de la tabla tipo_descuento
+ */
 class TipoDescuentoController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Lista de la tabla tipo_descuento.
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,16 +25,12 @@ class TipoDescuentoController extends BaseController
         return $this->sendResponse($tipoDescuento->toArray(), 'Tipos de descuentos devueltos con éxito');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
    
-
     /**
-     * Store a newly created resource in storage.
-     *
+     * Agrega un nuevo elemento a la tabla tipo_descuento
+     * @response {      
+     *  "nombre": "Tipo 1"
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -47,36 +47,31 @@ class TipoDescuentoController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista de un tipo de descuento en especifico 
+     *
+     * [Se filtra por el ID]
      *
      * @param  \App\Models\TipoDescuento  $tipoDescuento
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
-         $tipoDescuento = TipoDescuento::find($id);
-
-
+        
+        $tipoDescuento = TipoDescuento::find($id);
         if (is_null($tipoDescuento)) {
             return $this->sendError('Tipo de descuento no encontrado');
         }
-
-
         return $this->sendResponse($tipoDescuento->toArray(), 'Tipo de descuento devuelto con éxito');
     }
 
+    
     /**
-     * Show the form for editing the specified resource.
+     * Actualiza un elemeto de la tabla tipo_descuento 
      *
-     * @param  \App\Models\TipoDescuento  $tipoDescuento
-     * @return \Illuminate\Http\Response
-     */
-
-
-    /**
-     * Update the specified resource in storage.
-     *
+     * [Se filtra por el ID]
+     * @response {
+     *  "nombre": "Tipo Descuento 1"     
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\TipoDescuento  $tipoDescuento
      * @return \Illuminate\Http\Response
@@ -84,9 +79,7 @@ class TipoDescuentoController extends BaseController
     public function update($id,Request $request, TipoDescuento $tipoDescuento)
     {
         
-          $input = $request->all();
-
-
+        $input = $request->all();
         $validator = Validator::make($input, [
             'nombre' => 'required',           
                    
@@ -98,18 +91,20 @@ class TipoDescuentoController extends BaseController
 
      $tipoDescuento = TipoDescuento::find($id);
 
- if (is_null($tipoDescuento)) {
-            return $this->sendError('Tipo de descuento no encontrado');
+        if (is_null($tipoDescuento)) {
+                return $this->sendError('Tipo de descuento no encontrado');
+            }
+
+            $tipoDescuento->nombre = $input['nombre'];              
+             $tipoDescuento->save();
+             
+            return $this->sendResponse($tipoDescuento->toArray(), 'Tipo de descuento actualizado con éxito');
         }
 
-        $tipoDescuento->nombre = $input['nombre'];              
-         $tipoDescuento->save();
-         
-        return $this->sendResponse($tipoDescuento->toArray(), 'Tipo de descuento actualizado con éxito');
-    }
-
-    /**
-     * Remove the specified resource from storage.
+     /**
+     * Elimina un elemento de la tabla tipo_descuento
+     *
+     * [Se filtra por el ID]
      *
      * @param  \App\Models\TipoDescuento  $tipoDescuento
      * @return \Illuminate\Http\Response

@@ -7,11 +7,15 @@ use App\Models\Imagen;
 use App\Models\Artist;
 use App\Models\ImagenArtist;
 use Validator;
-
+/**
+ * @group Administración de Imagen - Artist
+ *
+ * APIs para la gestion de la tabla asociativa imagen_artist
+ */
 class ImagenArtistController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
+   /**
+     * Listado de las imagenes de los artistas.
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,10 +25,14 @@ class ImagenArtistController extends BaseController
         return $this->sendResponse($artist_img->toArray(), 'Imagenes de artistas devueltas con éxito');
     }
 
-
     /**
-     * Store a newly created resource in storage.
+     * Agrega un nuevo elemento a la tabla imagen_artist 
      *
+     * [Se filtra por el ID]  
+     * @response {
+     *  "id_artista": 1,
+     *  "id_imagen": 1,      
+     * }   
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -59,8 +67,8 @@ class ImagenArtistController extends BaseController
     }
 
     /**
-     * Display the specified resource.
-     *
+     * Lista las imagenes por artista en especifico
+     * [Se filtra por el ID del artista]
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -75,8 +83,14 @@ class ImagenArtistController extends BaseController
 
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla imagen_artist 
      *
+     * [Se filtra por el ID del artista]
+     * 
+     * @response {
+     *  "id_imagen_old": 1,
+     *  "id_imagen_new": 2,      
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -125,7 +139,9 @@ class ImagenArtistController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina todos los elemento de la tabla imagen_artist
+     *
+     * [Se filtra por el ID del artista]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

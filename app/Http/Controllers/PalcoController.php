@@ -7,11 +7,15 @@ use Validator;
 use App\Models\Palco;
 use App\Models\Localidad;
 use Illuminate\Support\Facades\Input;
-
+/**
+ * @group Administración de Palco
+ *
+ * APIs para la gestion de la tabla palco
+ */
 class PalcoController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Lista de la tabla palco.
      *
      * @return \Illuminate\Http\Response
      */
@@ -23,8 +27,11 @@ class PalcoController extends BaseController
 
    
     /**
-     * Store a newly created resource in storage.
-     *
+     * Agrega un nuevo elemento a la tabla palco
+     * @response {
+     *  "nombre": "Palco New",
+     *  "id_localidad": 1           
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -48,7 +55,9 @@ class PalcoController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista de un palco en especifico 
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -67,8 +76,13 @@ class PalcoController extends BaseController
 
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla palco 
      *
+     * [Se filtra por el ID]
+     * @response {
+     *  "nombre": "Palco 2",
+     *  "id_localidad": 1
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -98,7 +112,9 @@ class PalcoController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un elemento de la tabla palco
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

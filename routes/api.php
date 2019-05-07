@@ -53,11 +53,8 @@ Route::get('listeventipo/{listeventipo}','EventoController@listeventipo');
 Route::get('detalle_evento/{detalle_evento}','EventoController@detalle_evento');
 Route::get('buscar_evento','EventoController@buscar_evento');
 Route::get('listadoartistevento','ArtistController@listadoartistevento');
-/*
-Route::middleware('auth:api')->group( function () {
-	
-	//Route::resource('products', 'API\ProductController');
-});*/
+
+
 
 Route::get('listausuarios', 'UsuarioController@listausuarios');
 
@@ -77,18 +74,15 @@ Route::get('auth/{provider}', 'UsuarioController@redirectToProvider');
 Route::get('auth/{provider}/callback', 'UsuarioController@handleProviderCallback');
 
 Route::group(['middleware' => 'auth:api'], function () { 
+	Route::post('cambioclave', 'UsuarioController@cambioclave');
 	Route::post('detailsuser', 'UsuarioController@detailsuser');
 	Route::put('updateprofile/{updateprofile}', 'UsuarioController@updateprofile');
-	Route::post('cambioclave', 'UsuarioController@cambioclave');
+	
 	Route::post('logout', 'UsuarioController@logout');
-});
 
-Route::group([    
-    'namespace' => 'Auth',    
-    'middleware' => 'api',    
-    'prefix' => 'password'
-], function () {    
-    Route::post('create', 'PasswordResetController@create');
+	Route::post('create', 'PasswordResetController@create');
     Route::get('find/{token}', 'PasswordResetController@find');
     Route::post('reset', 'PasswordResetController@reset');
+
 });
+

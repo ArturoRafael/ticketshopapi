@@ -8,10 +8,15 @@ use App\Models\Localidad;
 use App\Models\Tribuna;
 use Illuminate\Support\Facades\Input;
 
+/**
+ * @group Administración de Localidad
+ *
+ * APIs para la gestion de la tabla localidad
+ */
 class LocalidadController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Lista de la tabla localidad.
      *
      * @return \Illuminate\Http\Response
      */
@@ -23,8 +28,12 @@ class LocalidadController extends BaseController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
+     * Agrega un nuevo elemento a la tabla localidad
+     * @response {
+     *  "nombre": "Localidad New",
+     *  "id_tribuna": 1, 
+     *  "puerta_acceso":null     
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -50,7 +59,9 @@ class LocalidadController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista de una localidad en especifico 
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -70,8 +81,14 @@ class LocalidadController extends BaseController
     }
 
      /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla localidad 
      *
+     * [Se filtra por el ID]
+     * @response {
+     *  "nombre": "Localidad 2",
+     *  "id_tribuna": 1, 
+     *  "puerta_acceso":"AA12"     
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -108,7 +125,9 @@ class LocalidadController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un elemento de la tabla localidad
+     *
+     * [Se filtra por el ID]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

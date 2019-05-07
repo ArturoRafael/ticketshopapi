@@ -7,11 +7,15 @@ use App\Models\Imagen;
 use App\Models\Auditorio;
 use App\Models\ImagenesAuditorio;
 use Validator;
-
+/**
+ * @group Administración de Imagenes Auditorio
+ *
+ * APIs para la gestion de la tabla imagenes_auditorio
+ */
 class ImagenesAuditorioController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Listado de las imagenes por auditorios.
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,9 +26,13 @@ class ImagenesAuditorioController extends BaseController
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     *
+     /**
+     * Agrega un nuevo elemento a la tabla imagenes_auditorio 
+     * 
+     * @response {
+     *  "id_imagen": 1,
+     *  "id_auditorio": 2,      
+     * }  
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -59,7 +67,8 @@ class ImagenesAuditorioController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista de imagenes por auditorio en especifico
+     * [Se filtra por el ID del auditorio]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -74,8 +83,14 @@ class ImagenesAuditorioController extends BaseController
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla imagenes_auditorio 
      *
+     * [Se filtra por el ID del auditorio]
+     *
+     * @response {
+     *  "id_imagen_old": 1,
+     *  "id_imagen_new": 2,      
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -125,7 +140,9 @@ class ImagenesAuditorioController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina todos los elemento de la tabla imagenes_auditorio
+     *
+     * [Se filtra por el ID del auditorio]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

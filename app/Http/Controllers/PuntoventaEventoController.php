@@ -8,11 +8,15 @@ use App\Models\PuntoVentum;
 use App\Models\PuntoventaEvento;
 use Illuminate\Support\Facades\Input;
 use Validator;
-
+/**
+ * @group Administración de Punto de Venta Evento
+ *
+ * APIs para la gestion de la tabla puntoventa_evento
+ */
 class PuntoventaEventoController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Listado de los puntos de venta por evento.
      *
      * @return \Illuminate\Http\Response
      */
@@ -24,8 +28,12 @@ class PuntoventaEventoController extends BaseController
 
 
     /**
-     * Store a newly created resource in storage.
-     *
+     * Agrega un nuevo elemento a la tabla puntoventa_evento 
+     * 
+     * @response {
+     *  "id_evento": 1,
+     *  "id_puntoventa": 1,      
+     * }  
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -60,7 +68,8 @@ class PuntoventaEventoController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Lista de los punto de venta por evento en especifico
+     * [Se filtra por el ID del evento]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -76,8 +85,14 @@ class PuntoventaEventoController extends BaseController
 
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un elemeto de la tabla puntoventa_evento 
      *
+     * [Se filtra por el ID del evento]
+     *
+     * @response {
+     *  "id_puntoventa_old": 1,
+     *  "id_puntoventa_new": 2,      
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -126,7 +141,9 @@ class PuntoventaEventoController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina todos los elemento de la tabla puntoventa_evento
+     *
+     * [Se filtra por el ID del evento]
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
