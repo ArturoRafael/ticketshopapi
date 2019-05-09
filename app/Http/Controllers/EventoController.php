@@ -32,9 +32,6 @@ class EventoController extends BaseController
      * Agrega un nuevo elemento a la tabla evento
      *
      * @return \Illuminate\Http\Response
-     */
-    /**
-     * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -482,7 +479,7 @@ class EventoController extends BaseController
                 ->join('auditorio', 'evento.id_auditorio', '=', 'auditorio.id')                
                 ->join('clientes', 'evento.id_cliente', '=', 'clientes.id')
                 ->where('evento.id','=', $id)
-                ->select('evento.fecha_evento', 'evento.nombre','evento.hora_inicio','evento.hora_apertura', 'evento.hora_finalizacion', 'evento.codigo_pulep','evento.domicilios','evento.venta_linea','evento.status','evento.fecha_inicio_venta_internet','evento.fecha_inicio_venta_puntos','tipo_evento.nombre AS tipo_evento', 'temporada.nombre AS nombre_temporada','temporada.status AS status_temporada', 'auditorio.nombre AS auditorio', 'auditorio.ciudad AS ciudad_auditorio', 'auditorio.departamento AS departamento_auditorio', 'auditorio.pais AS pais_auditorio', 'auditorio.direccion', 'auditorio.latitud', 'auditorio.longitud', 'auditorio.aforo', 'clientes.Identificacion AS identificacion_cliente', 'clientes.tipo_identificacion', 'clientes.nombrerazon', 'clientes.direccion AS direccion_cliente', 'clientes.ciudad AS ciudad_cliente', 'clientes.departamento AS departamento_cliente', 'clientes.email', 'clientes.telefono', 'clientes.tipo_cliente')
+                ->select('evento.fecha_evento', 'evento.nombre','evento.hora_inicio','evento.hora_apertura', 'evento.hora_finalizacion', 'evento.codigo_pulep','evento.domicilios','evento.venta_linea','evento.status','evento.fecha_inicio_venta_internet','evento.fecha_inicio_venta_puntos','tipo_evento.nombre AS tipo_evento', 'temporada.nombre AS nombre_temporada','temporada.status AS status_temporada', 'auditorio.id AS id_auditorio','auditorio.nombre AS auditorio', 'auditorio.ciudad AS ciudad_auditorio', 'auditorio.departamento AS departamento_auditorio', 'auditorio.pais AS pais_auditorio', 'auditorio.direccion', 'auditorio.latitud', 'auditorio.longitud', 'auditorio.aforo', 'clientes.Identificacion AS identificacion_cliente', 'clientes.tipo_identificacion', 'clientes.nombrerazon', 'clientes.direccion AS direccion_cliente', 'clientes.ciudad AS ciudad_cliente', 'clientes.departamento AS departamento_cliente', 'clientes.email', 'clientes.telefono', 'clientes.tipo_cliente')
                 ->get();
 
         $preventas = \DB::table('evento')                
