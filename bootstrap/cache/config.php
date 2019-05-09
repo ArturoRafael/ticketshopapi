@@ -117,6 +117,7 @@
       24 => 'App\\Providers\\AuthServiceProvider',
       25 => 'App\\Providers\\EventServiceProvider',
       26 => 'App\\Providers\\RouteServiceProvider',
+      27 => 'Laravel\\Socialite\\SocialiteServiceProvider',
     ),
     'aliases' => 
     array (
@@ -153,6 +154,7 @@
       'URL' => 'Illuminate\\Support\\Facades\\URL',
       'Validator' => 'Illuminate\\Support\\Facades\\Validator',
       'View' => 'Illuminate\\Support\\Facades\\View',
+      'Socialite' => 'Laravel\\Socialite\\Facades\\Socialite',
     ),
   ),
   'auth' => 
@@ -248,7 +250,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\storage\\framework/cache/data',
+        'path' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -297,8 +299,8 @@
         'host' => '127.0.0.1',
         'port' => '3306',
         'database' => 'ticketshop',
-        'username' => 'ticketshop',
-        'password' => 'ticketshop',
+        'username' => 'root',
+        'password' => 'ticket2019',
         'unix_socket' => '',
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
@@ -312,8 +314,8 @@
         'host' => '127.0.0.1',
         'port' => '3306',
         'database' => 'ticketshop',
-        'username' => 'ticketshop',
-        'password' => 'ticketshop',
+        'username' => 'root',
+        'password' => 'ticket2019',
         'charset' => 'utf8',
         'prefix' => '',
         'schema' => 'public',
@@ -325,8 +327,8 @@
         'host' => '127.0.0.1',
         'port' => '3306',
         'database' => 'ticketshop',
-        'username' => 'ticketshop',
-        'password' => 'ticketshop',
+        'username' => 'root',
+        'password' => 'ticket2019',
         'charset' => 'utf8',
         'prefix' => '',
       ),
@@ -360,12 +362,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\storage\\app',
+        'root' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\storage\\app/public',
+        'root' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\storage\\app/public',
         'url' => 'http://api.ticketshop.com.co//storage',
         'visibility' => 'public',
       ),
@@ -410,13 +412,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 7,
       ),
@@ -452,23 +454,23 @@
   'mail' => 
   array (
     'driver' => 'smtp',
-    'host' => 'smtp.gmail.com',
-    'port' => '587',
+    'host' => 'smtp.mailtrap.io',
+    'port' => '2525',
     'from' => 
     array (
       'address' => 'hello@example.com',
       'name' => 'Example',
     ),
-    'encryption' => 'tls',
-    'username' => 'arturorafael30@gmail.com',
-    'password' => 'arturoxd',
+    'encryption' => NULL,
+    'username' => NULL,
+    'password' => NULL,
     'sendmail' => '/usr/sbin/sendmail -bs',
     'markdown' => 
     array (
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\resources\\views/vendor/mail',
+        0 => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -476,7 +478,7 @@
   array (
     '*' => 
     array (
-      'path' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\app\\Models',
+      'path' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\app\\Models',
       'namespace' => 'App\\Models',
       'parent' => 'Reliese\\Database\\Eloquent\\Model',
       'use' => 
@@ -579,6 +581,12 @@
       'key' => NULL,
       'secret' => NULL,
     ),
+    'google' => 
+    array (
+      'client_id' => '130633469523-nrslkkf9j5jlidnorud0e4lucidt5fkk.apps.googleusercontent.com',
+      'client_secret' => 'g2rulO6E0W8rtnBCAhG-8qId',
+      'redirect' => 'http://localhost:8000/auth/google/callback',
+    ),
   ),
   'session' => 
   array (
@@ -586,7 +594,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\storage\\framework/sessions',
+    'files' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -606,9 +614,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\resources\\views',
+      0 => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\resources\\views',
     ),
-    'compiled' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\storage\\framework\\views',
+    'compiled' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\storage\\framework\\views',
   ),
   'debug-server' => 
   array (
@@ -618,18 +626,18 @@
   array (
     'config' => 
     array (
-      'model_template_path' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\vendor/xethron/laravel-4-generators/src/Way/Generators/templates/model.txt',
-      'scaffold_model_template_path' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\vendor/xethron/laravel-4-generators/src/Way/Generators/templates/scaffolding/model.txt',
-      'controller_template_path' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\vendor/xethron/laravel-4-generators/src/Way/Generators/templates/controller.txt',
-      'scaffold_controller_template_path' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\vendor/xethron/laravel-4-generators/src/Way/Generators/templates/scaffolding/controller.txt',
-      'migration_template_path' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\vendor/xethron/laravel-4-generators/src/Way/Generators/templates/migration.txt',
-      'seed_template_path' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\vendor/xethron/laravel-4-generators/src/Way/Generators/templates/seed.txt',
-      'view_template_path' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\vendor/xethron/laravel-4-generators/src/Way/Generators/templates/view.txt',
-      'model_target_path' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\app',
-      'controller_target_path' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\app\\Http/Controllers',
-      'migration_target_path' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\database/migrations',
-      'seed_target_path' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\database/seeds',
-      'view_target_path' => 'C:\\xampp\\htdocs\\Code TicketShop\\ticketshopapi\\resources/views',
+      'model_template_path' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\vendor/xethron/laravel-4-generators/src/Way/Generators/templates/model.txt',
+      'scaffold_model_template_path' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\vendor/xethron/laravel-4-generators/src/Way/Generators/templates/scaffolding/model.txt',
+      'controller_template_path' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\vendor/xethron/laravel-4-generators/src/Way/Generators/templates/controller.txt',
+      'scaffold_controller_template_path' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\vendor/xethron/laravel-4-generators/src/Way/Generators/templates/scaffolding/controller.txt',
+      'migration_template_path' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\vendor/xethron/laravel-4-generators/src/Way/Generators/templates/migration.txt',
+      'seed_template_path' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\vendor/xethron/laravel-4-generators/src/Way/Generators/templates/seed.txt',
+      'view_template_path' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\vendor/xethron/laravel-4-generators/src/Way/Generators/templates/view.txt',
+      'model_target_path' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\app',
+      'controller_target_path' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\app\\Http/Controllers',
+      'migration_target_path' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\database/migrations',
+      'seed_target_path' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\database/seeds',
+      'view_target_path' => 'C:\\Users\\Nelumbo\\Desktop\\Repositorios\\ticketshopapi\\resources/views',
     ),
   ),
   'trustedproxy' => 
