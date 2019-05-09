@@ -302,7 +302,7 @@ class EventoController extends BaseController
                 ->join('tipo_evento', 'evento.id_tipo_evento', '=', 'tipo_evento.id')
                 ->join('auditorio', 'evento.id_auditorio', '=', 'auditorio.id')
                 ->where('evento.id_tipo_evento','=', $id)
-                ->select('evento.fecha_evento', 'evento.nombre','evento.hora_inicio','evento.hora_apertura', 'evento.hora_finalizacion', 'evento.fecha_inicio_venta_internet','tipo_evento.nombre AS tipo_evento', 'auditorio.nombre AS auditorio')
+                ->select('evento.id','evento.fecha_evento', 'evento.nombre','evento.hora_inicio','evento.hora_apertura', 'evento.hora_finalizacion', 'evento.fecha_inicio_venta_internet','tipo_evento.id AS id_tipo_evento','tipo_evento.nombre AS tipo_evento', 'auditorio.id AS id_auditorio','auditorio.nombre AS auditorio')
                 ->get();
 
         $events_img = \DB::table('evento')

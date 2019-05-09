@@ -194,17 +194,17 @@ class UsuarioController extends BaseController
         ]);
 
         if ($validator->fails()) { 
-            return response()->json(['error'=>$validator->errors()], 401);            
+            return response()->json(['error'=>$validator->errors()], 404);            
         }
 
         $rol = Rol::find($request->input('id_rol'));
         if (is_null($rol)) {            
-            return response()->json(['error'=>'El Rol indicado no existe'], 401);
+            return response()->json(['error'=>'El Rol indicado no existe'], 404);
         }
 
         $user_search = Usuario::find($request->input('email'));
         if (!is_null($user_search)) {            
-            return response()->json(['error'=>'El Usuario ya se encuentra registrado'], 401);
+            return response()->json(['error'=>'El Usuario ya se encuentra registrado'], 404);
         }
 
 
