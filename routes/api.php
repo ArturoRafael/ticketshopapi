@@ -54,18 +54,14 @@ Route::get('detalle_evento/{detalle_evento}','EventoController@detalle_evento');
 Route::get('buscar_evento','EventoController@buscar_evento');
 Route::get('listadoartistevento','ArtistController@listadoartistevento');
 
-
-
 Route::get('listausuarios', 'UsuarioController@listausuarios');
 
 Route::get('comprasrealizadas/{comprasrealizadas}', 'UsuarioController@comprasrealizadas');
 Route::get('temporadascompradas/{temporadascompradas}', 'UsuarioController@temporadascompradas');
 Route::get('reservas/{reservas}', 'UsuarioController@reservas');
 
-
 Route::post('login', 'UsuarioController@login');
 Route::post('register', 'UsuarioController@register');
-
 Route::delete('destroy', 'UsuarioController@destroy');
 
 Route::get('auth/signup/activate/{token}', 'UsuarioController@signupActivate');
@@ -73,8 +69,8 @@ Route::get('auth/signup/activate/{token}', 'UsuarioController@signupActivate');
 Route::get('auth/{provider}', 'UsuarioController@redirectToProvider');
 Route::get('auth/{provider}/callback', 'UsuarioController@handleProviderCallback');
 
-Route::post('create', 'PasswordResetController@create');
-Route::get('find/{token}', 'PasswordResetController@find');
+Route::post('creatreset', 'PasswordResetController@creatreset');
+Route::get('password/find/{token}', 'PasswordResetController@find');
 Route::post('reset', 'PasswordResetController@reset');
 
 Route::group(['middleware' => 'auth:api'], function () { 

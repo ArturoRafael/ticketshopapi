@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Notifications\PasswordResetRequest;
-use App\Usuario;
-use App\PasswordReset;
+use App\Notifications\PasswordResetSuccess;
+use App\Models\Usuario;
+use App\Models\PasswordReset;
 /**
  * @group Restablecimiento de contraseña
  *
@@ -23,7 +24,7 @@ class PasswordResetController extends BaseController
      * @param  [string] email
      * @return [string] message
      */
-    public function create(Request $request)
+    public function creatreset(Request $request)
     {
         $request->validate([
             'email' => 'required|string|email',
@@ -70,7 +71,8 @@ class PasswordResetController extends BaseController
             $passwordReset->delete();
             return $this->sendError('Este token de restablecimiento de contraseña no es válido.');
         }
-        return response()->json($passwordReset);
+        
+        return $this->sendResponse($passwordReset->toArray(), 'Token exitoso.');
     }
 
 
@@ -79,6 +81,7 @@ class PasswordResetController extends BaseController
      *@response {
      *  "email": "email@example.com",
      *  "password": "123456789",
+     *  "password_confirmation": "123456789",
      *  "token": "kghkvnñskrnslnv34433GGHGthfhfndtlkfvlknvlvnlnvlvnl8688",                
      * }
      * @param  [string] email
@@ -115,6 +118,7 @@ class PasswordResetController extends BaseController
         $passwordReset->delete();
         $user->notify(new PasswordResetSuccess($passwordReset));
         
-        return response()->json($user);
+        
+        return $this->sendResponse($user->toArray(), 'Restablecimiento y cambio de contraseña exitoso.');
     }
 }
