@@ -68,7 +68,7 @@ Route::post('register', 'UsuarioController@register');
 
 Route::delete('destroy', 'UsuarioController@destroy');
 
-Route::get('signup/activate/{token}', 'UsuarioController@signupActivate');
+Route::get('auth/signup/activate/{token}', 'UsuarioController@signupActivate');
 
 Route::get('auth/{provider}', 'UsuarioController@redirectToProvider');
 Route::get('auth/{provider}/callback', 'UsuarioController@handleProviderCallback');
