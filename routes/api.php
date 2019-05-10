@@ -73,16 +73,14 @@ Route::get('auth/signup/activate/{token}', 'UsuarioController@signupActivate');
 Route::get('auth/{provider}', 'UsuarioController@redirectToProvider');
 Route::get('auth/{provider}/callback', 'UsuarioController@handleProviderCallback');
 
+Route::post('create', 'PasswordResetController@create');
+Route::get('find/{token}', 'PasswordResetController@find');
+Route::post('reset', 'PasswordResetController@reset');
+
 Route::group(['middleware' => 'auth:api'], function () { 
 	Route::post('cambioclave', 'UsuarioController@cambioclave');
 	Route::post('detailsuser', 'UsuarioController@detailsuser');
-	Route::put('updateprofile/{updateprofile}', 'UsuarioController@updateprofile');
-	
+	Route::put('updateprofile/{updateprofile}', 'UsuarioController@updateprofile');	
 	Route::post('logout', 'UsuarioController@logout');
-
-	Route::post('create', 'PasswordResetController@create');
-    Route::get('find/{token}', 'PasswordResetController@find');
-    Route::post('reset', 'PasswordResetController@reset');
-
 });
 
