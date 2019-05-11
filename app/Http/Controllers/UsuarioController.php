@@ -159,9 +159,10 @@ class UsuarioController extends BaseController
     }
     
     /**
-     * Actualiza el perfil del usuario.
-     * [Se filtra por el ID]
-     * @response {      
+     * Registrar usuario.
+     * [JSON EXAMPLE]
+     * [
+     *  {      
      *  "nombre": "Gold Gold",
      *  "email" : "mail@example.com" 
      *  "password": "1234567890",
@@ -173,8 +174,8 @@ class UsuarioController extends BaseController
      *  "departamento" : "Departamento",
      *  "telefono" : "311565634",
      *  "id_rol" : 1 
-     * }
-     *
+     *  }
+     * ]
      * @return \Illuminate\Http\Response 
      */ 
     public function register(Request $request) 
@@ -232,7 +233,7 @@ class UsuarioController extends BaseController
 
     /**
      * 
-     *  Obtener la información de usuario de Google.
+     * Obtener la información de usuario de Google.
      *
      * @return Response
      */
@@ -268,14 +269,6 @@ class UsuarioController extends BaseController
             $usuario = Usuario::create([
                 'nombre' => $user->name, 
                 'email' => $user->email, 
-                'password' => bcrypt(123456789),            
-                'identificacion' => " ",
-                'tipo_identificacion' => 1,
-                'direccion' => " ",
-                'ciudad' => " ",
-                'departamento' => " ",
-                'telefono' => " ",
-                'id_rol' => 1,
                 'active' => 1,
                 'provider' => strtoupper($provider),
                 'provider_id' => $user->id, 
@@ -295,7 +288,7 @@ class UsuarioController extends BaseController
 
     /**
      * 
-     *  Activar la cuenta del usuario
+     * Activar la cuenta del usuario
      * [Se requiere Token enviado al correo]
      * @return Response
      */
