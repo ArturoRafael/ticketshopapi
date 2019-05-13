@@ -117,7 +117,6 @@
       24 => 'App\\Providers\\AuthServiceProvider',
       25 => 'App\\Providers\\EventServiceProvider',
       26 => 'App\\Providers\\RouteServiceProvider',
-      27 => 'Laravel\\Socialite\\SocialiteServiceProvider',
     ),
     'aliases' => 
     array (
@@ -153,8 +152,7 @@
       'Storage' => 'Illuminate\\Support\\Facades\\Storage',
       'URL' => 'Illuminate\\Support\\Facades\\URL',
       'Validator' => 'Illuminate\\Support\\Facades\\Validator',
-      'View' => 'Illuminate\\Support\\Facades\\View',
-      'Socialite' => 'Laravel\\Socialite\\Facades\\Socialite',
+      'View' => 'Illuminate\\Support\\Facades\\View',      
     ),
   ),
   'auth' => 

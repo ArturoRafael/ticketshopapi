@@ -40,6 +40,10 @@ class PassportServiceProvider extends ServiceProvider
             $this->registerMigrations();
 
             $this->publishes([
+                __DIR__.'/../database/migrations' => database_path('migrations'),
+            ], 'passport-migrations');
+
+            $this->publishes([
                 __DIR__.'/../resources/views' => base_path('resources/views/vendor/passport'),
             ], 'passport-views');
 
@@ -65,10 +69,6 @@ class PassportServiceProvider extends ServiceProvider
         if (Passport::$runsMigrations) {
             return $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         }
-
-        $this->publishes([
-            __DIR__.'/../database/migrations' => database_path('migrations'),
-        ], 'passport-migrations');
     }
 
     /**
@@ -96,6 +96,8 @@ class PassportServiceProvider extends ServiceProvider
     {
         $this->app->singleton(AuthorizationServer::class, function () {
             return tap($this->makeAuthorizationServer(), function ($server) {
+                $server->setDefaultScope(Passport::$defaultScope);
+
                 $server->enableGrantType(
                     $this->makeAuthCodeGrant(), Passport::tokensExpireIn()
                 );
@@ -109,7 +111,7 @@ class PassportServiceProvider extends ServiceProvider
                 );
 
                 $server->enableGrantType(
-                    new PersonalAccessGrant, new DateInterval('P1Y')
+                    new PersonalAccessGrant, Passport::personalAccessTokensExpireIn()
                 );
 
                 $server->enableGrantType(

@@ -32,7 +32,7 @@ class StructureTest extends AbstractBaseTestCase
      *
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->instance = new Structure($this->getTestData());
     }
@@ -67,7 +67,7 @@ class StructureTest extends AbstractBaseTestCase
      *
      * @return void
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
     }
 
@@ -233,6 +233,7 @@ class StructureTest extends AbstractBaseTestCase
      * @return void
      *
      * @covers \Windwalker\Structure\Structure::loadString
+     * @throws \Exception
      */
     public function testLoadString()
     {
@@ -266,6 +267,25 @@ class StructureTest extends AbstractBaseTestCase
             )->get('flower'),
             'sakura'
         );
+        $this->assertEquals(
+            $structure->reset()->loadString(
+                file_get_contents(__DIR__ . '/Stubs/flower.hjson'),
+                'hjson'
+            )->get('flower'),
+            'sakura'
+        );
+        $this->assertEquals(
+            $structure->reset()->loadString(
+                file_get_contents(__DIR__ . '/Stubs/flower.toml'),
+                'toml',
+                ['load_raw' => true]
+            )->get('flower'),
+            'sakura'
+        );
+
+        show($structure->toArray());
+
+        show($structure->toString('toml'));
     }
 
     /**
@@ -274,6 +294,7 @@ class StructureTest extends AbstractBaseTestCase
      * @return void
      *
      * @covers \Windwalker\Structure\Structure::merge
+     * @throws \Exception
      */
     public function testMerge()
     {

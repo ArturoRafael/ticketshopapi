@@ -1,4 +1,11 @@
 <?php return array (
+  'barryvdh/laravel-cors' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Barryvdh\\Cors\\ServiceProvider',
+    ),
+  ),
   'beyondcode/laravel-dump-server' => 
   array (
     'providers' => 
@@ -13,6 +20,13 @@
       0 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
     ),
   ),
+  'laravel/nexmo-notification-channel' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Illuminate\\Notifications\\NexmoChannelServiceProvider',
+    ),
+  ),
   'laravel/passport' => 
   array (
     'providers' => 
@@ -20,15 +34,11 @@
       0 => 'Laravel\\Passport\\PassportServiceProvider',
     ),
   ),
-  'laravel/socialite' => 
+  'laravel/slack-notification-channel' => 
   array (
     'providers' => 
     array (
-      0 => 'Laravel\\Socialite\\SocialiteServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Socialite' => 'Laravel\\Socialite\\Facades\\Socialite',
+      0 => 'Illuminate\\Notifications\\SlackChannelServiceProvider',
     ),
   ),
   'laravel/tinker' => 

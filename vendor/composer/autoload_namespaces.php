@@ -12,7 +12,5 @@ return array(
     'Parsedown' => array($vendorDir . '/erusev/parsedown'),
     'Mpociot' => array($vendorDir . '/mpociot/reflection-docblock/src'),
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
-    'JakubOnderka\\PhpConsoleHighlighter' => array($vendorDir . '/jakub-onderka/php-console-highlighter/src'),
-    'Doctrine\\DBAL\\' => array($vendorDir . '/doctrine/dbal/lib'),
     'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),
 );
