@@ -31,7 +31,10 @@ class FilaController extends BaseController
 
      /**
      * Agrega un nuevo elemento a la tabla fila
-     * @response {
+     *@bodyParam id_localidad int required Id de la localidad de la fila.
+     *@bodyParam nombre string Nombre de la fila.
+     *@bodyParam numero int Numero de la fila. 
+     *@response{
      *  "id_localidad": 1,
      *  "nombre": "Fila 1",
      *  "numero": 1
@@ -84,10 +87,12 @@ class FilaController extends BaseController
      * Actualiza un elemeto de la tabla fila 
      *
      * [Se filtra por el ID]
-     *
+     *@bodyParam id_localidad int required Id de la localidad de la fila.
+     *@bodyParam nombre string Nombre de la fila.
+     *@bodyParam numero int Numero de la fila.
      * @response {
-     *  "id_localidad": 1,
-     *  "nombre": "Fila 1",
+     *  "id_localidad": 2,
+     *  "nombre": "Fila A1",
      *  "numero": 1
      * }
      * @param  \Illuminate\Http\Request  $request

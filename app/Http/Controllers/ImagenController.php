@@ -29,6 +29,7 @@ class ImagenController extends BaseController
     /**
      * Agrega un nuevo elemento a la tabla imagen
      * [Debe enviarse en el request un elemento tipo file que contenga como key="imagen" y el value="archivo tipo file"]
+     *@bodyParam imagen file required Imagen.
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -50,7 +51,9 @@ class ImagenController extends BaseController
             $file = $request->file('imagen');
             
             $name = $file->getClientOriginalName();
-            $fileurl = 'http://api.ticketshop.com.co/storage/uploads/'.$name; 
+            $name = $name.time();
+            $public_path = public_path();
+            $fileurl = $public_path.'/storage/uploads/'.$name; 
             $file->move('uploads/', $name);
             
             $imagen->url = $fileurl; 
@@ -85,7 +88,7 @@ class ImagenController extends BaseController
      * Actualiza un elemeto de la tabla imagen
      * [Debe enviarse en el request un elemento tipo file que contenga como key="imagen" y el value="archivo tipo file"] 
      * [Se filtra por el ID]
-     *
+      *@bodyParam imagen file required Imagen.
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -110,7 +113,9 @@ class ImagenController extends BaseController
             $file = $request->file('imagen');
             
             $name = $file->getClientOriginalName();
-            $fileurl = 'http://api.ticketshop.com.co/storage/uploads/'.$name; 
+            $name = $name.time();
+            $public_path = public_path();
+            $fileurl = $public_path.'/storage/uploads/'.$name; 
             $file->move('uploads/', $name);
             
             $imagen->url = $fileurl; 

@@ -28,6 +28,26 @@ class ClienteController extends BaseController
 
     /**
      * Agrega un nuevo elemento a la tabla cliente
+     *@bodyParam Identificacion string required Identificacion del cliente.
+     *@bodyParam tipo_identificacion boolean required Tipo de identificacion del cliente.
+     *@bodyParam nombrerazon string required Nombre razon del cliente.
+     *@bodyParam direccion string required Direccion del cliente.
+     *@bodyParam ciudad string Ciudad del cliente.
+     *@bodyParam departamento string Departamento del cliente.
+     *@bodyParam tipo_cliente boolean required Tipo de cliente.
+     *@bodyParam email string required Email del cliente.
+     *@bodyParam telefono string required Telefono del cliente.
+     *@response{
+     *       "Identificacion" : "Cliente Platinium",
+     *       "tipo_identificacion" : 1,
+     *       "nombrerazon": "Company",
+     *       "direccion": "Street 22",
+     *       "ciudad" : null,
+     *       "departamento": null,
+     *       "tipo_cliente": 1,
+     *       "email": "cliente@example.com",
+     *       "telefono": "5788722330092"
+     *     }
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -74,6 +94,26 @@ class ClienteController extends BaseController
      * Actualiza un elemeto de la tabla cliente 
      *
      * [Se filtra por el ID]
+     *@bodyParam Identificacion string required Identificacion del cliente.
+     *@bodyParam tipo_identificacion boolean required Tipo de identificacion del cliente.
+     *@bodyParam nombrerazon string required Nombre razon del cliente.
+     *@bodyParam direccion string required Direccion del cliente.
+     *@bodyParam ciudad string Ciudad del cliente.
+     *@bodyParam departamento string Departamento del cliente.
+     *@bodyParam tipo_cliente boolean required Tipo de cliente.
+     *@bodyParam email string required Email del cliente.
+     *@bodyParam telefono string required Telefono del cliente.
+     *@response{
+     *       "Identificacion" : "Cliente Platinium",
+     *       "tipo_identificacion" : 1,
+     *       "nombrerazon": "Company B.C.",
+     *       "direccion": "Street 25",
+     *       "ciudad" : null,
+     *       "departamento": "Hotel Royal A-0065",
+     *       "tipo_cliente": 1,
+     *       "email": "cliente@example.com",
+     *       "telefono": "5788722330092"
+     *     }
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Cliente  $cliente
@@ -137,7 +177,7 @@ class ClienteController extends BaseController
             return $this->sendResponse($cliente->toArray(), 'Cliente eliminado con éxito');
 
         }catch (\Illuminate\Database\QueryException $e){
-            return response()->json(['error' => 'El Cliente no se puedo eliminar, es usada en otra tabla', 'exception' => $e->errorInfo], 400);
+            return response()->json(['error' => 'El Cliente no se puedo eliminar, el registro esta siendo usado en otra tabla', 'exception' => $e->errorInfo], 400);
         }
 
 

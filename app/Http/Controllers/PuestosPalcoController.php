@@ -27,7 +27,8 @@ class PuestosPalcoController extends BaseController
 
    /**
      * Agrega un nuevo elemento a la tabla puestos_palco 
-     * 
+     *@bodyParam id_palco int required Id del palco.
+     *@bodyParam id_puesto int required Id del puesto.
      * @response {
      *  "id_palco": 1,
      *  "id_puesto": 1,      
@@ -45,12 +46,6 @@ class PuestosPalcoController extends BaseController
             return $this->sendError('Error de validación.', $validator->errors());       
         }
 
-        $puesto_palco_search = PuestosPalcoController::puesto_palco_search($request->input('id_palco'), $request->input('id_puesto'));
-
-        if(count($puesto_palco_search) != 0){
-           return $this->sendError('El palco ya posee el puesto asociada'); 
-        }
-
         $palco = Palco::find($request->input('id_palco'));
         if (is_null($palco)) {
             return $this->sendError('El palco indicado no existe');
@@ -60,6 +55,13 @@ class PuestosPalcoController extends BaseController
         if (is_null($puesto)) {
             return $this->sendError('El puesto indicado no existe');
         }
+
+        $puesto_palco_search = PuestosPalcoController::puesto_palco_search($request->input('id_palco'), $request->input('id_puesto'));
+
+        if(count($puesto_palco_search) != 0){
+           return $this->sendError('El palco ya posee el puesto asociada'); 
+        }
+        
 
         $puesto_palco = PuestosPalco::create($request->all());        
         return $this->sendResponse($puesto_palco->toArray(), 'El puesto por palco creado con éxito');
@@ -86,8 +88,9 @@ class PuestosPalcoController extends BaseController
      * Actualiza un elemeto de la tabla puestos_palco 
      *
      * [Se filtra por el ID del palco]
-     *
-     * @response {
+     *@bodyParam id_puesto_old int required Id del puesto (El cual se quiere editar).
+     *@bodyParam id_puesto_new int required Id del puesto (Id nuevo de la cuponera).
+     *@response {
      *  "id_puesto_old": 1,
      *  "id_puesto_new": 2,      
      * }

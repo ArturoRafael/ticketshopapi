@@ -29,6 +29,9 @@ class PuestoController extends BaseController
 
     /**
      * Agrega un nuevo elemento a la tabla puesto
+     *@bodyParam numero string Numero del puesto.
+     *@bodyParam id_localidad int required Id de la localidad.
+     *@bodyParam id_fila int Id de la fila.
      * @response {      
      *  "numero": "AA1", 
      *  "id_localidad":1,
@@ -89,6 +92,11 @@ class PuestoController extends BaseController
      * Actualiza un elemeto de la tabla puesto 
      *
      * [Se filtra por el ID]
+     *
+     *@bodyParam numero string Numero del puesto.
+     *@bodyParam id_localidad int required Id de la localidad.
+     *@bodyParam id_fila int Id de la fila.
+     *
      * @response {
      *  "numero": "BB1", 
      *  "id_localidad":1,

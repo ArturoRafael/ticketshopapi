@@ -28,7 +28,8 @@ class TipoDescuentoController extends BaseController
    
     /**
      * Agrega un nuevo elemento a la tabla tipo_descuento
-     * @response {      
+     *@bodyParam nombre string required Nombre del tipo de descuento.
+     *@response {      
      *  "nombre": "Tipo 1"
      * }
      * @param  \Illuminate\Http\Request  $request
@@ -69,7 +70,8 @@ class TipoDescuentoController extends BaseController
      * Actualiza un elemeto de la tabla tipo_descuento 
      *
      * [Se filtra por el ID]
-     * @response {
+     *@bodyParam nombre string required Nombre del tipo de descuento.
+     *@response {
      *  "nombre": "Tipo Descuento 1"     
      * }
      * @param  \Illuminate\Http\Request  $request
@@ -89,7 +91,7 @@ class TipoDescuentoController extends BaseController
         }
         
 
-     $tipoDescuento = TipoDescuento::find($id);
+       $tipoDescuento = TipoDescuento::find($id);
 
         if (is_null($tipoDescuento)) {
                 return $this->sendError('Tipo de descuento no encontrado');
@@ -111,13 +113,17 @@ class TipoDescuentoController extends BaseController
      */
     public function destroy($id)
     {
-        $tipoDescuento= TipoDescuento::find($id);
-        if (is_null($tipoDescuento)) {
-            return $this->sendError('Tipo de descuento no encontrado');
+        try { 
+                $tipoDescuento= TipoDescuento::find($id);
+                if (is_null($tipoDescuento)) {
+                    return $this->sendError('Tipo de descuento no encontrado');
+                }
+                $tipoDescuento->delete();
+
+
+                return $this->sendResponse($tipoDescuento->toArray(), 'Tipo de descuento eliminado con éxito');
+        }catch (\Illuminate\Database\QueryException $e){
+            return response()->json(['error' => 'Tipo de descuento no se puedo eliminar, es usado en otra tabla', 'exception' => $e->errorInfo], 400);
         }
-        $tipoDescuento->delete();
-
-
-        return $this->sendResponse($tipoDescuento->toArray(), 'Tipo de descuento eliminado con éxito');
     }
 }

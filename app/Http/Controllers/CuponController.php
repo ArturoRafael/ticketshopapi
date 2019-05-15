@@ -30,6 +30,24 @@ class CuponController extends BaseController
   
    /**
      * Agrega un nuevo elemento a la tabla cupon
+     *@bodyParam codigo string Codigo del cupon.
+     *@bodyParam status boolean required Status del cupon.
+     *@bodyParam monto int Monto del cupon.
+     *@bodyParam porcentaje_descuento int Porcentaje de descuento del cupon.
+     *@bodyParam id_tipo_cupon int required Id del tipo de cupon.
+     *@bodyParam id_cuponera int required Id de la cuponera.
+     *@bodyParam cantidad_compra int  Cantidad de compra.
+     *@bodyParam cantidad_paga int Cantidad de paga.    
+     *@response{
+     *       "codigo" : null,
+     *       "status" : 1,
+     *       "monto": null,
+     *       "porcentaje_descuento": null,
+     *       "id_tipo_cupon" : 1,
+     *       "id_cuponera": 1,
+     *       "cantidad_compra": null,
+     *       "cantidad_paga": null
+     *     }
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -105,6 +123,24 @@ class CuponController extends BaseController
      * Actualiza un elemeto de la tabla cupon 
      *
      * [Se filtra por el ID]
+     *@bodyParam codigo string Codigo del cupon.
+     *@bodyParam status boolean required Status del cupon.
+     *@bodyParam monto int Monto del cupon.
+     *@bodyParam porcentaje_descuento int Porcentaje de descuento del cupon.
+     *@bodyParam id_tipo_cupon int required Id del tipo de cupon.
+     *@bodyParam id_cuponera int required Id de la cuponera.
+     *@bodyParam cantidad_compra int  Cantidad de compra.
+     *@bodyParam cantidad_paga int Cantidad de paga.    
+     *@response{
+     *       "codigo" : "75647563jfghhg",
+     *       "status" : 1,
+     *       "monto": 200,
+     *       "porcentaje_descuento": 5,
+     *       "id_tipo_cupon" : 1,
+     *       "id_cuponera": 1,
+     *       "cantidad_compra": null,
+     *       "cantidad_paga": null
+     *     }
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id

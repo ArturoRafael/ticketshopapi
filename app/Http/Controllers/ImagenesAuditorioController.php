@@ -28,7 +28,8 @@ class ImagenesAuditorioController extends BaseController
 
      /**
      * Agrega un nuevo elemento a la tabla imagenes_auditorio 
-     * 
+     *@bodyParam id_imagen int required Id de la imagen.
+     *@bodyParam id_auditorio int required Id del auditorio. 
      * @response {
      *  "id_imagen": 1,
      *  "id_auditorio": 2,      
@@ -46,12 +47,6 @@ class ImagenesAuditorioController extends BaseController
             return $this->sendError('Error de validación.', $validator->errors());       
         }
 
-        $img_evento_search = ImagenesAuditorioController::img_auditorio_search($request->input('id_auditorio'), $request->input('id_imagen'));
-
-        if(count($img_evento_search) != 0){
-           return $this->sendError('El auditorio ya posee esa imagen asociada'); 
-        }
-
         $auditorio = Auditorio::find($request->input('id_auditorio'));
         if (is_null($auditorio)) {
             return $this->sendError('El auditorio indicado no existe');
@@ -61,6 +56,14 @@ class ImagenesAuditorioController extends BaseController
         if (is_null($imagen)) {
             return $this->sendError('La imagen indicada no existe');
         }
+
+
+        $img_evento_search = ImagenesAuditorioController::img_auditorio_search($request->input('id_auditorio'), $request->input('id_imagen'));
+
+        if(count($img_evento_search) != 0){
+           return $this->sendError('El auditorio ya posee esa imagen asociada'); 
+        }
+
         
         $img_auditorio = ImagenesAuditorio::create($request->all());        
         return $this->sendResponse($img_auditorio->toArray(), 'Imagenes de auditorio creado con éxito');
@@ -86,7 +89,8 @@ class ImagenesAuditorioController extends BaseController
      * Actualiza un elemeto de la tabla imagenes_auditorio 
      *
      * [Se filtra por el ID del auditorio]
-     *
+     *@bodyParam id_imagen_old int required Id de la imagen (La cual se quiere editar).
+     *@bodyParam id_imagen_new int required Id de la imagen (Id nuevo de la imagen).
      * @response {
      *  "id_imagen_old": 1,
      *  "id_imagen_new": 2,      

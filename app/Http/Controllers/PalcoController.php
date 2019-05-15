@@ -28,6 +28,8 @@ class PalcoController extends BaseController
    
     /**
      * Agrega un nuevo elemento a la tabla palco
+     *@bodyParam nombre string Nombre del palco.
+     *@bodyParam id_localidad int required Id de la localidad.
      * @response {
      *  "nombre": "Palco New",
      *  "id_localidad": 1           
@@ -77,7 +79,8 @@ class PalcoController extends BaseController
 
     /**
      * Actualiza un elemeto de la tabla palco 
-     *
+     *@bodyParam nombre string Nombre del palco.
+     *@bodyParam id_localidad int required Id de la localidad.
      * [Se filtra por el ID]
      * @response {
      *  "nombre": "Palco 2",

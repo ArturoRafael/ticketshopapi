@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Artist;
 use App\Models\ArtistaEvento;
 use App\Models\Genero;
+use App\Models\ImagenArtist;
 use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -30,13 +31,20 @@ class ArtistController extends BaseController
 
    /**
      * Agrega un nuevo elemento a la tabla artista
-     *
+     *@bodyParam nombre string required El nombre del artista.
+     *@bodyParam manager string required Nombre del manager del artista.
+     *@bodyParam id_genero int required id del genero.
+     *@response{
+     *       "nombre" : "Artist",
+     *       "manager" : "Manager Artist",
+     *       "id_genero": 1
+     *     }
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+       
          $validator = Validator::make($request->all(), [
             'nombre' => 'required',            
             'manager' => 'required',
@@ -81,13 +89,20 @@ class ArtistController extends BaseController
      * Actualiza un elemeto de la tabla artista 
      *
      * [Se filtra por el ID]
-     *
+     *@bodyParam nombre string required El nombre del artista.
+     *@bodyParam manager string required Nombre del manager del artista.
+     *@bodyParam id_genero int required id del genero.
+     *@response{
+     *       "nombre" : "Artist Edit",
+     *       "manager" : "Manager Artist",
+     *       "id_genero": 1
+     *     }
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Artist  $artist
+     * @param  \App\Models\Artist  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id,Request $request, Artist $artist)
+    public function update($id, Request $request)
     {
        
         $input = $request->all();

@@ -18,6 +18,7 @@ class PasswordResetController extends BaseController
 {
     /**
      * Creación del token para restablecer la contraseña
+     *@bodyParam email string required Email del usuario.
      *@response {
      *  "email": "email@example.com"            
      * }
@@ -78,11 +79,16 @@ class PasswordResetController extends BaseController
 
     /**
      * Restablecer la contraseña
+     *@bodyParam email string Email del usuario.
+     *@bodyParam password string required Password del usuario.
+     *@bodyParam password_confirmation string required Password de confirmación.
+     *@bodyParam token string required Token recibido del URL.
+     *
      *@response {
      *  "email": "email@example.com",
      *  "password": "123456789",
      *  "password_confirmation": "123456789",
-     *  "token": "kghkvnñskrnslnv34433GGHGthfhfndtlkfvlknvlvnlnvlvnl8688",                
+     *  "token": "kghkvnñskrnslnv34433GGHGthfhfnlknvlvnlnvlvnl8688",                
      * }
      * @param  [string] email
      * @param  [string] password

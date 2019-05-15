@@ -27,6 +27,7 @@ class TipoCuponController extends BaseController
    
     /**
      * Agrega un nuevo elemento a la tabla tipo_cupon
+     *@bodyParam nombre string required Nombre del tipo de cupón.
      * @response {      
      *  "nombre": "Tipo 1"            
      * }
@@ -71,14 +72,15 @@ class TipoCuponController extends BaseController
      * Actualiza un elemeto de la tabla tipo_cupon 
      *
      * [Se filtra por el ID]
+     *@bodyParam nombre string required Nombre del tipo de cupón.
      * @response {
      *  "nombre": "Tipo Cupon 1"
      * }
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TipoCupon  $tipoCupon
+     * @param  \App\Models\TipoCupon  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id,Request $request, TipoCupon $tipoCupon)
+    public function update($id, Request $request)
     {
         $input = $request->all();
 
@@ -94,7 +96,7 @@ class TipoCuponController extends BaseController
 
      $tipoCupon = TipoCupon::find($id);
 
- if (is_null($tipoCupon)) {
+    if (is_null($tipoCupon)) {
             return $this->sendError('Tipo de descuento no encontrado');
         }
 
@@ -115,13 +117,18 @@ class TipoCuponController extends BaseController
      */
     public function destroy($id)
     {
-      $tipoCupon = TipoCupon::find($id);
-        if (is_null($tipoCupon)) {
-            return $this->sendError('Tipo de cupón no encontrado');
+      
+        try { 
+
+            $tipoCupon = TipoCupon::find($id);
+            if (is_null($tipoCupon)) {
+                return $this->sendError('Tipo de cupón no encontrado');
+            }
+            $tipoCupon->delete();
+            return $this->sendResponse($tipoCupon->toArray(), 'Tipo de Cupón eliminado con éxito');
+
+        }catch (\Illuminate\Database\QueryException $e){
+            return response()->json(['error' => 'Tipo de Cupón  no se puedo eliminar, es usado en otra tabla', 'exception' => $e->errorInfo], 400);
         }
-        $tipoCupon->delete();
-
-
-        return $this->sendResponse($tipoCupon->toArray(), 'Tipo de Cupón eliminado con éxito');
     }
 }

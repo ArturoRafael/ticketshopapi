@@ -29,7 +29,8 @@ class PuntoventaEventoController extends BaseController
 
     /**
      * Agrega un nuevo elemento a la tabla puntoventa_evento 
-     * 
+     *@bodyParam id_evento int required Id del evento.
+     *@bodyParam id_puntoventa int required Id del punto de venta. 
      * @response {
      *  "id_evento": 1,
      *  "id_puntoventa": 1,      
@@ -47,13 +48,7 @@ class PuntoventaEventoController extends BaseController
             return $this->sendError('Error de validación.', $validator->errors());       
         }
 
-        $ptoventa_event_search = PuntoventaEventoController::ptoventa_event_search($request->input('id_evento'), $request->input('id_puntoventa'));
-
-        if(count($ptoventa_event_search) != 0){
-           return $this->sendError('Punto de venta por evento ya existe'); 
-        }
-
-        $evento = Evento::find($request->input('id_evento'));
+         $evento = Evento::find($request->input('id_evento'));
         if (is_null($evento)) {
             return $this->sendError('El evento indicado no existe');
         }
@@ -61,6 +56,12 @@ class PuntoventaEventoController extends BaseController
         $pto_venta = PuntoVentum::find($request->input('id_puntoventa'));
         if (is_null($pto_venta)) {
             return $this->sendError('El punto de venta indicado no existe');
+        }
+
+        $ptoventa_event_search = PuntoventaEventoController::ptoventa_event_search($request->input('id_evento'), $request->input('id_puntoventa'));
+
+        if(count($ptoventa_event_search) != 0){
+           return $this->sendError('Punto de venta por evento ya existe'); 
         }
 
         $ptoventa_event = PuntoventaEvento::create($request->all());        
@@ -88,7 +89,8 @@ class PuntoventaEventoController extends BaseController
      * Actualiza un elemeto de la tabla puntoventa_evento 
      *
      * [Se filtra por el ID del evento]
-     *
+     *@bodyParam id_puntoventa_old int required Id del punto de venta (El cual se quiere editar).
+     *@bodyParam id_puntoventa_new int required Id del punto de venta (Id nuevo de la cuponera).
      * @response {
      *  "id_puntoventa_old": 1,
      *  "id_puntoventa_new": 2,      

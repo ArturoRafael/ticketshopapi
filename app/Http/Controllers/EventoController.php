@@ -31,7 +31,38 @@ class EventoController extends BaseController
     /**
      * Agrega un nuevo elemento a la tabla evento
      *
-     * @return \Illuminate\Http\Response
+     *@bodyParam fecha_evento date required Fecha del evento. Example: 2019-01-01
+     *@bodyParam nombre string required Nombre del evento.
+     *@bodyParam hora_inicio time Hora de inicio del evento. Example: null
+     *@bodyParam hora_apertura time Hora de apertura del evento. Example: null
+     *@bodyParam hora_finalizacion time Hora de finalizacion del evento. Example: null
+     *@bodyParam codigo_pulep string Codigo del evento. Example: null
+     *@bodyParam id_tipo_evento int  Id del tipo de evento. Defaults to 0
+     *@bodyParam domicilios int Domicilios del evento. Defaults to 0
+     *@bodyParam venta_linea int Venta en linea del evento. Defaults to 1
+     *@bodyParam id_auditorio int required Id del auditorio del evento.
+     *@bodyParam id_cliente int required Id del cliente del evento.
+     *@bodyParam id_temporada int Id de la temporada del evento.
+     *@bodyParam status int Status del evento.
+     *@bodyParam fecha_inicio_venta_internet date Fecha de inicio de la venta por internet. Example: 2019-01-01
+     *@bodyParam fecha_inicio_venta_puntos int required Cantidad de puntos de la ventas desde la fecha de inicio.
+     *@response{
+     *       "fecha_evento" : "2019-01-01",
+     *       "nombre" : "Evento WW",
+     *       "hora_inicio": null,
+     *       "hora_apertura": null,
+     *       "hora_finalizacion" : null,
+     *       "codigo_pulep": null,
+     *       "id_tipo_evento": 0,
+     *       "domicilios": 0,
+     *       "venta_linea" : 1,
+     *       "id_auditorio": 2,
+     *       "id_cliente": 3,
+     *       "id_temporada" : 1,
+     *       "status": 0,
+     *       "fecha_inicio_venta_internet": null,
+     *       "fecha_inicio_venta_puntos": 12,
+     *     }
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -146,6 +177,38 @@ class EventoController extends BaseController
      * Actualiza un elemeto de la tabla evento 
      *
      * [Se filtra por el ID]
+     *@bodyParam fecha_evento date required Fecha del evento. Example: 2019-01-01
+     *@bodyParam nombre string required Nombre del evento.
+     *@bodyParam hora_inicio time Hora de inicio del evento. Example: null
+     *@bodyParam hora_apertura time Hora de apertura del evento. Example: null
+     *@bodyParam hora_finalizacion time Hora de finalizacion del evento. Example: null
+     *@bodyParam codigo_pulep string Codigo del evento. Example: null
+     *@bodyParam id_tipo_evento int  Id del tipo de evento. Defaults to 0
+     *@bodyParam domicilios int Domicilios del evento. Defaults to 0
+     *@bodyParam venta_linea int Venta en linea del evento. Defaults to 1
+     *@bodyParam id_auditorio int required Id del auditorio del evento.
+     *@bodyParam id_cliente int required Id del cliente del evento.
+     *@bodyParam id_temporada int Id de la temporada del evento.
+     *@bodyParam status int Status del evento.
+     *@bodyParam fecha_inicio_venta_internet date Fecha de inicio de la venta por internet. Example: 2019-01-01
+     *@bodyParam fecha_inicio_venta_puntos int required Cantidad de puntos de la ventas desde la fecha de inicio.
+     *@response{
+     *       "fecha_evento" : "2019-01-03",
+     *       "nombre" : "Evento WW",
+     *       "hora_inicio": null,
+     *       "hora_apertura": null,
+     *       "hora_finalizacion" : null,
+     *       "codigo_pulep": null,
+     *       "id_tipo_evento": 0,
+     *       "domicilios": 1,
+     *       "venta_linea" : 1,
+     *       "id_auditorio": 1,
+     *       "id_cliente": 3,
+     *       "id_temporada" : null,
+     *       "status": 1,
+     *       "fecha_inicio_venta_internet": "2019-01-01",
+     *       "fecha_inicio_venta_puntos": 12,
+     *     }
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -326,27 +389,27 @@ class EventoController extends BaseController
      *
      * [Filtros por rango de precios, artista, tipo de evento. rango de fechas, (opcionales los parámetros de búsqueda)]
      *
-     * @response {
+     *@response{
      *  "precio_inicio": 100,
      *  "precio_fin": null,
      *  "artistas": [
-                            {
-                               "id_artist" : 1  
-                            },
-                            {
-                               "id_artist" : 2  
-                            }
-                    ],
-        "tipos_evento" : [
-                            {
-                               "id_tipo_evento" : 1  
-                            },
-                            {
-                               "id_tipo_evento" : 2  
-                            }
-                    ],
-        "fecha_inicio" : null,
-        "fecha_fin" : null
+     *                      {
+     *                          "id_artist" : 1  
+     *                      },
+     *                      {
+     *                          "id_artist" : 2  
+     *                      }
+     *               ],
+     *  "tipos_evento" : [
+     *                       {
+     *                          "id_tipo_evento" : 1  
+     *                       },
+     *                       {
+     *                          "id_tipo_evento" : 2  
+     *                       }
+     *              ],
+     *  "fecha_inicio" : null,
+     *  "fecha_fin" : null
      * }
      */
     public function buscar_evento(Request $request){

@@ -27,7 +27,8 @@ class ImagenArtistController extends BaseController
 
     /**
      * Agrega un nuevo elemento a la tabla imagen_artist 
-     *
+     *@bodyParam id_artista int required Id del artista.
+     *@bodyParam id_imagen int required Id de la imagen.
      * [Se filtra por el ID]  
      * @response {
      *  "id_artista": 1,
@@ -46,12 +47,6 @@ class ImagenArtistController extends BaseController
             return $this->sendError('Error de validación.', $validator->errors());       
         }
 
-        $img_artist_search = ImagenArtistController::img_artist_search($request->input('id_artista'), $request->input('id_imagen'));
-
-        if(count($img_artist_search) != 0){
-           return $this->sendError('El artista ya posee la imagen asociada'); 
-        }
-
         $artist = Artist::find($request->input('id_artista'));
         if (is_null($artist)) {
             return $this->sendError('El artista indicado no existe');
@@ -60,6 +55,12 @@ class ImagenArtistController extends BaseController
         $imagen = Imagen::find($request->input('id_imagen'));
         if (is_null($imagen)) {
             return $this->sendError('La imagen indicada no existe');
+        }
+
+        $img_artist_search = ImagenArtistController::img_artist_search($request->input('id_artista'), $request->input('id_imagen'));
+
+        if(count($img_artist_search) != 0){
+           return $this->sendError('El artista ya posee la imagen asociada'); 
         }
 
         $artist_img = ImagenArtist::create($request->all());        
@@ -86,7 +87,8 @@ class ImagenArtistController extends BaseController
      * Actualiza un elemeto de la tabla imagen_artist 
      *
      * [Se filtra por el ID del artista]
-     * 
+     *@bodyParam id_imagen_old int required Id del imagen (La cual se quiere editar).
+     *@bodyParam id_imagen_new int required Id de la imagen (Id nuevo de la imagen). 
      * @response {
      *  "id_imagen_old": 1,
      *  "id_imagen_new": 2,      

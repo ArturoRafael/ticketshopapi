@@ -29,9 +29,10 @@ class EventoCuponeraController extends BaseController
 
     /**
      * Agrega un nuevo elemento a la tabla evento_cuponera
-     *
-     * @response {
-     *  "id_evento": 1,
+     *@bodyParam id_evento int required Id del evento.
+     *@bodyParam id_cuponera int required Id de la cuponera.
+     *@response{
+     *  "id_evento": 3,
      *  "id_cuponera": 1,      
      * }
      * @param  \Illuminate\Http\Request  $request
@@ -47,12 +48,6 @@ class EventoCuponeraController extends BaseController
             return $this->sendError('Error de validación.', $validator->errors());       
         }
 
-        $evento_cuponera_search = EventoCuponeraController::evento_cuponera_search($request->input('id_evento'), $request->input('id_cuponera'));
-
-        if(count($evento_cuponera_search) != 0){
-           return $this->sendError('Cuponera por evento ya existe'); 
-        }
-
         $evento = Evento::find($request->input('id_evento'));
         if (is_null($evento)) {
             return $this->sendError('El evento indicado no existe');
@@ -61,6 +56,12 @@ class EventoCuponeraController extends BaseController
         $cuponera = Cuponera::find($request->input('id_cuponera'));
         if (is_null($cuponera)) {
             return $this->sendError('La cuponera indicada no existe');
+        }
+
+        $evento_cuponera_search = EventoCuponeraController::evento_cuponera_search($request->input('id_evento'), $request->input('id_cuponera'));
+
+        if(count($evento_cuponera_search) != 0){
+           return $this->sendError('Cuponera por evento ya existe'); 
         }
 
         $evento_cuponera = EventoCuponera::create($request->all());        
@@ -89,8 +90,9 @@ class EventoCuponeraController extends BaseController
      * Actualiza un elemeto de la tabla evento_cuponera 
      *
      * [Se filtra por el ID del evento]
-     * 
-     * @response {
+     *@bodyParam id_cuponera_old int required Id de la cuponera (La cual se quiere editar).
+     *@bodyParam id_cuponera_new int required Id de la cuponera (Id nuevo de la cuponera).
+     *@response{
      *  "id_cuponera_old": 1,
      *  "id_cuponera_new": 2,      
      * }

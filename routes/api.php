@@ -61,7 +61,9 @@ use Illuminate\Http\Request;
 
 	Route::post('login', 'UsuarioController@login');
 	Route::post('register', 'UsuarioController@register');
-	Route::delete('destroy', 'UsuarioController@destroy');
+	Route::delete('destroy/{usuario}', 'UsuarioController@destroy');
+
+	Route::get('validateToken', 'UsuarioController@validateToken');
 
 	Route::get('auth/signup/activate/{token}', 'UsuarioController@signupActivate');
 

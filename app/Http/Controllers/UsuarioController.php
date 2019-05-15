@@ -2,14 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request; 
+
+use Validator;
+use DateTime;
+use Socialite;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;  
 use App\Models\Usuario;
 use App\Models\Rol;
-use Validator;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash; 
 use App\Notifications\SignupActivate;
-use Socialite;
+use Laravel\Passport\TokenRepository;
+use League\OAuth2\Server\ResourceServer;
+use League\OAuth2\Server\Exception\OAuthServerException;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+
 /**
  * @group Administración de Usuario
  *
@@ -19,21 +27,33 @@ class UsuarioController extends BaseController
 {
 
     public $successStatus = 200;
-   
+    protected $server;
+    protected $tokens;
+
+    public function __construct(ResourceServer $server, TokenRepository $tokens) {
+        $this->server = $server;
+        $this->tokens = $tokens;
+    }
     /**
      * Actualiza el perfil del usuario.
      * [Se filtra por el ID]
+     *@authenticated
+     *@bodyParam nombre string required Nombre del usuario.
+     *@bodyParam identificacion string Identificacion del usuario.
+     *@bodyParam tipo_identificacion boolean Tipo de identificacion del usuario.
+     *@bodyParam direccion string Direccion del usuario.
+     *@bodyParam ciudad string Ciudad del usuario.
+     *@bodyParam departamento string Departamento del usuario.
+     *@bodyParam telefono string Telefono del usuario.
+     *
      * @response {      
      *  "nombre": "Gold User", 
-     *  "password": "1234567890",
-     *  "c_password" : "1234567890"
      *  "identificacion" : "Manager",
      *  "tipo_identificacion" : 1,
      *  "direccion" : "Address 11",
      *  "ciudad" : "Ciudad",
      *  "departamento" : "Departamento",
-     *  "telefono" : "311565634"
-     *  "id_rol" : 1 
+     *  "telefono" : "311565634" 
      * }
      *
      * @param  \Illuminate\Http\Request  $request
@@ -46,16 +66,13 @@ class UsuarioController extends BaseController
         $input = $request->all();
 
         $validator = Validator::make($input, [ 
-            'nombre' => 'required',             
-            'password' => 'required|min:3',
-            'c_password' => 'required|min:3|same:password', 
-            'identificacion' => 'required',
-            'tipo_identificacion' => 'required',
-            'direccion' => 'required',
-            'ciudad' => 'required',
-            'departamento' => 'required',
-            'telefono' => 'required',
-            'id_rol' => 'required',
+            'nombre' => 'required|string',
+            'identificacion' => 'string',
+            'tipo_identificacion' => 'boolean',
+            'direccion' => 'string',
+            'ciudad' => 'string',
+            'departamento' => 'string',
+            'telefono' => 'string',
         ]);
 
         if($validator->fails()){
@@ -68,7 +85,6 @@ class UsuarioController extends BaseController
         }
 
         $users->nombre = $input['nombre'];
-        $users->password = $input['password'];
         $users->identificacion = $input['identificacion'];
         $users->tipo_identificacion = $input['tipo_identificacion'];    
         $users->direccion = $input['direccion'];
@@ -86,6 +102,11 @@ class UsuarioController extends BaseController
     /**
      * Cambio de clave del usuario.
      * [El usuario debe estar logeado (Headers => Authorization => Bearer Token)]
+     *@authenticated
+     *@bodyParam mypassword string Contraseña actual del usuario.
+     *@bodyParam password string Nueva contraseña del usuario.
+     *@bodyParam c_password string Confirmación de la nueva contraseña del usuario.
+     *
      * @response {      
      *  "mypassword": "Temporada Gold", 
      *  "password": "1234567890",
@@ -121,7 +142,11 @@ class UsuarioController extends BaseController
 
      /** 
      * Inicio de sesion del usuario 
-     * @response {      
+     *
+     *@bodyParam email string Email del usuario.
+     *@bodyParam password string Contraseña del usuario.
+     *
+     *@response {      
      *  "email": "email@example.com", 
      *  "password": "1234567890"    
      * }
@@ -149,9 +174,17 @@ class UsuarioController extends BaseController
         
         if(Auth::attempt($userdata)){ 
             $user = Auth::user(); 
-            $success['token'] =  $user->createToken('MyApi')-> accessToken; 
+            
+            $tokenResult =  $user->createToken('MyApi');
+            $token = $tokenResult->token;
+            $token->expires_at = Carbon::now()->addDays(1);
+            $token->save();
+
+            $success['token'] =  $tokenResult->accessToken; 
             $success['token_type'] = 'Bearer';
-            return response()->json(['success' => $success], $this-> successStatus); 
+            $success['token_expire'] = Carbon::now()->addDays(1)->format('Y-m-d');
+            
+            return response()->json(['success' => $success], $this->successStatus); 
         } 
         else{ 
             return response()->json(['error'=>'Unauthorised'], 401); 
@@ -160,9 +193,20 @@ class UsuarioController extends BaseController
     
     /**
      * Registrar usuario.
-     * [JSON EXAMPLE]
-     * [
-     *  {      
+     *
+     *@bodyParam nombre string required Nombre del usuario.
+     *@bodyParam email string required Email del usuario.
+     *@bodyParam password string Nueva contraseña del usuario.
+     *@bodyParam c_password string Confirmación de la nueva contraseña del usuario.
+     *@bodyParam identificacion string Identificacion del usuario.
+     *@bodyParam tipo_identificacion boolean Tipo de identificacion del usuario.
+     *@bodyParam direccion string Direccion del usuario.
+     *@bodyParam ciudad string Ciudad del usuario.
+     *@bodyParam departamento string Departamento del usuario.
+     *@bodyParam telefono string Telefono del usuario.
+     *@bodyParam id_rol int Id del rol del usuario.
+     *
+     *@response{      
      *  "nombre": "Gold Gold",
      *  "email" : "mail@example.com" 
      *  "password": "1234567890",
@@ -175,23 +219,24 @@ class UsuarioController extends BaseController
      *  "telefono" : "311565634",
      *  "id_rol" : 1 
      *  }
-     * ]
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response 
      */ 
     public function register(Request $request) 
     { 
        $validator = Validator::make($request->all(), [ 
-            'nombre' => 'required', 
-            'email' => 'required|email', 
-            'password' => 'required|min:3',
-            'c_password' => 'required|min:3|same:password', 
-            'identificacion' => 'required',
-            'tipo_identificacion' => 'required',
-            'direccion' => 'required',
-            'ciudad' => 'required',
-            'departamento' => 'required',
-            'telefono' => 'required',
-            'id_rol' => 'required', 
+            'nombre' => 'required|string', 
+            'email' => 'required|string|email', 
+            'password' => 'string|min:3',
+            'c_password' => 'string|min:3|same:password', 
+            'identificacion' => 'string',
+            'tipo_identificacion' => 'boolean',
+            'direccion' => 'string',
+            'ciudad' => 'string',
+            'departamento' => 'string',
+            'telefono' => 'string',
+            'id_rol' => 'integer', 
         ]);
 
         if ($validator->fails()) { 
@@ -214,10 +259,48 @@ class UsuarioController extends BaseController
         $input['activation_token'] = str_random(60);
         $user = Usuario::create($input); 
         $user->notify(new SignupActivate($user));
-        $success['token'] =  $user->createToken('MyApi')-> accessToken; 
+        $success['token'] =  $user->createToken('MyApi')->accessToken; 
         $success['nombre'] =  $user->nombre;
         $success['token_type'] = 'Bearer';
-        return response()->json(['success'=>$success], $this-> successStatus); 
+        return response()->json(['success'=>$success], $this->successStatus); 
+    }
+
+
+    /**
+     * Validar Token 
+     * [Activo o inactivo durante la sesión del usuario] 
+     *@authenticated
+     * headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "Bearer $AccessToken"
+        }
+
+     * @param  \Illuminate\Http\Request  $request
+     * @return Response
+     */
+    public function validateToken(Request $request) {
+        
+        $psr = (new DiactorosFactory)->createRequest($request);
+
+        try {
+            $psr = $this->server->validateAuthenticatedRequest($psr);
+            
+            $token = $this->tokens->find(
+                $psr->getAttribute('oauth_access_token_id')
+            );
+
+            $currentDate = new DateTime();
+            $tokenExpireDate = new DateTime($token->expires_at);
+
+            $isAuthenticated = $tokenExpireDate > $currentDate ? true : false;
+                           
+            return response()->json(array('authenticated' => $isAuthenticated), 200);
+            
+        } catch (OAuthServerException $e) {
+            return $this->sendError('Algo salio mal con la autenticacion. Por favor, cierre la sesion y vuelva a iniciar sesion.'); 
+            
+        }
     }
 
 
@@ -257,9 +340,9 @@ class UsuarioController extends BaseController
 
             if(Auth::attempt($userdata)){ 
                 $usuario = Auth::user(); 
-                $success['token'] =  $usuario->createToken('MyApi')-> accessToken; 
+                $success['token'] =  $usuario->createToken('MyApi')->accessToken; 
                 $success['token_type'] = 'Bearer';
-                return response()->json(['success' => $success], $this-> successStatus); 
+                return response()->json(['success' => $success], $this->successStatus); 
             }else{ 
                 return response()->json(['error'=>'Unauthorised'], 401); 
             } 
@@ -274,10 +357,10 @@ class UsuarioController extends BaseController
                 'provider_id' => $user->id, 
             ]); 
 
-            $success['token'] =  $usuario->createToken('MyApi')-> accessToken; 
+            $success['token'] =  $usuario->createToken('MyApi')->accessToken; 
             $success['nombre'] =  $usuario->nombre;
             $success['token_type'] = 'Bearer';
-            return response()->json(['success'=>$success], $this-> successStatus);
+            return response()->json(['success'=>$success], $this->successStatus);
         }
 
         
@@ -307,12 +390,13 @@ class UsuarioController extends BaseController
     /** 
      * Detalles del usuario logeado 
      * [El usuario debe estar logeado (Headers => Authorization => Bearer Token)]
+     *@authenticated
      * @return \Illuminate\Http\Response 
      */ 
     public function detailsuser() 
     { 
         $user = Auth::user();
-        return response()->json(['success' => $user], $this-> successStatus); 
+        return response()->json(['success' => $user], $this->successStatus); 
     }
 
 
@@ -401,6 +485,7 @@ class UsuarioController extends BaseController
      * Cierre de sesion del usuario 
      * [Logout all devices]
      * [El usuario debe estar logeado (Headers => Authorization => Bearer Token)]
+     *@authenticated
      * @return \Illuminate\Http\Response 
      */  
     public function logout()
@@ -413,7 +498,7 @@ class UsuarioController extends BaseController
                 'revoked' => true
             ]);
         $accessToken->revoke();
-        return response()->json(['data' => 'Usuario ha cerrado sesión.'], 200);       
+        return response()->json(['data' => 'Usuario ha cerrado sesión en todos los dispositivos'], 200);       
     }
 
     /**
@@ -424,20 +509,12 @@ class UsuarioController extends BaseController
      * @param  \App\Models\Usuario  $usuario
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($email)
     {
         try {
-
-            $validator  = Validator::make($request->all(), [
-             'email' => 'email|required|string',            
-            ]);
-
-            if ($validator->fails()) { 
-                return response()->json(['error'=>$validator->errors()], 401);            
-            }
-
-            $usuario = Usuario::find($request->input('email'));
-            if (is_null($tribuna)) {
+            
+            $usuario = Usuario::find($email);
+            if (is_null($usuario)) {
                 return $this->sendError('Usuario no encontrado');
             }            
             $usuario->delete();

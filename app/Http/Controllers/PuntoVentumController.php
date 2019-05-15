@@ -26,6 +26,13 @@ class PuntoVentumController extends BaseController
 
     /**
      * Agrega un nuevo elemento a la tabla punto_venta
+     *
+     *@bodyParam nombre_razon string required Nombre razon del punto de venta.
+     *@bodyParam identificacion string required required Identificacion del punto de venta.
+     *@bodyParam tipo_identificacion boolean required Tipo de identificacion punto de venta.
+     *@bodyParam direccion string Direccion del punto de venta.
+     *@bodyParam telefono string Telefono del punto de venta.
+     *
      * @response {      
      *  "nombre_razon": "BBV", 
      *  "identificacion": "BBV",
@@ -72,8 +79,15 @@ class PuntoVentumController extends BaseController
 
     /**
      * Actualiza un elemeto de la tabla punto_venta 
-     *
      * [Se filtra por el ID]
+     *
+     *@bodyParam nombre_razon string required Nombre razon del punto de venta.
+     *@bodyParam identificacion string required required Identificacion del punto de venta.
+     *@bodyParam tipo_identificacion boolean required Tipo de identificacion punto de venta.
+     *@bodyParam direccion string Direccion del punto de venta.
+     *@bodyParam telefono string Telefono del punto de venta.
+     *
+     *
      * @response {
      *  "nombre_razon": "BBV", 
      *  "identificacion": "BBV",

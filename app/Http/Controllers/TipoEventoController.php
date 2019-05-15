@@ -27,6 +27,7 @@ class TipoEventoController extends BaseController
 
     /**
      * Agrega un nuevo elemento a la tabla tipo_evento
+     *@bodyParam nombre string required Nombre del tipo de evento.
      * @response {      
      *  "nombre": "Tipo 1"            
      * }
@@ -71,6 +72,7 @@ class TipoEventoController extends BaseController
      * Actualiza un elemeto de la tabla tipo_evento 
      *
      * [Se filtra por el ID]
+     *@bodyParam nombre string required Nombre del tipo de evento.
      * @response {
      *  "nombre": "Tipo Evento 1"
      * }

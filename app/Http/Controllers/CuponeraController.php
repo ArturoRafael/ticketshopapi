@@ -27,6 +27,16 @@ class CuponeraController extends BaseController
 
      /**
      * Agrega un nuevo elemento a la tabla cuponera
+     *@bodyParam nombre string required Nombre de la cuponera.
+     *@bodyParam fecha_inicio date Fecha de inicio  de la cuponera.
+     *@bodyParam fecha_fin date Fecha fin de la cuponera.
+     *@bodyParam status int Status de la cuponera.        
+     *@response{
+     *       "nombre" : "Cuponera New",
+     *       "fecha_inicio" : null,
+     *       "fecha_fin": null,
+     *       "status": 0       
+     *     }
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -90,6 +100,16 @@ class CuponeraController extends BaseController
      * Actualiza un elemeto de la tabla cuponera 
      *
      * [Se filtra por el ID]
+     *@bodyParam nombre string required Nombre de la cuponera.
+     *@bodyParam fecha_inicio date Fecha de inicio  de la cuponera.
+     *@bodyParam fecha_fin date Fecha fin de la cuponera.
+     *@bodyParam status int Status de la cuponera.        
+     *@response{
+     *       "nombre" : "Cuponera Basic",
+     *       "fecha_inicio" : null,
+     *       "fecha_fin": null,
+     *       "status": 2       
+     *     }
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id

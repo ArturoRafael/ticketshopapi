@@ -29,6 +29,9 @@ class LocalidadController extends BaseController
 
     /**
      * Agrega un nuevo elemento a la tabla localidad
+     *@bodyParam nombre string required Nombre de la localidad.
+     *@bodyParam id_tribuna int required Id de la tribuna.
+     *@bodyParam puerta_acceso string Puerta de acceso de la loccalidad. Defaults to 0
      * @response {
      *  "nombre": "Localidad New",
      *  "id_tribuna": 1, 
@@ -82,7 +85,9 @@ class LocalidadController extends BaseController
 
      /**
      * Actualiza un elemeto de la tabla localidad 
-     *
+     *@bodyParam nombre string required Nombre de la localidad.
+     *@bodyParam id_tribuna int required Id de la tribuna.
+     *@bodyParam puerta_acceso string Puerta de acceso de la loccalidad. Defaults to 0
      * [Se filtra por el ID]
      * @response {
      *  "nombre": "Localidad 2",

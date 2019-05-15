@@ -29,13 +29,16 @@ class GeneroController extends BaseController
 
     /**
      * Agrega un nuevo elemento a la tabla genero
-     *
+     *@bodyParam nombre string required Nombre del genero.
+     *@response{
+     *    "nombre" : "Electronica",
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+       
        $validator = Validator::make($request->all(), [
             'nombre' => 'required'            
         ]);
@@ -74,7 +77,10 @@ class GeneroController extends BaseController
      * Actualiza un elemeto de la tabla Genero 
      *
      * [Se filtra por el ID]
-     *
+     *@bodyParam nombre string required Nombre del genero.
+     *@response{
+     *    "nombre" : "Electronica Sound",
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Genero  $genero
      * @return \Illuminate\Http\Response

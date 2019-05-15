@@ -29,6 +29,8 @@ class TribunaController extends BaseController
 
     /**
      * Agrega un nuevo elemento a la tabla tribuna
+     *@bodyParam nombre string required Nombre de la tribuna.
+     *@bodyParam id_auditorio int required Id del auditorio.
      * @response {      
      *  "nombre": "Tribuna Gold", 
      *  "id_auditorio": 1    
@@ -81,6 +83,8 @@ class TribunaController extends BaseController
      * Actualiza un elemeto de la tabla tribuna 
      *
      * [Se filtra por el ID]
+     *@bodyParam nombre string required Nombre de la tribuna.
+     *@bodyParam id_auditorio int required Id del auditorio.
      * @response {
      *  "nombre": "Tribuna Gold New", 
      *  "id_auditorio": 2    

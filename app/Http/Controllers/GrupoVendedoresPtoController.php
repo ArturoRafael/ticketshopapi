@@ -29,7 +29,8 @@ class GrupoVendedoresPtoController extends BaseController
   
     /**
      * Agrega un nuevo elemento a la tabla grupovendedorespto
-     *
+     *@bodyParam id_grupo_vendedores int required Id del grupo de vendedor.
+     *@bodyParam id_punto_venta int required Id del punto de venta.
      * @response {
      *  "id_grupo_vendedores": 1,
      *  "id_punto_venta": 1,      
@@ -47,13 +48,6 @@ class GrupoVendedoresPtoController extends BaseController
             return $this->sendError('Error de validación.', $validator->errors());       
         }
 
-        $grupo_vendors_pto_search = GrupoVendedoresPtoController::grupo_vendors_pto_search($request->input('id_grupo_vendedores'), $request->input('id_punto_venta'));
-        
-        
-        if(count($grupo_vendors_pto_search) != 0){
-           return $this->sendError('Grupo de Vendedores por punto de venta ya existe'); 
-        }
-
         $grupo_vendors = GrupsVendedore::find($request->input('id_grupo_vendedores'));
         if (is_null($grupo_vendors)) {
             return $this->sendError('El grupo de vendedores indicado no existe');
@@ -62,6 +56,13 @@ class GrupoVendedoresPtoController extends BaseController
         $pto_venta = PuntoVentum::find($request->input('id_punto_venta'));
         if (is_null($pto_venta)) {
             return $this->sendError('El punto de venta indicado no existe');
+        }
+
+        $grupo_vendors_pto_search = GrupoVendedoresPtoController::grupo_vendors_pto_search($request->input('id_grupo_vendedores'), $request->input('id_punto_venta'));
+        
+        
+        if(count($grupo_vendors_pto_search) != 0){
+           return $this->sendError('Grupo de Vendedores por punto de venta ya existe'); 
         }
 
         $grupo_vendors_pto = GrupoVendedoresPto::create($request->all());        
@@ -91,7 +92,8 @@ class GrupoVendedoresPtoController extends BaseController
      * Actualiza un elemeto de la tabla grupovendedorespto 
      *
      * [Se filtra por el ID del grupo del vendedor]
-     * 
+     *@bodyParam id_punto_venta_old int required Id del punto de venta (El cual se quiere editar).
+     *@bodyParam id_punto_venta_new int required Id del punto de venta (Id nuevo del punto de venta). 
      * @response {
      *  "id_punto_venta_old": 1,
      *  "id_punto_venta_new": 2,      

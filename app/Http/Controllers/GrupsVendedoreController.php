@@ -27,8 +27,8 @@ class GrupsVendedoreController extends BaseController
 
     /**
      * Agrega un nuevo elemento a la tabla grups_vendedores 
-     *
-     * [Se filtra por el ID]  
+     *@bodyParam nombre string required Nombre del grupo de vendedores.
+     *@bodyParam caracteristica string required Característica del grupo de vendedores. 
      * @response {
      *  "nombre": "Grupo 1",
      *  "caracteristica": "Grupo vendedor 1",      
@@ -68,7 +68,8 @@ class GrupsVendedoreController extends BaseController
   
     /**
      * Actualiza un elemeto de la tabla grups_vendedores 
-     *
+     *@bodyParam nombre string required Nombre del grupo de vendedores.
+     *@bodyParam caracteristica string required Característica del grupo de vendedores.
      * [Se filtra por el ID]
      *
      * @param  \Illuminate\Http\Request  $request

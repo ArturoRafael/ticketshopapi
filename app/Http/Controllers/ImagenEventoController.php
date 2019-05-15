@@ -29,7 +29,8 @@ class ImagenEventoController extends BaseController
 
     /**
      * Agrega un nuevo elemento a la tabla imagen_evento 
-     * 
+     *@bodyParam id_imagen int required Id de la imagen.
+     *@bodyParam id_evento int required Id del evento. 
      * @response {
      *  "id_imagen": 1,
      *  "id_evento": 1,      
@@ -90,7 +91,8 @@ class ImagenEventoController extends BaseController
      * Actualiza un elemeto de la tabla imagen_evento 
      *
      * [Se filtra por el ID del evento]
-     *
+     *@bodyParam id_imagen_old int required Id de la imagen (La cual se quiere editar).
+     *@bodyParam id_imagen_new int required Id de la imagen (Id nuevo de la imagen).
      * @response {
      *  "id_imagen_old": 1,
      *  "id_imagen_new": 2,      
