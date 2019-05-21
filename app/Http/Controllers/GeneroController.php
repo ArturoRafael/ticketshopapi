@@ -25,6 +25,39 @@ class GeneroController extends BaseController
         return $this->sendResponse($genero->toArray(), 'Géneros devueltos con éxito');
     }
 
+
+    /**
+     * Buscar Generos por descripción.
+     *@bodyParam nombre string Nombre del genero.
+     *@response{
+     *    "nombre" : "Rock",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarGenero(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $generos = \DB::table('genero')
+                ->where('genero.nombre','like', '%'.strtolower($input["nombre"]).'%')
+                ->select('genero.id','genero.nombre')
+                ->get();
+            return $this->sendResponse($generos->toArray(), 'Todos los Géneros filtrados');
+       }else{
+            
+            $generos = \DB::table('genero')                
+                ->select('genero.id','genero.nombre')
+                ->get();
+            return $this->sendResponse($generos->toArray(), 'Todos los géneros devueltos'); 
+       }
+
+        
+    }
+
    
 
     /**

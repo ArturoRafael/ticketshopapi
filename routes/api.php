@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 
   	Route::apiResource('genero','GeneroController');
+  	Route::get('buscarGenero','GeneroController@buscarGenero');
 	Route::apiResource('artista','ArtistController');
 	Route::apiResource('temporada','TemporadaController');
 

@@ -73,7 +73,7 @@ class PasswordResetController extends BaseController
             return $this->sendError('Este token de restablecimiento de contraseña no es válido.');
         }
         
-        return $this->sendResponse($passwordReset->toArray(), 'Token exitoso.');
+        return $this->sendResponse($passwordReset->toArray(), 'Este Token debe ser usado para restablecer la contraseña.');
     }
 
 
@@ -82,7 +82,7 @@ class PasswordResetController extends BaseController
      *@bodyParam email string Email del usuario.
      *@bodyParam password string required Password del usuario.
      *@bodyParam password_confirmation string required Password de confirmación.
-     *@bodyParam token string required Token recibido del URL.
+     *@bodyParam token string required Token recibido despues de la solicitud de restablecimiento de contraseña.
      *
      *@response {
      *  "email": "email@example.com",
@@ -93,7 +93,7 @@ class PasswordResetController extends BaseController
      * @param  [string] email
      * @param  [string] password
      * @param  [string] password_confirmation
-     * @param  [string] token
+     * @param  [string] token 
      * @return [string] message
      * @return [json] user object
      */
