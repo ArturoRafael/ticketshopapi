@@ -22,7 +22,9 @@ class EventoCuponeraController extends BaseController
      */
     public function index()
     {
-        $evento_cuponera = EventoCuponera::paginate(15);
+        $evento_cuponera = EventoCuponera::with('evento')
+                            ->with('cuponera')
+                            ->paginate(15);
         return $this->sendResponse($evento_cuponera->toArray(), 'Cupones por evento devueltos con éxito');
     }
 

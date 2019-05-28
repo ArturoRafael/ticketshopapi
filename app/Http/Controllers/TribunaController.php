@@ -25,6 +25,49 @@ class TribunaController extends BaseController
 
         return $this->sendResponse($tribuna->toArray(), 'Tribunas devueltas con éxito');
     }
+
+
+    /**
+     * Listado detallado de las tribunas.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listado_detalle_tribunas()
+    {
+        
+        $tribunas = Tribuna::with('auditorio')->paginate(15);       
+        return $this->sendResponse($tribunas, 'Tribunas devueltas con éxito');
+    }
+
+
+    /**
+     * Buscar tribuna por descripción.
+     *@bodyParam nombre string Nombre de la tribuna.
+     *@response{
+     *    "nombre" : "Tribuna",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarTribuna(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $generos = Tribuna::with('auditorio')
+                        ->where('tribuna.nombre','like', '%'.strtolower($input["nombre"]).'%')
+                        ->get();
+            return $this->sendResponse($generos->toArray(), 'Todas las tribunas filtradas');
+       }else{
+            
+            $generos = Tribuna::with('auditorio')->get();
+            return $this->sendResponse($generos->toArray(), 'Todas las tribunas devueltas'); 
+       }
+
+        
+    }
     
 
     /**

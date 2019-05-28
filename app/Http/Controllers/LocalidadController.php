@@ -27,6 +27,53 @@ class LocalidadController extends BaseController
         return $this->sendResponse($localidad->toArray(), 'Localidades devueltas con éxito');
     }
 
+
+    /**
+     * Listado detallado de las localidades.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listado_detalle_localidades()
+    {
+        
+        $localidad = Localidad::with('tribuna')->paginate(15);       
+        return $this->sendResponse($localidad, 'Localidades devueltas con éxito');
+    }
+
+    /**
+     * Buscar localidades por descripción.
+     *@bodyParam nombre string Nombre de la localidad.
+     *@response{
+     *    "nombre" : "Localidad",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarLocalidad(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $generos = \DB::table('localidad')
+                ->join('tribuna','tribuna.id','=','localidad.id_tribuna')
+                ->where('localidad.nombre','like', '%'.strtolower($input["nombre"]).'%')
+                ->select('localidad.*', 'tribuna.nombre AS tribuna_nombre')
+                ->get();
+            return $this->sendResponse($generos->toArray(), 'Todas las localidades filtradas');
+       }else{
+            
+            $generos = \DB::table('localidad') 
+                ->join('tribuna','tribuna.id','=','localidad.id_tribuna')               
+                ->select('localidad.*', 'tribuna.nombre AS tribuna_nombre')
+                ->get();
+            return $this->sendResponse($generos->toArray(), 'Todas las localidades devueltas'); 
+       }
+
+        
+    }
+
     /**
      * Agrega un nuevo elemento a la tabla localidad
      *@bodyParam nombre string required Nombre de la localidad.

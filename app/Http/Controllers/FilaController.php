@@ -27,6 +27,22 @@ class FilaController extends BaseController
         return $this->sendResponse($fila->toArray(), 'Filas devueltas con éxito');
     }
 
+
+    /**
+     * Listado detallado de las filas.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listado_detalle_filas()
+    {       
+        
+        $fila = Fila::with('localidad')                 
+                  ->with('puestos')                 
+                  ->paginate(15);
+        
+        return $this->sendResponse($fila, 'Filas devueltas con éxito');
+    }
+
     
 
      /**

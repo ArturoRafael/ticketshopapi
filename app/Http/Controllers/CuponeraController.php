@@ -25,6 +25,21 @@ class CuponeraController extends BaseController
     }
 
 
+    /**
+     * Listado detallado de las cuponeras.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listado_detalle_cuponeras()
+    {
+        
+        $cuponera = Cuponera::with('cupons')                
+                ->paginate(15);
+        $lista_cuponera = compact('cuponera');
+        return $this->sendResponse($lista_cuponera, 'Cuponeras devueltas con éxito');
+    }
+
+
      /**
      * Agrega un nuevo elemento a la tabla cuponera
      *@bodyParam nombre string required Nombre de la cuponera.

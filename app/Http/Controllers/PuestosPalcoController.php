@@ -21,7 +21,9 @@ class PuestosPalcoController extends BaseController
      */
     public function index()
     {
-        $puesto_palco = PuestosPalco::paginate(15);
+        $puesto_palco = PuestosPalco::with('palco')
+                               ->with('puesto')
+                               ->paginate(15);
         return $this->sendResponse($puesto_palco->toArray(), 'Puestos por palco devueltos con éxito');
     }
 

@@ -22,7 +22,9 @@ class PuntoventaEventoController extends BaseController
      */
     public function index()
     {
-        $puntoventa_evento = PuntoventaEvento::paginate(15);
+        $puntoventa_evento = PuntoventaEvento::with('punto_ventum')
+                            ->with('evento')
+                            ->paginate(15);
         return $this->sendResponse($puntoventa_evento->toArray(), 'Puntos de venta por eventos devueltos con éxito');
     }
 

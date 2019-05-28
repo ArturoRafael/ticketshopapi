@@ -19,10 +19,26 @@ class AuditorioController extends BaseController
      */
     public function index()
     {
-        //
+       
          $auditorio = Auditorio::paginate(15);
 
          return $this->sendResponse($auditorio->toArray(), 'Auditorios devueltos con éxito');
+    }
+
+
+    /**
+     * Listado detallado de los auditorios.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listado_detalle_auditorios()
+    {
+        
+        $auditorio = Auditorio::with('tribunas')
+                    ->with('imagens')
+                    ->paginate(15);
+        $lista_auditorio = compact('auditorio');
+        return $this->sendResponse($lista_auditorio, 'Auditorios devueltos con éxito');
     }
 
     /**

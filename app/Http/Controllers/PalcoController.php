@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\Palco;
 use App\Models\Localidad;
+use App\Models\Tribuna;
 use Illuminate\Support\Facades\Input;
 /**
  * @group Administración de Palco
@@ -23,6 +24,29 @@ class PalcoController extends BaseController
     {
         $palco = Palco::paginate(15);
         return $this->sendResponse($palco->toArray(), 'Palcos devueltos con éxito');
+    }
+
+
+    /**
+     * Listado detallado de los palcos.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listado_detalle_palcos()
+    {       
+
+        // $palco = \DB::table('palco')
+        //         ->join('localidad', 'localidad.id', '=', 'palco.id_localidad') 
+        //         ->join('tribuna', 'tribuna.id', '=', 'localidad.id_tribuna')
+        //         ->join('auditorio', 'auditorio.id', '=', 'tribuna.id_auditorio')
+        //         ->select('palco.id AS id_palco', 'palco.nombre AS nombre_palco', 'palco.id_localidad', 'localidad.nombre AS nombre_localidad', 'localidad.puerta_acceso', 'localidad.id_tribuna', 'tribuna.nombre AS nombre_tribuna', 'auditorio.*')
+        //         ->paginate(15); 
+        
+        $palco = Palco::with('localidad')                 
+                  ->with('puestos')                 
+                  ->paginate(15);
+        
+        return $this->sendResponse($palco, 'Palcos devueltos con éxito');
     }
 
    

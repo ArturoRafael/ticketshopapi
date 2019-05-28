@@ -29,6 +29,20 @@ class ArtistController extends BaseController
         return $this->sendResponse($artist->toArray(), 'Artistas devueltos con éxito');
     }
 
+
+    /**
+     * Listado detallado de los artistas.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listado_detalle_artistas()
+    {
+        
+        $artist = Artist::with('genero')->paginate(15);
+        $lista_artist = compact('artist');
+        return $this->sendResponse($lista_artist, 'Artistas devueltos con éxito');
+    }
+
    /**
      * Agrega un nuevo elemento a la tabla artista
      *@bodyParam nombre string required El nombre del artista.

@@ -25,6 +25,39 @@ class TipoEventoController extends BaseController
         return $this->sendResponse($tipoEventos->toArray(), 'Tipos de eventos devueltos con éxito');
     }
 
+
+    /**
+     * Buscar Tipo de evento por descripción.
+     *@bodyParam nombre string Nombre del Tipo de evento.
+     *@response{
+     *    "nombre" : "Tipo de evento",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarTipoEvento(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $tipoEventos = \DB::table('tipo_evento')
+                ->where('tipo_evento.nombre','like', '%'.strtolower($input["nombre"]).'%')
+                ->select('tipo_evento.id','tipo_evento.nombre')
+                ->get();
+            return $this->sendResponse($tipoEventos->toArray(), 'Todos los tipos de eventos filtrados');
+       }else{
+            
+            $tipoEventos = \DB::table('tipo_evento')                
+                ->select('tipo_evento.id','tipo_evento.nombre')
+                ->get();
+            return $this->sendResponse($tipoEventos->toArray(), 'Todos los tipos de eventos devueltos'); 
+       }
+        
+    }
+
+
     /**
      * Agrega un nuevo elemento a la tabla tipo_evento
      *@bodyParam nombre string required Nombre del tipo de evento.

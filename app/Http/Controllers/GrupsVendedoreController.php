@@ -25,6 +25,39 @@ class GrupsVendedoreController extends BaseController
     }
 
 
+     /**
+     * Buscar Grupo de Vendedores por nombre.
+     *@bodyParam nombre string Nombre del grupo de vendedor.
+     *@response{
+     *    "nombre" : "Grupo Vendedor",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarGrupoVendedores(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $grups_vendedores = \DB::table('grups_vendedores')
+                ->where('grups_vendedores.nombre','like', '%'.strtolower($input["nombre"]).'%')
+                ->select('grups_vendedores.*')
+                ->get();
+            return $this->sendResponse($grups_vendedores->toArray(), 'Todos los Grupos de Vendedores filtrados');
+       }else{
+            
+            $grups_vendedores = \DB::table('grups_vendedores')                
+                ->select('grups_vendedores.*')
+                ->get();
+            return $this->sendResponse($grups_vendedores->toArray(), 'Todos los Grupo de Vendedores devueltos'); 
+       }
+
+        
+    }
+
+
     /**
      * Agrega un nuevo elemento a la tabla grups_vendedores 
      *@bodyParam nombre string required Nombre del grupo de vendedores.

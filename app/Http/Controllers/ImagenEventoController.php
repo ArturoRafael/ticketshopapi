@@ -22,7 +22,9 @@ class ImagenEventoController extends BaseController
     public function index()
     {
         
-        $img_evento = ImagenEvento::paginate(15);
+        $img_evento = ImagenEvento::with('evento')
+                        ->with('imagen')
+                      ->paginate(15);
         return $this->sendResponse($img_evento->toArray(), 'Imagenes de eventos devueltas con éxito');
     }
 

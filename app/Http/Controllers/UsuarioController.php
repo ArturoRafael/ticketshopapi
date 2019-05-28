@@ -179,7 +179,8 @@ class UsuarioController extends BaseController
             $token = $tokenResult->token;
             $token->expires_at = Carbon::now()->addDays(1);
             $token->save();
-
+            
+            $success['usuario'] =  $user;
             $success['token'] =  $tokenResult->accessToken; 
             $success['token_type'] = 'Bearer';
             $success['token_expire'] = Carbon::now()->addDays(1)->format('Y-m-d');

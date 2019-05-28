@@ -22,7 +22,9 @@ class GrupoVendedoresPtoController extends BaseController
      */
     public function index()
     {
-        $grupo_vendors_pto = GrupoVendedoresPto::paginate(15);
+        $grupo_vendors_pto = GrupoVendedoresPto::with('grups_vendedore')
+                            ->with('punto_ventum')
+                            ->paginate(15);
         return $this->sendResponse($grupo_vendors_pto->toArray(), 'Grupo de Vendedores por punto de venta devueltos con éxito');
     }
 

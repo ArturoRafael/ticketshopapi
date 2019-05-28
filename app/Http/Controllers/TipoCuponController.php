@@ -24,6 +24,38 @@ class TipoCuponController extends BaseController
         return $this->sendResponse($tipoCupon->toArray(), 'Tipos de cupones devueltos con éxito');
     }
 
+
+    /**
+     * Buscar Tipo de cupon por descripción.
+     *@bodyParam nombre string Nombre del Tipo de descuento.
+     *@response{
+     *    "nombre" : "Tipo cupon 1",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarTipoCupon(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $tipoCupon = \DB::table('tipo_cupon')
+                ->where('tipo_cupon.nombre','like', '%'.strtolower($input["nombre"]).'%')
+                ->select('tipo_cupon.id','tipo_cupon.nombre')
+                ->get();
+            return $this->sendResponse($tipoCupon->toArray(), 'Todos los tipos de cupon filtrados');
+       }else{
+            
+            $tipoCupon = \DB::table('tipo_cupon')                
+                ->select('tipo_cupon.id','tipo_cupon.nombre')
+                ->get();
+            return $this->sendResponse($tipoCupon->toArray(), 'Todos los tipos de cupon devueltos'); 
+       }
+        
+    }
+
    
     /**
      * Agrega un nuevo elemento a la tabla tipo_cupon

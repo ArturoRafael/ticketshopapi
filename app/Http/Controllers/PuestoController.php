@@ -27,6 +27,23 @@ class PuestoController extends BaseController
     }
 
 
+     /**
+     * Listado detallado de los puestos.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listado_detalle_puestos()
+    {       
+        
+        $puesto = Puesto::with('localidad')                 
+                  ->with('fila')
+                  ->with('palcos')               
+                  ->paginate(15);
+        
+        return $this->sendResponse($puesto, 'Puestos devueltos con éxito');
+    }
+
+
     /**
      * Agrega un nuevo elemento a la tabla puesto
      *@bodyParam numero string Numero del puesto.

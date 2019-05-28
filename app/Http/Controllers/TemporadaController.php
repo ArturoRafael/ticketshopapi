@@ -25,6 +25,19 @@ class TemporadaController extends BaseController
         return $this->sendResponse($temporada->toArray(), 'Temporadas devueltas con éxito');
     }
 
+    /**
+     * Listado de las temporadas en venta.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listado_venta_temporadas()
+    {
+        $temporada = Temporada::with('venta_temporadas')
+                    ->paginate(15);
+        $lista_temporada = compact('temporada');
+        return $this->sendResponse($lista_temporada, 'Temporadas devueltas con éxito');
+    }
+
    
     /**
      * Agrega un nuevo elemento a la tabla temporada

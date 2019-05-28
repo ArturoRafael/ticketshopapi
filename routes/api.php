@@ -16,8 +16,12 @@ use Illuminate\Http\Request;
 
   	Route::apiResource('genero','GeneroController');
   	Route::get('buscarGenero','GeneroController@buscarGenero');
+	
 	Route::apiResource('artista','ArtistController');
+	Route::get('listado_detalle_artistas','ArtistController@listado_detalle_artistas');
+	
 	Route::apiResource('temporada','TemporadaController');
+	Route::get('listado_venta_temporadas','TemporadaController@listado_venta_temporadas');
 
 	Route::get('imagen','ImagenController@index');
 	Route::get('imagen/{imagen}','ImagenController@show');
@@ -27,27 +31,58 @@ use Illuminate\Http\Request;
 
 
 	Route::apiResource('auditorio','AuditorioController');
+	Route::get('listado_detalle_auditorios','AuditorioController@listado_detalle_auditorios');
+
 	Route::apiResource('imagenesauditorio','ImagenesAuditorioController');
+
 	Route::apiResource('tipodescuento','TipoDescuentoController');
+	Route::get('buscarTipoDescuento','TipoDescuentoController@buscarTipoDescuento');
+
 	Route::apiResource('cupon','CuponController');
+	Route::get('listado_detalle_cupones','CuponController@listado_detalle_cupones');
+
 	Route::apiResource('tipocupon','TipoCuponController');
+	Route::get('buscarTipoCupon','TipoCuponController@buscarTipoCupon');
+
+
 	Route::apiResource('cuponera','CuponeraController');
+	Route::get('listado_detalle_cuponeras','CuponeraController@listado_detalle_cuponeras');
+
+
 	Route::apiResource('tipoevento','TipoEventoController');
+	Route::get('buscarTipoEvento','TipoEventoController@buscarTipoEvento');
+
+
 	Route::apiResource('evento','EventoController');
 	Route::apiResource('imagenevento','ImagenEventoController');
 	Route::apiResource('imagenartist','ImagenArtistController');
 	Route::apiResource('puntoventaevento','PuntoventaEventoController');
 	Route::apiResource('eventocuponera','EventoCuponeraController');
 	Route::apiResource('cliente','ClienteController');
+    Route::apiResource('puestospalco','PuestosPalcoController');
+    Route::apiResource('puntoventum','PuntoVentumController');
+    Route::apiResource('grupovendedorespto','GrupoVendedoresPtoController');
+
 	Route::apiResource('palco','PalcoController');
+	Route::get('listado_detalle_palcos','PalcoController@listado_detalle_palcos');
+
 	Route::apiResource('fila','FilaController');
+    Route::get('listado_detalle_filas','FilaController@listado_detalle_filas');
+
 	Route::apiResource('puesto','PuestoController');
-	Route::apiResource('puestospalco','PuestosPalcoController');
+	Route::get('listado_detalle_puestos','PuestoController@listado_detalle_puestos');
+
+	
 	Route::apiResource('localidad','LocalidadController');
+	Route::get('listado_detalle_localidades','LocalidadController@listado_detalle_localidades');	
+	Route::get('buscarLocalidad','LocalidadController@buscarLocalidad');	
+
 	Route::apiResource('tribuna','TribunaController');
-	Route::apiResource('puntoventum','PuntoVentumController');
+	Route::get('listado_detalle_tribunas','TribunaController@listado_detalle_tribunas');
+	Route::get('buscarTribuna','TribunaController@buscarTribuna');
+
 	Route::apiResource('grupsvendedore','GrupsVendedoreController');
-	Route::apiResource('grupovendedorespto','GrupoVendedoresPtoController');
+	Route::get('buscarGrupoVendedores','GrupsVendedoreController@buscarGrupoVendedores');	
 
 	Route::get('listeventipo/{listeventipo}','EventoController@listeventipo');
 	Route::get('detalle_evento/{detalle_evento}','EventoController@detalle_evento');

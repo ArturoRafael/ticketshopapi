@@ -27,6 +27,23 @@ class CuponController extends BaseController
         return $this->sendResponse($cupon->toArray(), 'Cupones devueltos con éxito');
     }
 
+
+    /**
+     * Listado detallado de los cupones.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listado_detalle_cupones()
+    {
+        
+        $cupon = Cupon::with('genero')
+                ->with('tipo_cupon')
+                ->with('cuponera')
+                ->paginate(15);
+        $lista_cupon = compact('cupon');
+        return $this->sendResponse($lista_cupon, 'Cupones devueltos con éxito');
+    }
+
   
    /**
      * Agrega un nuevo elemento a la tabla cupon

@@ -24,7 +24,11 @@ class EventoController extends BaseController
      */
     public function index()
     {
-        $evento = Evento::paginate(15);
+        $evento = Evento::with('auditorio')
+                    ->with('tipoevento')
+                    ->with('cliente')
+                    ->with('temporada')                    
+                    ->paginate(15);
         return $this->sendResponse($evento->toArray(), 'Eventos devueltos con éxito');
     }
 
@@ -506,7 +510,7 @@ class EventoController extends BaseController
                         ->with('tipoevento')
                         ->with('palcos')
                         ->with('imagens')
-                        ->where('evento.status',1)                                                
+                        ->where('evento.status',1)                         
                         ->paginate(10);
             $lista_eventos = compact('eventos'); 
 

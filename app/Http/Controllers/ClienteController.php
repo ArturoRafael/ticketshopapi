@@ -54,7 +54,7 @@ class ClienteController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+    
        $validator = Validator::make($request->all(), [
             'Identificacion'=> 'required' ,
             'tipo_identificacion' => 'required|boolean',
@@ -169,7 +169,7 @@ class ClienteController extends BaseController
 
         try {
 
-            $cliente =Auditorio::find($id);
+            $cliente =Cliente::find($id);
             if (is_null($cliente)) {
                 return $this->sendError('Cliente no encontrado');
             }

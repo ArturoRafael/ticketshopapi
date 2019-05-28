@@ -25,6 +25,38 @@ class TipoDescuentoController extends BaseController
         return $this->sendResponse($tipoDescuento->toArray(), 'Tipos de descuentos devueltos con éxito');
     }
 
+
+    /**
+     * Buscar Tipo de descuento por descripción.
+     *@bodyParam nombre string Nombre del Tipo de descuento.
+     *@response{
+     *    "nombre" : "Descuento 1",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarTipoDescuento(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $tipoDescuento = \DB::table('tipo_descuento')
+                ->where('tipo_descuento.nombre','like', '%'.strtolower($input["nombre"]).'%')
+                ->select('tipo_descuento.id','tipo_descuento.nombre')
+                ->get();
+            return $this->sendResponse($tipoDescuento->toArray(), 'Todos los tipos de descuento filtrados');
+       }else{
+            
+            $tipoDescuento = \DB::table('tipo_descuento')                
+                ->select('tipo_descuento.id','tipo_descuento.nombre')
+                ->get();
+            return $this->sendResponse($tipoDescuento->toArray(), 'Todos los tipos de descuento devueltos'); 
+       }
+        
+    }
+
    
     /**
      * Agrega un nuevo elemento a la tabla tipo_descuento

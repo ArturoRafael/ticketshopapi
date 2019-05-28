@@ -21,7 +21,9 @@ class ImagenArtistController extends BaseController
      */
     public function index()
     {
-        $artist_img = ImagenArtist::paginate(15);
+        $artist_img = ImagenArtist::with('artist')
+                        ->with('imagen')
+                        ->paginate(15);
         return $this->sendResponse($artist_img->toArray(), 'Imagenes de artistas devueltas con éxito');
     }
 
