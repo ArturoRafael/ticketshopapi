@@ -26,6 +26,36 @@ class ClienteController extends BaseController
         return $this->sendResponse($cliente->toArray(), 'Clientes devueltos con éxito');
     }
 
+
+    /**
+     * Buscar Clientes por nombre.
+     *@bodyParam nombre string Nombre_razon del cliente.
+     *@response{
+     *    "nombre" : "CLiente 1",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarClientes(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $cliente = Cliente::where('clientes.nombrerazon','like', '%'.strtolower($input["nombre"]).'%')
+                ->get();
+            return $this->sendResponse($cliente->toArray(), 'Todos los Clientes filtrados');
+       }else{
+            
+            $cliente = Cliente::get();
+            return $this->sendResponse($cliente->toArray(), 'Todos los Clientes devueltos'); 
+       }
+
+        
+    }
+
+
     /**
      * Agrega un nuevo elemento a la tabla cliente
      *@bodyParam Identificacion string required Identificacion del cliente.

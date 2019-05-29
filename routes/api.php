@@ -18,19 +18,19 @@ use Illuminate\Http\Request;
   	Route::get('buscarGenero','GeneroController@buscarGenero');
 	
 	Route::apiResource('artista','ArtistController');
+	Route::get('buscarArtistas','ArtistController@buscarArtistas');
 	Route::get('listado_detalle_artistas','ArtistController@listado_detalle_artistas');
 	
 	Route::apiResource('temporada','TemporadaController');
 	Route::get('listado_venta_temporadas','TemporadaController@listado_venta_temporadas');
 
-	Route::get('imagen','ImagenController@index');
-	Route::get('imagen/{imagen}','ImagenController@show');
-	Route::post('imagen','ImagenController@store');
-	Route::post('imagen/{imagen}','ImagenController@update');
-	Route::delete('imagen/{imagen}','ImagenController@destroy');
+	
+	Route::apiResource('imagen','ImagenController');
+	Route::post('updateImage/{imagen}','ImagenController@updateImage');
 
 
 	Route::apiResource('auditorio','AuditorioController');
+	Route::get('buscarAuditorio','AuditorioController@buscarAuditorio');
 	Route::get('listado_detalle_auditorios','AuditorioController@listado_detalle_auditorios');
 
 	Route::apiResource('imagenesauditorio','ImagenesAuditorioController');
@@ -58,18 +58,27 @@ use Illuminate\Http\Request;
 	Route::apiResource('imagenartist','ImagenArtistController');
 	Route::apiResource('puntoventaevento','PuntoventaEventoController');
 	Route::apiResource('eventocuponera','EventoCuponeraController');
+	
 	Route::apiResource('cliente','ClienteController');
+	Route::get('buscarClientes','ClienteController@buscarClientes');
+
     Route::apiResource('puestospalco','PuestosPalcoController');
+    
     Route::apiResource('puntoventum','PuntoVentumController');
+    Route::get('buscarPuntoVentum','PuntoVentumController@buscarPuntoVentum');
+    
     Route::apiResource('grupovendedorespto','GrupoVendedoresPtoController');
 
 	Route::apiResource('palco','PalcoController');
+	Route::get('buscarPalco','PalcoController@buscarPalco');
 	Route::get('listado_detalle_palcos','PalcoController@listado_detalle_palcos');
 
 	Route::apiResource('fila','FilaController');
+	Route::get('buscarFila','FilaController@buscarFila');
     Route::get('listado_detalle_filas','FilaController@listado_detalle_filas');
 
 	Route::apiResource('puesto','PuestoController');
+	Route::get('buscarPuestos','PuestoController@buscarPuestos');
 	Route::get('listado_detalle_puestos','PuestoController@listado_detalle_puestos');
 
 	

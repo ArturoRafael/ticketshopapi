@@ -27,6 +27,37 @@ class AuditorioController extends BaseController
 
 
     /**
+     * Buscar Auditorios por nombre.
+     *@bodyParam nombre string Nombre del auditorio.
+     *@response{
+     *    "nombre" : "auditorio 1",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarAuditorio(Request $request)
+    {       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $auditorio = \DB::table('auditorio')
+                ->where('auditorio.nombre','like', '%'.strtolower($input["nombre"]).'%')
+                ->select('auditorio.*')
+                ->get();
+            return $this->sendResponse($auditorio->toArray(), 'Todos los Auditorios filtrados');
+       }else{
+            
+            $auditorio = \DB::table('auditorio')                
+                ->select('auditorio.*')
+                ->get();
+            return $this->sendResponse($auditorio->toArray(), 'Todos los Auditorios devueltos'); 
+       }
+        
+    }
+
+
+    /**
      * Listado detallado de los auditorios.
      *
      * @return \Illuminate\Http\Response

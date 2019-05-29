@@ -45,6 +45,39 @@ class PuestoController extends BaseController
 
 
     /**
+     * Buscar Puestos por numero.
+     *@bodyParam numero string Numero del puesto.
+     *@response{
+     *    "numero" : "1",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarPuestos(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["numero"]) && $input["numero"] != null){
+            
+            $input = $request->all();
+            $puesto = Puesto::with('localidad')
+                ->with('fila')
+                ->where('puesto.numero','like', '%'.strtolower($input["numero"]).'%')
+                ->get();
+            return $this->sendResponse($puesto->toArray(), 'Todos los Puestos filtrados');
+       }else{
+            
+            $puesto = Puesto::with('localidad')
+                ->with('fila')
+                ->get();
+            return $this->sendResponse($puesto->toArray(), 'Todos los Puestos devueltos'); 
+       }
+
+        
+    }
+
+
+    /**
      * Agrega un nuevo elemento a la tabla puesto
      *@bodyParam numero string Numero del puesto.
      *@bodyParam id_localidad int required Id de la localidad.

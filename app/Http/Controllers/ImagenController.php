@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Imagen;
 use Validator;
 
@@ -51,12 +52,12 @@ class ImagenController extends BaseController
             $file = $request->file('imagen');
             
             $name = $file->getClientOriginalName();
-            $name = $name.time();
-            $public_path = public_path();
-            $fileurl = $public_path.'/storage/uploads/'.$name; 
-            $file->move('uploads/', $name);
+                        
+            $fileUrl = Storage::disk('public')->put('imagenes', $file);
             
-            $imagen->url = $fileurl; 
+            $urlFile = env('APP_URL').'storage/'.$fileUrl;
+            
+            $imagen->url = $urlFile; 
             $imagen->nombre = $name;
             $imagen->save();
 
@@ -93,7 +94,7 @@ class ImagenController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
+    public function updateImage(Request $request, $id)
     {
                
         $validator = Validator::make($request->all(), [
@@ -113,12 +114,12 @@ class ImagenController extends BaseController
             $file = $request->file('imagen');
             
             $name = $file->getClientOriginalName();
-            $name = $name.time();
-            $public_path = public_path();
-            $fileurl = $public_path.'/storage/uploads/'.$name; 
-            $file->move('uploads/', $name);
             
-            $imagen->url = $fileurl; 
+            $fileUrl = Storage::disk('public')->put('imagenes', $file);
+            
+            $urlFile = env('APP_URL').'storage/'.$fileUrl;
+            
+            $imagen->url = $urlFile; 
             $imagen->nombre = $name;
             $imagen->save();
 

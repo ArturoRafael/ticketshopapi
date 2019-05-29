@@ -49,6 +49,37 @@ class PalcoController extends BaseController
         return $this->sendResponse($palco, 'Palcos devueltos con éxito');
     }
 
+
+    /**
+     * Buscar Palcos por nombre.
+     *@bodyParam nombre string Nombre del palco.
+     *@response{
+     *    "nombre" : "Palco 1",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarPalco(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $palco = Palco::with('localidad')
+                ->where('palco.nombre','like', '%'.strtolower($input["nombre"]).'%')
+                ->get();
+            return $this->sendResponse($palco->toArray(), 'Todos los Palcos filtrados');
+       }else{
+            
+            $palco = Palco::with('localidad')
+                ->get();
+            return $this->sendResponse($palco->toArray(), 'Todos los Palcos devueltos'); 
+       }
+
+        
+    }
+
    
     /**
      * Agrega un nuevo elemento a la tabla palco

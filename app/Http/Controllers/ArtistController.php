@@ -31,6 +31,37 @@ class ArtistController extends BaseController
 
 
     /**
+     * Buscar Artistas por nombre.
+     *@bodyParam nombre string Nombre del artista.
+     *@response{
+     *    "nombre" : "Artista 1",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarArtistas(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $artist = Artist::with('genero')
+                ->where('artist.nombre','like', '%'.strtolower($input["nombre"]).'%')
+                ->get();
+            return $this->sendResponse($artist->toArray(), 'Todos los Artistas filtrados');
+       }else{
+            
+            $artist = Artist::with('genero') 
+                ->get();
+            return $this->sendResponse($artist->toArray(), 'Todos los Artistas devueltos'); 
+       }
+
+        
+    }
+
+
+    /**
      * Listado detallado de los artistas.
      *
      * @return \Illuminate\Http\Response

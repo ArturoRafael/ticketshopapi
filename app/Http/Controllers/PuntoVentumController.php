@@ -24,6 +24,37 @@ class PuntoVentumController extends BaseController
         return $this->sendResponse($punto_venta->toArray(), 'Puntos de ventas devueltos con éxito');
     }
 
+
+
+    /**
+     * Buscar Punto de venta por nombre razon.
+     *@bodyParam nombre string Nombre_razon del punto de venta.
+     *@response{
+     *    "nombre" : "Nombre razon",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarPuntoVentum(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $punto_venta = PuntoVentum::where('punto_venta.nombre_razon','like', '%'.strtolower($input["nombre"]).'%')
+                ->get();
+            return $this->sendResponse($punto_venta->toArray(), 'Todos los Punto de venta filtrados');
+       }else{
+            
+            $punto_venta = PuntoVentum::get();
+            return $this->sendResponse($punto_venta->toArray(), 'Todos los Punto de venta devueltos'); 
+       }
+
+        
+    }
+
+
     /**
      * Agrega un nuevo elemento a la tabla punto_venta
      *

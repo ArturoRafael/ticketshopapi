@@ -43,6 +43,37 @@ class FilaController extends BaseController
         return $this->sendResponse($fila, 'Filas devueltas con éxito');
     }
 
+
+    /**
+     * Buscar Filas por nombre.
+     *@bodyParam nombre string Nombre del genero.
+     *@response{
+     *    "nombre" : "Fila 1",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarFila(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $filas = Fila::with('localidad')
+                ->where('fila.nombre','like', '%'.strtolower($input["nombre"]).'%')
+                ->get();
+            return $this->sendResponse($filas->toArray(), 'Todos las Filas filtrados');
+       }else{
+            
+            $filas = Fila::with('localidad')
+                ->get();
+            return $this->sendResponse($filas->toArray(), 'Todos las Filas devueltos'); 
+       }
+
+        
+    }
+
     
 
      /**
