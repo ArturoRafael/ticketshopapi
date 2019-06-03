@@ -38,6 +38,35 @@ class TemporadaController extends BaseController
         return $this->sendResponse($lista_temporada, 'Temporadas devueltas con éxito');
     }
 
+
+    /**
+     * Buscar Temporada por nombre.
+     *@bodyParam nombre string Nombre de la temporada.
+     *@response{
+     *    "nombre" : "temporada 1",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarTemporada(Request $request)
+    {       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $temporada = \DB::table('temporada')
+                ->where('temporada.nombre','like', '%'.strtolower($input["nombre"]).'%')
+                ->select('temporada.*')
+                ->get();
+            return $this->sendResponse($temporada->toArray(), 'Todos las Temporadas filtradas');
+       }else{
+            
+            $temporada = Temporada::get();
+            return $this->sendResponse($temporada->toArray(), 'Todos las Temporadas devueltas'); 
+       }
+        
+    }
+
    
     /**
      * Agrega un nuevo elemento a la tabla temporada

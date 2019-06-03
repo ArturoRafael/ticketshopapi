@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 	Route::get('listado_detalle_artistas','ArtistController@listado_detalle_artistas');
 	
 	Route::apiResource('temporada','TemporadaController');
+	Route::get('buscarTemporada','TemporadaController@buscarTemporada');
 	Route::get('listado_venta_temporadas','TemporadaController@listado_venta_temporadas');
 
 	
@@ -46,6 +47,7 @@ use Illuminate\Http\Request;
 
 
 	Route::apiResource('cuponera','CuponeraController');
+	Route::get('buscarCuponera','CuponeraController@buscarCuponera');
 	Route::get('listado_detalle_cuponeras','CuponeraController@listado_detalle_cuponeras');
 
 

@@ -40,6 +40,35 @@ class CuponeraController extends BaseController
     }
 
 
+    /**
+     * Buscar Cuponera por nombre.
+     *@bodyParam nombre string Nombre de la cuponera.
+     *@response{
+     *    "nombre" : "cuponera 1",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarCuponera(Request $request)
+    {       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $cuponera = \DB::table('cuponera')
+                ->where('cuponera.nombre','like', '%'.strtolower($input["nombre"]).'%')
+                ->select('cuponera.*')
+                ->get();
+            return $this->sendResponse($cuponera->toArray(), 'Todos las Cuponeras filtradas');
+       }else{
+            
+            $cuponera = Cuponera::get();
+            return $this->sendResponse($cuponera->toArray(), 'Todos las Cuponeras devueltas'); 
+       }
+        
+    }
+
+
      /**
      * Agrega un nuevo elemento a la tabla cuponera
      *@bodyParam nombre string required Nombre de la cuponera.

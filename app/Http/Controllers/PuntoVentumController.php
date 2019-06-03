@@ -63,13 +63,21 @@ class PuntoVentumController extends BaseController
      *@bodyParam tipo_identificacion boolean required Tipo de identificacion punto de venta.
      *@bodyParam direccion string Direccion del punto de venta.
      *@bodyParam telefono string Telefono del punto de venta.
+     *@bodyParam responsable string required Responsable del punto de venta.
+     *@bodyParam zona string required Zona.
+     *@bodyParam email string required Email.
+     *@bodyParam id_ciudad int required ID de la ciudad.
      *
      * @response {      
      *  "nombre_razon": "BBV", 
      *  "identificacion": "BBV",
      *  "tipo_identificacion": 1,
-     *  "direccion" : "Address One"
-     *  "telefono" : "311998333"     
+     *  "direccion" : "Address One",
+     *  "telefono" : "311998333",
+     *  "responsable": "Responsable",
+     *  "zona" : "Zona 1",
+     *  "email" : "responsable@gmail.com",
+     *  "id_ciudad" : 1      
      * }
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -79,7 +87,11 @@ class PuntoVentumController extends BaseController
         $validator = Validator::make($request->all(), [
             'nombre_razon' => 'required',  
             'identificacion' => 'required',
-            'tipo_identificacion' => 'required|boolean',  
+            'tipo_identificacion' => 'required|boolean',
+            'responsable' => 'required',
+            'zona' => 'required',
+            'email' => 'required|email',
+            'id_ciudad' => 'integer'  
         ]);
         if($validator->fails()){
             return $this->sendError('Error de validación.', $validator->errors());       
@@ -117,6 +129,10 @@ class PuntoVentumController extends BaseController
      *@bodyParam tipo_identificacion boolean required Tipo de identificacion punto de venta.
      *@bodyParam direccion string Direccion del punto de venta.
      *@bodyParam telefono string Telefono del punto de venta.
+     *@bodyParam responsable string required Responsable del punto de venta.
+     *@bodyParam zona string required Zona.
+     *@bodyParam email string required Email.
+     *@bodyParam id_ciudad int required ID de la ciudad.
      *
      *
      * @response {
@@ -124,7 +140,11 @@ class PuntoVentumController extends BaseController
      *  "identificacion": "BBV",
      *  "tipo_identificacion": 0,
      *  "direccion" : "Address Two"
-     *  "telefono" : "311998333"   
+     *  "telefono" : "311998333",
+     *  "responsable": "Responsable",
+     *  "zona" : "Zona 1",
+     *  "email" : "responsable@gmail.com",
+     *  "id_ciudad" : 1   
      * }
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -137,7 +157,11 @@ class PuntoVentumController extends BaseController
         $validator = Validator::make($input, [
             'nombre_razon' => 'required',  
             'identificacion' => 'required',
-            'tipo_identificacion' => 'required|boolean',           
+            'tipo_identificacion' => 'required|boolean',
+            'responsable' => 'required',
+            'zona' => 'required',
+            'email' => 'required|email',
+            'id_ciudad' => 'integer'            
         ]);
 
         $punto_venta_search = PuntoVentum::find($id);        
@@ -150,6 +174,10 @@ class PuntoVentumController extends BaseController
         $punto_venta_search->tipo_identificacion = $input['tipo_identificacion'];         
         $punto_venta_search->direccion = $input['direccion'];
         $punto_venta_search->telefono = $input['telefono'];
+        $punto_venta_search->responsable = $input['responsable'];
+        $punto_venta_search->zona = $input['zona'];
+        $punto_venta_search->email = $input['email'];
+        $punto_venta_search->id_ciudad = $input['id_ciudad'];
         $punto_venta_search->save();
 
         return $this->sendResponse($punto_venta_search->toArray(), 'Punto de Venta actualizado con éxito');
