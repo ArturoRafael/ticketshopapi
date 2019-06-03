@@ -55,6 +55,15 @@ use Illuminate\Http\Request;
 	Route::get('buscarTipoEvento','TipoEventoController@buscarTipoEvento');
 
 
+	Route::apiResource('pais','PaisController');
+	Route::get('buscarPais','PaisController@buscarPais');
+
+	Route::apiResource('departamento','DepartamentoController');
+	Route::get('buscarDepartamento','DepartamentoController@buscarDepartamento');
+
+	Route::apiResource('ciudad','CiudadController');
+	Route::get('buscarCiudad','CiudadController@buscarCiudad');	
+
 	Route::apiResource('evento','EventoController');
 	Route::apiResource('imagenevento','ImagenEventoController');
 	Route::apiResource('imagenartist','ImagenArtistController');
