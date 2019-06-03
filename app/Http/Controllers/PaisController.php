@@ -126,10 +126,10 @@ class PaisController extends BaseController
             return $this->sendError('Pais no encontrado');
         }
 
-        $localidad_search->descripcion = $input['descripcion'];
-        $localidad_search->save();
+        $pais_search->descripcion = $input['descripcion'];
+        $pais_search->save();
 
-        return $this->sendResponse($localidad_search->toArray(), 'Pais actualizado con éxito');
+        return $this->sendResponse($pais_search->toArray(), 'Pais actualizado con éxito');
 
     }
 

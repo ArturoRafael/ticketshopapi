@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Reliese\Database\Eloquent\Model as Eloquent;
 /**
  * Class Pais
  * 
  * @property int $id
  * @property string $descripcion
  * 
+ * @property \Illuminate\Database\Eloquent\Collection $departamentos
  *
  * @package App\Models
  */
-class Pais extends Model
+class Pais extends Eloquent
 {
     protected $table = 'pais';
 	public $timestamps = false;

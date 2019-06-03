@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Input;
 use App\Models\Ciudad;
+use App\Models\Departamento;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -12,7 +13,7 @@ use Validator;
  *
  * APIs para la gestion de la tabla ciudad
  */
-class CiudadController extends Controller
+class CiudadController extends BaseController
 {
     /**
      * Lista de la tabla ciudades.
@@ -76,6 +77,11 @@ class CiudadController extends Controller
         if($validator->fails()){
             return $this->sendError('Error de validación.', $validator->errors());       
         }
+
+        $departamento = Departamento::find($request->input('id_departamento'));
+        if (is_null($departamento)) {
+            return $this->sendError('El Departamento indicado no existe');
+        }
         
         $ciudad = Ciudad::create($request->all());        
         return $this->sendResponse($ciudad->toArray(), 'Ciudad creada con éxito');
@@ -128,6 +134,11 @@ class CiudadController extends Controller
         $ciudad_search = Ciudad::find($id);        
         if (is_null($ciudad_search)) {
             return $this->sendError('Ciudad no encontrada');
+        }
+
+        $departamento = Departamento::find($request->input('id_departamento'));
+        if (is_null($departamento)) {
+            return $this->sendError('El Departamento indicado no existe');
         }
 
         $ciudad_search->id_departamento = $input['id_departamento'];

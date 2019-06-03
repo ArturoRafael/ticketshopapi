@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Reliese\Database\Eloquent\Model as Eloquent;
 /**
  * Class Ciudad
  * 
@@ -10,10 +10,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id_departamento
  * @property string $descripcion
  * 
- *
+ * @property \Illuminate\Database\Eloquent\Collection $departamento
  * @package App\Models
  */
-class Ciudad extends Model
+class Ciudad extends Eloquent
 {
     protected $table = 'ciudad';
 	public $timestamps = false;

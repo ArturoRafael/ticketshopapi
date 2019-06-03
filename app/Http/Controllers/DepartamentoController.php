@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Input;
 use App\Models\Departamento;
+use App\Models\Pais;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -13,7 +14,7 @@ use Validator;
  *
  * APIs para la gestion de la tabla departamento
  */
-class DepartamentoController extends Controller
+class DepartamentoController extends BaseController
 {
     /**
      * Lista de la tabla departamento.
@@ -45,7 +46,7 @@ class DepartamentoController extends Controller
             
             $input = $request->all();
             $departamento = Departamento::with('pais')
-                ->where('departmento.descripcion','like', '%'.strtolower($input["nombre"]).'%')
+                ->where('departamento.descripcion','like', '%'.strtolower($input["nombre"]).'%')
                 ->get();
             return $this->sendResponse($departamento->toArray(), 'Todos los Departamento filtrados');
        }else{
@@ -78,6 +79,11 @@ class DepartamentoController extends Controller
         ]);
         if($validator->fails()){
             return $this->sendError('Error de validación.', $validator->errors());       
+        }
+
+        $pais = Pais::find($request->input('id_pais'));
+        if (is_null($pais)) {
+            return $this->sendError('El Pais indicado no existe');
         }
         
         $departamento = Departamento::create($request->all());        
@@ -132,6 +138,11 @@ class DepartamentoController extends Controller
         $depart_search = Departamento::find($id);        
         if (is_null($depart_search)) {
             return $this->sendError('Departamento no encontrado');
+        }
+
+        $pais = Pais::find($request->input('id_pais'));
+        if (is_null($pais)) {
+            return $this->sendError('El Pais indicado no existe');
         }
 
         $depart_search->id_pais = $input['id_pais'];
