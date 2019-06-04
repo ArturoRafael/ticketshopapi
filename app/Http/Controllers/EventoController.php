@@ -32,6 +32,43 @@ class EventoController extends BaseController
         return $this->sendResponse($evento->toArray(), 'Eventos devueltos con éxito');
     }
 
+
+    /**
+     * Buscar Evento por nombre.
+     *@bodyParam nombre string Nombre del evento.
+     *@response{
+     *    "nombre" : "Evento 1",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarEvento(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $evento = Evento::with('auditorio')
+                    ->with('tipoevento')
+                    ->with('cliente')
+                    ->with('temporada')
+                ->where('evento.nombre','like', '%'.strtolower($input["nombre"]).'%')
+                ->get();
+            return $this->sendResponse($evento->toArray(), 'Todos los Eventos filtrados');
+       }else{
+            
+            $evento = Evento::with('auditorio')
+                    ->with('tipoevento')
+                    ->with('cliente')
+                    ->with('temporada')
+                    ->get();
+            return $this->sendResponse($evento->toArray(), 'Todos los Eventos devueltos'); 
+       }
+        
+    }
+
+
     /**
      * Agrega un nuevo elemento a la tabla evento
      *
@@ -50,6 +87,7 @@ class EventoController extends BaseController
      *@bodyParam status int Status del evento.
      *@bodyParam fecha_inicio_venta_internet date Fecha de inicio de la venta por internet. Example: 2019-01-01
      *@bodyParam fecha_inicio_venta_puntos int required Cantidad de puntos de la ventas desde la fecha de inicio.
+     *@bodyParam monto_minimo double Monto mínimo del evento.
      *@response{
      *       "fecha_evento" : "2019-01-01",
      *       "nombre" : "Evento WW",
@@ -66,6 +104,7 @@ class EventoController extends BaseController
      *       "status": 0,
      *       "fecha_inicio_venta_internet": null,
      *       "fecha_inicio_venta_puntos": 12,
+     *       "monto_minimo": 10.10,
      *     }
      *
      * @param  \Illuminate\Http\Request  $request
@@ -148,6 +187,10 @@ class EventoController extends BaseController
             Input::merge(['status' => 0]);
         }
 
+        if(is_null($request->input('monto_minimo'))){
+            Input::merge(['monto_minimo' => 0.00]);
+        }
+
         if(is_null($request->input('domicilios'))){
             Input::merge(['domicilios' => 0]);
         }
@@ -196,6 +239,7 @@ class EventoController extends BaseController
      *@bodyParam status int Status del evento.
      *@bodyParam fecha_inicio_venta_internet date Fecha de inicio de la venta por internet. Example: 2019-01-01
      *@bodyParam fecha_inicio_venta_puntos int required Cantidad de puntos de la ventas desde la fecha de inicio.
+     *@bodyParam monto_minimo double Monto mínimo del evento.
      *@response{
      *       "fecha_evento" : "2019-01-03",
      *       "nombre" : "Evento WW",
@@ -212,6 +256,7 @@ class EventoController extends BaseController
      *       "status": 1,
      *       "fecha_inicio_venta_internet": "2019-01-01",
      *       "fecha_inicio_venta_puntos": 12,
+     *       "monto_minimo": 150.10
      *     }
      *
      * @param  \Illuminate\Http\Request  $request
@@ -308,6 +353,10 @@ class EventoController extends BaseController
             $evento_search->status  = 0;
         }
 
+        if(is_null($input['monto_minimo'])){
+           $evento_search->monto_minimo = 0.00;
+        }
+
         if(is_null($input['domicilios'])){
              $evento_search->domicilios = 0;
         }
@@ -369,7 +418,7 @@ class EventoController extends BaseController
                 ->join('tipo_evento', 'evento.id_tipo_evento', '=', 'tipo_evento.id')
                 ->join('auditorio', 'evento.id_auditorio', '=', 'auditorio.id')
                 ->where('evento.id_tipo_evento','=', $id)
-                ->select('evento.id','evento.fecha_evento', 'evento.nombre','evento.hora_inicio','evento.hora_apertura', 'evento.hora_finalizacion', 'evento.fecha_inicio_venta_internet','tipo_evento.id AS id_tipo_evento','tipo_evento.nombre AS tipo_evento', 'auditorio.id AS id_auditorio','auditorio.nombre AS auditorio')
+                ->select('evento.id','evento.fecha_evento', 'evento.nombre','evento.hora_inicio','evento.hora_apertura', 'evento.hora_finalizacion', 'evento.fecha_inicio_venta_internet','evento.monto_minimo', 'tipo_evento.id AS id_tipo_evento','tipo_evento.nombre AS tipo_evento', 'auditorio.id AS id_auditorio','auditorio.nombre AS auditorio')
                 ->get();
 
         $events_img = \DB::table('evento')
@@ -546,7 +595,7 @@ class EventoController extends BaseController
                 ->join('auditorio', 'evento.id_auditorio', '=', 'auditorio.id')                
                 ->join('clientes', 'evento.id_cliente', '=', 'clientes.id')
                 ->where('evento.id','=', $id)
-                ->select('evento.fecha_evento', 'evento.nombre','evento.hora_inicio','evento.hora_apertura', 'evento.hora_finalizacion', 'evento.codigo_pulep','evento.domicilios','evento.venta_linea','evento.status','evento.fecha_inicio_venta_internet','evento.fecha_inicio_venta_puntos','tipo_evento.nombre AS tipo_evento', 'temporada.nombre AS nombre_temporada','temporada.status AS status_temporada', 'auditorio.id AS id_auditorio','auditorio.nombre AS auditorio', 'auditorio.ciudad AS ciudad_auditorio', 'auditorio.departamento AS departamento_auditorio', 'auditorio.pais AS pais_auditorio', 'auditorio.direccion', 'auditorio.latitud', 'auditorio.longitud', 'auditorio.aforo', 'clientes.Identificacion AS identificacion_cliente', 'clientes.tipo_identificacion', 'clientes.nombrerazon', 'clientes.direccion AS direccion_cliente', 'clientes.ciudad AS ciudad_cliente', 'clientes.departamento AS departamento_cliente', 'clientes.email', 'clientes.telefono', 'clientes.tipo_cliente')
+                ->select('evento.fecha_evento', 'evento.nombre','evento.hora_inicio','evento.hora_apertura', 'evento.hora_finalizacion', 'evento.codigo_pulep','evento.domicilios','evento.venta_linea','evento.status','evento.fecha_inicio_venta_internet','evento.fecha_inicio_venta_puntos','tipo_evento.nombre AS tipo_evento', 'evento.monto_minimo','temporada.nombre AS nombre_temporada','temporada.status AS status_temporada', 'auditorio.id AS id_auditorio','auditorio.nombre AS auditorio', 'auditorio.ciudad AS ciudad_auditorio', 'auditorio.departamento AS departamento_auditorio', 'auditorio.pais AS pais_auditorio', 'auditorio.direccion', 'auditorio.latitud', 'auditorio.longitud', 'auditorio.aforo', 'clientes.Identificacion AS identificacion_cliente', 'clientes.tipo_identificacion', 'clientes.nombrerazon', 'clientes.direccion AS direccion_cliente', 'clientes.ciudad AS ciudad_cliente', 'clientes.departamento AS departamento_cliente', 'clientes.email', 'clientes.telefono', 'clientes.tipo_cliente')
                 ->get();
 
         $preventas = \DB::table('evento')                

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auditorio;
+use App\Models\Pais;
+use App\Models\Departamento;
+use App\Models\Ciudad;
 use Illuminate\Http\Request;
 use Validator;
 /**
@@ -41,16 +44,20 @@ class AuditorioController extends BaseController
        if(isset($input["nombre"]) && $input["nombre"] != null){
             
             $input = $request->all();
-            $auditorio = \DB::table('auditorio')
+            $auditorio = Auditorio::with('pais')
+                    ->with('departamento')
+                    ->with('ciudad')
+                    ->with('imagens')
                 ->where('auditorio.nombre','like', '%'.strtolower($input["nombre"]).'%')
-                ->select('auditorio.*')
                 ->get();
             return $this->sendResponse($auditorio->toArray(), 'Todos los Auditorios filtrados');
        }else{
             
-            $auditorio = \DB::table('auditorio')                
-                ->select('auditorio.*')
-                ->get();
+            $auditorio = Auditorio::with('pais')
+                    ->with('departamento')
+                    ->with('ciudad')
+                    ->with('imagens')
+                    ->get();
             return $this->sendResponse($auditorio->toArray(), 'Todos los Auditorios devueltos'); 
        }
         
@@ -66,6 +73,9 @@ class AuditorioController extends BaseController
     {
         
         $auditorio = Auditorio::with('tribunas')
+                    ->with('pais')
+                    ->with('departamento')
+                    ->with('ciudad')
                     ->with('imagens')
                     ->paginate(15);
         $lista_auditorio = compact('auditorio');
@@ -75,18 +85,18 @@ class AuditorioController extends BaseController
     /**
      * Agrega un nuevo elemento a la tabla auditorio
      *@bodyParam nombre string required Nombre del Auditorio.
-     *@bodyParam ciudad string required Ciudad del auditorio.
-     *@bodyParam departamento string required Departamento del auditorio.
-     *@bodyParam pais string required Pais del auditorio.
+     *@bodyParam id_ciudad int required ID de la ciudad.
+     *@bodyParam id_departamento int required ID del departamento.
+     *@bodyParam id_pais int required ID del pais.
      *@bodyParam direccion string Direccion del auditorio.
      *@bodyParam longitud int Coordenada: Longitud.
      *@bodyParam latitud int Coordenada: Latitud.
      *@bodyParam aforo int Aforo.
      *@response{
      *       "nombre" : "Auditorio 1",
-     *       "ciudad" : "Raccon City",
-     *       "departamento": "Departament 1",
-     *       "pais": "US",
+     *       "id_ciudad" : 1,
+     *       "id_departamento": 1,
+     *       "id_pais": 1,
      *       "direccion": "Street 1-56",
      *       "longitud": null,
      *       "latitud": null,
@@ -101,9 +111,9 @@ class AuditorioController extends BaseController
         //
          $validator = Validator::make($request->all(), [
             'nombre' => 'required',   
-            'ciudad' => 'required',
-            'departamento' => 'required',
-            'pais' => 'required',
+            'id_ciudad' => 'required|integer',
+            'id_departamento' => 'required|integer',
+            'id_pais' => 'required|integer',
             'direccion' => 'required',
             'longitud' => 'numeric',
             'latitud' => 'numeric',
@@ -112,8 +122,24 @@ class AuditorioController extends BaseController
         if($validator->fails()){
             return $this->sendError('Error de validación.', $validator->errors());       
         }
-          $auditorio=Auditorio::create($request->all());        
-         return $this->sendResponse($auditorio->toArray(), 'Auditorio creado con éxito');
+
+        $pais = Pais::find($request->input('id_pais'));
+        if (is_null($pais)) {
+            return $this->sendError('El País indicado no existe');
+        }
+
+        $departamento = Departamento::find($request->input('id_departamento'));
+        if (is_null($departamento)) {
+            return $this->sendError('El Departamento indicado no existe');
+        }
+
+        $ciudad = Ciudad::find($request->input('id_ciudad'));
+        if (is_null($ciudad)) {
+            return $this->sendError('La Ciudad indicada no existe');
+        }
+        
+        $auditorio=Auditorio::create($request->all());        
+        return $this->sendResponse($auditorio->toArray(), 'Auditorio creado con éxito');
 
     }
 
@@ -146,18 +172,18 @@ class AuditorioController extends BaseController
      * [Se filtra por el ID]
      *
      *@bodyParam nombre string required Nombre del Auditorio.
-     *@bodyParam ciudad string required Ciudad del auditorio.
-     *@bodyParam departamento string required Departamento del auditorio.
-     *@bodyParam pais string required Pais del auditorio.
+     *@bodyParam id_ciudad int required ID de la ciudad.
+     *@bodyParam id_departamento int required ID del departamento.
+     *@bodyParam id_pais int required ID del pais.
      *@bodyParam direccion string Direccion del auditorio.
      *@bodyParam longitud int Coordenada: Longitud.
      *@bodyParam latitud int Coordenada: Latitud.
      *@bodyParam aforo int Aforo.
      *@response{
      *       "nombre" : "Auditorio GOLD",
-     *       "ciudad" : "Raccon City",
-     *       "departamento": "Departament 1",
-     *       "pais": "US",
+     *       "id_ciudad" : 1,
+     *       "id_departamento": 2,
+     *       "id_pais": 1,
      *       "direccion": "Street 1-56",
      *       "longitud": 222,
      *       "latitud": 765,
@@ -175,10 +201,10 @@ class AuditorioController extends BaseController
 
 
         $validator = Validator::make($request->all(), [
-           'nombre' => 'required',   
-            'ciudad' => 'required',
-            'departamento' => 'required',
-            'pais' => 'required',
+            'nombre' => 'required',   
+            'id_ciudad' => 'required|integer',
+            'id_departamento' => 'required|integer',
+            'id_pais' => 'required|integer',
             'direccion' => 'required',
             'longitud' => 'numeric',
             'latitud' => 'numeric',
@@ -190,15 +216,31 @@ class AuditorioController extends BaseController
             return $this->sendError('Error de validación', $validator->errors());       
         }
 
-        $auditorio = Auditorio::find($id);
+
+        $pais = Pais::find($request->input('id_pais'));
+        if (is_null($pais)) {
+            return $this->sendError('El País indicado no existe');
+        }
+
+        $departamento = Departamento::find($request->input('id_departamento'));
+        if (is_null($departamento)) {
+            return $this->sendError('El Departamento indicado no existe');
+        }
+
+        $ciudad = Ciudad::find($request->input('id_ciudad'));
+        if (is_null($ciudad)) {
+            return $this->sendError('La Ciudad indicada no existe');
+        }
+
+         $auditorio = Auditorio::find($id);
         if (is_null($auditorio)) {
             return $this->sendError('Auditorio no encontrado');
         }
         
         $auditorio->nombre = $input['nombre'];
-        $auditorio->ciudad = $input['ciudad'];
-        $auditorio->departamento = $input['departamento'];
-        $auditorio->pais = $input['pais'];
+        $auditorio->ciudad = $input['id_ciudad'];
+        $auditorio->departamento = $input['id_departamento'];
+        $auditorio->pais = $input['id_pais'];
         $auditorio->direccion = $input['direccion'];        
         if (!is_null($request->input('latitud'))) 
             $auditorio->latitud = $input['latitud'];

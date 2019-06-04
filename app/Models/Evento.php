@@ -27,6 +27,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $id_temporada
  * @property int $status
  * @property \Carbon\Carbon $fecha_inicio_venta
+ * @property double $monto_minimo
  * 
  * @property \App\Models\Auditorio $auditorio
  * @property \App\Models\Cliente $cliente
@@ -55,7 +56,8 @@ class Evento extends Eloquent
 		'id_auditorio' => 'int',
 		'id_cliente' => 'int',
 		'id_temporada' => 'int',
-		'status' => 'int'
+		'status' => 'int',
+		'monto_minimo' => 'double'
 	];
 
 	protected $dates = [
@@ -84,7 +86,8 @@ class Evento extends Eloquent
 		'id_temporada',
 		'status',
 		'fecha_inicio_venta_internet',
-		'fecha_inicio_venta_puntos'
+		'fecha_inicio_venta_puntos',
+		'monto_minimo'
 	];
 
 	public function auditorio()

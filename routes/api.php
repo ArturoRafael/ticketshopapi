@@ -12,8 +12,9 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-
+	Route::apiResource('condicion','CondicionController');
+	Route::apiResource('tipocosto','TipoCostoController');
+/*---------------------------------------------------------------------------------------*/
   	Route::apiResource('genero','GeneroController');
   	Route::get('buscarGenero','GeneroController@buscarGenero');
 	
@@ -24,11 +25,9 @@ use Illuminate\Http\Request;
 	Route::apiResource('temporada','TemporadaController');
 	Route::get('buscarTemporada','TemporadaController@buscarTemporada');
 	Route::get('listado_venta_temporadas','TemporadaController@listado_venta_temporadas');
-
 	
 	Route::apiResource('imagen','ImagenController');
 	Route::post('updateImage/{imagen}','ImagenController@updateImage');
-
 
 	Route::apiResource('auditorio','AuditorioController');
 	Route::get('buscarAuditorio','AuditorioController@buscarAuditorio');
@@ -45,15 +44,12 @@ use Illuminate\Http\Request;
 	Route::apiResource('tipocupon','TipoCuponController');
 	Route::get('buscarTipoCupon','TipoCuponController@buscarTipoCupon');
 
-
 	Route::apiResource('cuponera','CuponeraController');
 	Route::get('buscarCuponera','CuponeraController@buscarCuponera');
 	Route::get('listado_detalle_cuponeras','CuponeraController@listado_detalle_cuponeras');
 
-
 	Route::apiResource('tipoevento','TipoEventoController');
 	Route::get('buscarTipoEvento','TipoEventoController@buscarTipoEvento');
-
 
 	Route::apiResource('pais','PaisController');
 	Route::get('buscarPais','PaisController@buscarPais');
@@ -65,6 +61,8 @@ use Illuminate\Http\Request;
 	Route::get('buscarCiudad','CiudadController@buscarCiudad');	
 
 	Route::apiResource('evento','EventoController');
+	Route::get('buscarEvento','EventoController@buscarEvento');
+
 	Route::apiResource('imagenevento','ImagenEventoController');
 	Route::apiResource('imagenartist','ImagenArtistController');
 	Route::apiResource('puntoventaevento','PuntoventaEventoController');
