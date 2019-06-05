@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PuntoVentum;
+use App\Models\Ciudad;
 use Validator;
 use Illuminate\Support\Facades\Input;
 /**
@@ -20,7 +21,7 @@ class PuntoVentumController extends BaseController
      */
     public function index()
     {
-        $punto_venta = PuntoVentum::paginate(15);
+        $punto_venta = PuntoVentum::with("ciudades")->paginate(15);
         return $this->sendResponse($punto_venta->toArray(), 'Puntos de ventas devueltos con éxito');
     }
 
@@ -42,12 +43,13 @@ class PuntoVentumController extends BaseController
        if(isset($input["nombre"]) && $input["nombre"] != null){
             
             $input = $request->all();
-            $punto_venta = PuntoVentum::where('punto_venta.nombre_razon','like', '%'.strtolower($input["nombre"]).'%')
+            $punto_venta = PuntoVentum::with("ciudades")
+                ->where('punto_venta.nombre_razon','like', '%'.strtolower($input["nombre"]).'%')
                 ->get();
             return $this->sendResponse($punto_venta->toArray(), 'Todos los Punto de venta filtrados');
        }else{
             
-            $punto_venta = PuntoVentum::get();
+            $punto_venta = PuntoVentum::with("ciudades")->get();
             return $this->sendResponse($punto_venta->toArray(), 'Todos los Punto de venta devueltos'); 
        }
 
@@ -95,6 +97,11 @@ class PuntoVentumController extends BaseController
         ]);
         if($validator->fails()){
             return $this->sendError('Error de validación.', $validator->errors());       
+        }
+
+        $ciudad = Ciudad::find($request->input('id_ciudad'));
+        if (is_null($ciudad)) {
+            return $this->sendError('La Ciudad indicada no existe');
         }      
 
         $punto_venta = PuntoVentum::create($request->all());        
@@ -112,7 +119,7 @@ class PuntoVentumController extends BaseController
     public function show($id)
     {
          
-        $punto_venta = PuntoVentum::find($id);
+        $punto_venta = PuntoVentum::with("ciudades")->find($id);
         if (is_null($punto_venta)) {
             return $this->sendError('Punto de venta no encontrado');
         }
@@ -168,6 +175,11 @@ class PuntoVentumController extends BaseController
         if (is_null($punto_venta_search)) {
             return $this->sendError('Punto de Venta no encontrado');
         } 
+
+        $ciudad = Ciudad::find($input['id_ciudad']);
+        if (is_null($ciudad)) {
+            return $this->sendError('La Ciudad indicada no existe');
+        }
 
         $punto_venta_search->nombre_razon = $input['nombre_razon'];
         $punto_venta_search->identificacion = $input['identificacion'];

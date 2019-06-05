@@ -52,6 +52,11 @@ class PuntoVentum extends Eloquent
 		'id_ciudad'
 	];
 
+	public function ciudades()
+	{
+		return $this->belongsTo(\App\Models\Ciudad::class, 'id_ciudad');
+	}
+
 	public function boleta_reservas()
 	{
 		return $this->hasMany(\App\Models\BoletaReserva::class, 'id_punto_venta');

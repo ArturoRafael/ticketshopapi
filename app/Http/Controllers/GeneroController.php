@@ -19,7 +19,7 @@ class GeneroController extends BaseController
      */
     public function index()
     {
-        //
+        
         $genero = Genero::paginate(15);
 
         return $this->sendResponse($genero->toArray(), 'Géneros devueltos con éxito');
@@ -115,10 +115,10 @@ class GeneroController extends BaseController
      *    "nombre" : "Electronica Sound",
      * }
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Genero  $genero
+     * @param  \App\Models\Genero  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Genero $genero)
+    public function update(Request $request, $id)
     {
         //
         $input = $request->all();
@@ -133,6 +133,10 @@ class GeneroController extends BaseController
             return $this->sendError('Error de validación', $validator->errors());       
         }
 
+        $genero = Genero::find($id);        
+        if (is_null($genero)) {
+            return $this->sendError('Genero no encontrada');
+        }
 
         $genero->nombre = $input['nombre'];
          $genero->save();
@@ -150,14 +154,18 @@ class GeneroController extends BaseController
      */
     public function destroy($id)
     {
-        //
-        $genero = Genero::find($id);
-        if (is_null($genero)) {
-            return $this->sendError('Género no encontrado');
+        
+        try {
+            $genero = Genero::find($id);
+            if (is_null($genero)) {
+                return $this->sendError('Género no encontrado');
+            }
+            $genero->delete();
+
+            return $this->sendResponse($genero->toArray(), 'Genero eliminado con éxito');
+
+        }catch (\Illuminate\Database\QueryException $e){
+            return response()->json(['error' => 'El genero no se puedo eliminar, es usado en otra tabla', 'exception' => $e->errorInfo], 400);
         }
-        $genero->delete();
-
-
-        return $this->sendResponse($genero->toArray(), 'Genero eliminado con éxito');
     }
 }

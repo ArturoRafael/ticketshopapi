@@ -14,6 +14,9 @@ use Illuminate\Http\Request;
 */
 	Route::apiResource('condicion','CondicionController');
 	Route::apiResource('tipocosto','TipoCostoController');
+	Route::apiResource('descuentoevento','DescuentoEventoController');
+	Route::apiResource('moneda','MonedaController');
+	Route::apiResource('preventum','PreVentumController');
 /*---------------------------------------------------------------------------------------*/
   	Route::apiResource('genero','GeneroController');
   	Route::get('buscarGenero','GeneroController@buscarGenero');
