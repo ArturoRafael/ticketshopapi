@@ -53,7 +53,7 @@ class BoletaEvento extends Eloquent
 		'precio_servicio',
 		'impuesto',
 		'status',
-		'codigo'
+		'codigo_moneda'
 	];
 
 	public function evento()
@@ -64,6 +64,11 @@ class BoletaEvento extends Eloquent
 	public function puesto()
 	{
 		return $this->belongsTo(\App\Models\Puesto::class, 'id_puesto');
+	}
+
+	public function codigo_moneda()
+	{
+		return $this->belongsTo(\App\Models\Moneda::class, 'codigo_moneda');
 	}
 
 	public function boleta_reserva()

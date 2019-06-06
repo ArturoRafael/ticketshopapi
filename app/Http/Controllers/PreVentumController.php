@@ -14,7 +14,7 @@ use Validator;
 class PreVentumController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Lista de la tabla preventa.
      *
      * @return \Illuminate\Http\Response
      */
@@ -31,8 +31,8 @@ class PreVentumController extends BaseController
      *@bodyParam nombre string Nombre de la preventa.
      *@bodyParam id_evento int required Id del evento.
      *@bodyParam fecha_inicio date Fecha de inicio.
-     *@bodyParam fecha_fin date Fecha de finalización. Defaults 0
-     *@bodyParam activo int required Estado de la preventa.
+     *@bodyParam fecha_fin date Fecha de finalización. 
+     *@bodyParam activo int required Estado de la preventa. Defaults 0
      * @response {
      *  "nombre": "Palco New",
      *  "id_evento": 1,
@@ -95,8 +95,8 @@ class PreVentumController extends BaseController
      *@bodyParam nombre string Nombre de la preventa.
      *@bodyParam id_evento int required Id del evento.
      *@bodyParam fecha_inicio date Fecha de inicio.
-     *@bodyParam fecha_fin date Fecha de finalización. Defaults 0
-     *@bodyParam activo int required Estado de la preventa.
+     *@bodyParam fecha_fin date Fecha de finalización. 
+     *@bodyParam activo int required Estado de la preventa. Defaults 0
      * @response {
      *  "nombre": "Palco New",
      *  "id_evento": 3,
