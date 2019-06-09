@@ -28,12 +28,12 @@ class PalcoEventoController extends BaseController
                     ->with("moneda")
                     ->paginate(15);
 
-        return $this->sendResponse($boleta_evento->toArray(), 'Palcos de eventos devueltos con éxito');
+        return $this->sendResponse($palco_evento->toArray(), 'Palcos de eventos devueltos con éxito');
     }
 
     
    /**
-     * Agrega un nuevo elemento a la tabla boleta_evento
+     * Agrega un nuevo elemento a la tabla palco_evento
      *
      *@bodyParam id_evento int required ID del evento.
      *@bodyParam id_palco int required ID del puesto.
@@ -77,7 +77,7 @@ class PalcoEventoController extends BaseController
         }
 
         $palco = Palco::find($request->input('id_palco'));
-        if (is_null($puesto)) {
+        if (is_null($palco)) {
             return $this->sendError('El palco indicado no existe');
         }
 
@@ -116,7 +116,7 @@ class PalcoEventoController extends BaseController
 
    
     /**
-     * Actualiza un elemento a la tabla boleta_evento.
+     * Actualiza un elemento a la tabla palco_evento.
      *
      * [Se filtra por el ID]
      *

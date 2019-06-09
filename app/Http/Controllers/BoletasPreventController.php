@@ -205,12 +205,13 @@ class BoletasPreventController extends BaseController
         return $this->sendResponse($boleta_preventa_search->toArray(), 'Boleta de la preventa actualizada con éxito');
     }
 
+    
     /*
      * Elimina un elemento de la tabla boletas_prevent
      *
      * [Se filtra por el ID]
      *
-     * @param  \App\Models\BoletasPrevent  $boletasPrevent
+     * @param  \App\Models\BoletasPrevent $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

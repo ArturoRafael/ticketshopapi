@@ -24,7 +24,7 @@ class PalcoPreventController extends BaseController
      */
     public function index()
     {
-        $palco_prevent = BoletasPrevent::with("palco_evento")
+        $palco_prevent = PalcoPrevent::with("palco_evento")
                     ->with("moneda")
                     ->with("preventum")
                     ->paginate(15);
@@ -122,7 +122,7 @@ class PalcoPreventController extends BaseController
      */
     public function show($id)
     {
-        $palco_preventa = BoletasPrevent::with("palco_evento")
+        $palco_preventa = PalcoPrevent::with("palco_evento")
                     ->with("moneda")
                     ->with("preventum")
                     ->where('id_palco_evento','=',$id)
