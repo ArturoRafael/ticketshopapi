@@ -24,6 +24,36 @@ class TipoCostoController extends BaseController
         $tipo_costo = TipoCosto::paginate(15);
         return $this->sendResponse($tipo_costo->toArray(), 'Tipos de costo devueltos con éxito');
     }
+    
+
+     /**
+     * Buscar Tipo de costo por descripción.
+     *@bodyParam nombre string Nombre del tipo de costo.
+     *@response{
+     *    "nombre" : "Condicion 1",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarTipoCosto(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $tipo_costos = TipoCosto::where('descripcion','like', '%'.strtolower($input["nombre"]).'%')
+                ->get();
+            return $this->sendResponse($tipo_costos->toArray(), 'Todos los tipos de costos filtrados');
+       }else{
+            
+            $tipo_costos = TipoCosto::get();
+            return $this->sendResponse($tipo_costos->toArray(), 'Todos los tipos de costos devueltos'); 
+       }
+
+        
+    }
+
   
 
     /**

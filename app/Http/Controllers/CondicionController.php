@@ -26,6 +26,35 @@ class CondicionController extends BaseController
         return $this->sendResponse($condiciones->toArray(), 'Condiciones devueltas con éxito');
     }
 
+
+      /**
+     * Buscar Condición por descripción.
+     *@bodyParam nombre string Nombre de la condición.
+     *@response{
+     *    "nombre" : "Condicion 1",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarCondicion(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $condiciones = Condicion::where('descripcion','like', '%'.strtolower($input["nombre"]).'%')
+                ->get();
+            return $this->sendResponse($condiciones->toArray(), 'Todas las condiciones filtradas');
+       }else{
+            
+            $condiciones = Condicion::get();
+            return $this->sendResponse($condiciones->toArray(), 'Todas las condiciones devueltas'); 
+       }
+
+        
+    }
+
   
     /**
      * Agrega un nuevo elemento a la tabla condiciones

@@ -19,7 +19,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property float $precio_servicio
  * @property float $impuesto
  * @property int $status
- * @property string $codigo
+ * @property string $codigo_moneda
  * 
  * @property \App\Models\Evento $evento
  * @property \App\Models\Puesto $puesto

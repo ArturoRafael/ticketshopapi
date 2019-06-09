@@ -13,15 +13,24 @@ use Illuminate\Http\Request;
 |
 */
 	Route::apiResource('condicion','CondicionController');
-	Route::apiResource('tipocosto','TipoCostoController');
-	Route::apiResource('descuentoevento','DescuentoEventoController');
-	Route::apiResource('moneda','MonedaController');
-	Route::apiResource('preventum','PreVentumController');
+	Route::get('buscarCondicion','CondicionController@buscarCondicion');
 
+	Route::apiResource('tipocosto','TipoCostoController');
+	Route::get('buscarTipoCosto','TipoCostoController@buscarTipoCosto');
+
+	Route::apiResource('descuentoevento','DescuentoEventoController');
+	Route::apiResource('preventum','PreVentumController');
+	
+	Route::apiResource('moneda','MonedaController');
+	Route::get('buscarMoneda','MonedaController@buscarMoneda');
+	
+	Route::apiResource('boletasprevent','BoletasPreventController');
 	Route::apiResource('condicionesevento','CondicionesEventoController');
 	Route::apiResource('costoevento','CostoEventoController');
 	Route::apiResource('boletaevento','BoletaEventoController');
 	Route::apiResource('tasa','TasaController');
+	Route::apiResource('palcoevento','PalcoEventoController');
+	Route::apiResource('palcoprevent','PalcoPreventController');
 	Route::post('convertir','TasaController@convertir');
 /*---------------------------------------------------------------------------------------*/
   	Route::apiResource('genero','GeneroController');

@@ -35,11 +35,11 @@ class BoletaEventoController extends BaseController
 
   
     /**
-     * Agrega un nuevo elemento a la tabla condiciones
+     * Agrega un nuevo elemento a la tabla boleta_evento
      *
      *@bodyParam id_evento int required ID del evento.
      *@bodyParam id_puesto int required ID del puesto.
-     *@bodyParam precio_venta float required Precio de eventa de la boleta del evento.
+     *@bodyParam precio_venta float required Precio de venta de la boleta del evento.
      *@bodyParam precio_servicio float required Precio del servicio.
      *@bodyParam impuesto float Impuesto de la boleta.
      *@bodyParam status int Status de la boleta del evento.  
@@ -130,6 +130,7 @@ class BoletaEventoController extends BaseController
     /**
      * Actualiza un elemento a la tabla boleta_evento.
      *
+     * [Se filtra por el ID]
      *@bodyParam id_evento int required ID del evento.
      *@bodyParam id_puesto int required ID del puesto.
      *@bodyParam precio_venta float required Precio de eventa de la boleta del evento.

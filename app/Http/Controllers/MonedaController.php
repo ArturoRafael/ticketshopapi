@@ -26,6 +26,34 @@ class MonedaController extends BaseController
     }
 
     /**
+     * Buscar Moneda por descripción.
+     *@bodyParam descripcion string Descripción de la moneda.
+     *@response{
+     *    "descripcion" : "Peso Colombiano",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarMoneda(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["descripcion"]) && $input["descripcion"] != null){
+            
+            $input = $request->all();
+            $monedas = Moneda::where('descripcion','like', '%'.strtolower($input["descripcion"]).'%')
+                ->get();
+            return $this->sendResponse($monedas->toArray(), 'Todas las moneda filtradas');
+       }else{
+            
+            $monedas = Moneda::get();
+            return $this->sendResponse($monedas->toArray(), 'Todas las monedas devueltas'); 
+       }
+
+        
+    }
+
+    /**
      * Agrega un nuevo elemento a la tabla moneda
      *@bodyParam codigo_moneda string required Código de la moneda (Clave primaria).
      *@bodyParam descripcion string required Descripcion de la moneda.

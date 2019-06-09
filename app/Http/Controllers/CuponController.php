@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cupon;
 use App\Models\TipoCupon;
+use App\Models\Moneda;
 use App\Models\Cuponera;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -39,6 +40,7 @@ class CuponController extends BaseController
         $cupon = Cupon::with('genero')
                 ->with('tipo_cupon')
                 ->with('cuponera')
+                ->with('moneda')
                 ->paginate(15);
         $lista_cupon = compact('cupon');
         return $this->sendResponse($lista_cupon, 'Cupones devueltos con éxito');
@@ -54,7 +56,8 @@ class CuponController extends BaseController
      *@bodyParam id_tipo_cupon int required Id del tipo de cupon.
      *@bodyParam id_cuponera int required Id de la cuponera.
      *@bodyParam cantidad_compra int  Cantidad de compra.
-     *@bodyParam cantidad_paga int Cantidad de paga.    
+     *@bodyParam cantidad_paga int Cantidad de paga.
+     *@bodyParam codigo_moneda string required Codigo moneda.    
      *@response{
      *       "codigo" : null,
      *       "status" : 1,
@@ -63,7 +66,8 @@ class CuponController extends BaseController
      *       "id_tipo_cupon" : 1,
      *       "id_cuponera": 1,
      *       "cantidad_compra": null,
-     *       "cantidad_paga": null
+     *       "cantidad_paga": null,
+     *       "codigo_moneda": "USD"
      *     }
      *
      * @param  \Illuminate\Http\Request  $request
@@ -74,7 +78,8 @@ class CuponController extends BaseController
         $validator = Validator::make($request->all(), [
             'status' => 'required',
             'id_tipo_cupon' => 'required',
-            'id_cuponera' => 'required',      
+            'id_cuponera' => 'required',
+            'codigo_moneda' => 'required',      
         ]);
         if($validator->fails()){
             return $this->sendError('Error de validación.', $validator->errors());       
@@ -88,6 +93,11 @@ class CuponController extends BaseController
         $cuponera = Cuponera::find($request->input('id_cuponera'));
         if (is_null($cuponera)) {
             return $this->sendError('La cuponera indicada no existe');
+        }
+
+        $moneda = Moneda::find($request->input('codigo_moneda'));
+        if (is_null($moneda)) {
+            return $this->sendError('La moneda indicada no existe');
         }
 
         if(!is_null($request->input('monto'))){
@@ -147,7 +157,8 @@ class CuponController extends BaseController
      *@bodyParam id_tipo_cupon int required Id del tipo de cupon.
      *@bodyParam id_cuponera int required Id de la cuponera.
      *@bodyParam cantidad_compra int  Cantidad de compra.
-     *@bodyParam cantidad_paga int Cantidad de paga.    
+     *@bodyParam cantidad_paga int Cantidad de paga.
+     *@bodyParam codigo_moneda string required Codigo moneda..    
      *@response{
      *       "codigo" : "75647563jfghhg",
      *       "status" : 1,
@@ -156,7 +167,8 @@ class CuponController extends BaseController
      *       "id_tipo_cupon" : 1,
      *       "id_cuponera": 1,
      *       "cantidad_compra": null,
-     *       "cantidad_paga": null
+     *       "cantidad_paga": null,
+     *       "codigo_moneda": "COP"
      *     }
      *
      * @param  \Illuminate\Http\Request  $request
@@ -169,7 +181,8 @@ class CuponController extends BaseController
         $validator = Validator::make($input, [
             'status' => 'required',
             'id_tipo_cupon' => 'required',
-            'id_cuponera' => 'required',           
+            'id_cuponera' => 'required',
+            'codigo_moneda' => 'required',           
         ]);
         if($validator->fails()){
             return $this->sendError('Error de validación', $validator->errors());       
@@ -180,6 +193,10 @@ class CuponController extends BaseController
             return $this->sendError('Cupon no encontrado');
         } 
 
+        $moneda = Moneda::find($input['codigo_moneda']);
+        if (is_null($moneda)) {
+            return $this->sendError('La moneda indicada no existe');
+        }
 
         $tipo_cupon = TipoCupon::find($input['id_tipo_cupon']);
         if (is_null($tipo_cupon)) {
@@ -221,6 +238,7 @@ class CuponController extends BaseController
         $cupon_search->id_cuponera = $input['id_cuponera'];
         $cupon_search->cantidad_compra = $input['cantidad_compra'];        
         $cupon_search->cantidad_paga = $input['cantidad_paga'];
+        $cupon_search->codigo_moneda = $input['codigo_moneda'];
         $cupon_search->save();
         return $this->sendResponse($cupon_search->toArray(), 'Cupon actualizado con éxito');
 

@@ -23,7 +23,7 @@ class TasaController extends BaseController
     public function index()
     {
         
-        $tasa = Tasa::with('moneda_alta')->with('moneda_baja')->get();
+        $tasa = Tasa::with('moneda_alta')->with('moneda_baja')->paginate(15);
         return $this->sendResponse($tasa->toArray(), 'Tasas devueltas con éxito');
     }
 
