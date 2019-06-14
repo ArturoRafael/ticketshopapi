@@ -35,7 +35,8 @@ class PalcoPreventController extends BaseController
     /**
      * Agrega un nuevo elemento a la tabla boletas_prevent
      *
-     *@bodyParam id_palco_evento int required ID de la boleta.
+     *@bodyParam id_evento int required ID del Evento.
+     *@bodyParam id_palco int required ID de la Palco.
      *@bodyParam id_preventa int required ID de la preventa.
      *@bodyParam precio_venta float Precio de venta de la boleta.
      *@bodyParam precio_servicio float Precio del servicio.
@@ -44,7 +45,8 @@ class PalcoPreventController extends BaseController
      *@bodyParam codigo_moneda string required Codigo de la moneda.     
      *
      *@response{
-     *       "id_palco_evento" : 2,
+     *       "id_evento" : 2,   
+     *       "id_palco" : 2,
      *       "id_preventa" : 2,
      *       "precio_venta" : 0,
      *       "precio_servicio" : 0,
@@ -59,7 +61,8 @@ class PalcoPreventController extends BaseController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id_palco_evento'=> 'required|integer',
+            'id_evento'=> 'required|integer',
+            'id_palco'=> 'required|integer',
             'id_preventa' => 'required|integer',
             'precio_venta' => 'nullable',
             'precio_servicio' => 'nullable',
@@ -71,12 +74,16 @@ class PalcoPreventController extends BaseController
             return $this->sendError('Error de validación.', $validator->errors());       
         }
 
-        $palco_preventa_search = PalcoPrevent::find($request->input('id_palco_evento'));
-        if (!is_null($palco_preventa_search)) {
-            return $this->sendError('Palco en preventa ya se encuentra registrado');
+        $palco_evento_search =  PalcoEvento::where('id_evento', $request->input('id_evento'))
+                                ->where('id_palco', $request->input('id_palco'))
+                                ->first();
+        if (!$palco_evento_search) {
+
+            return $this->sendError('El palco por evento indicado no existe');
         }
 
-        $palco_evento = PalcoEvento::find($request->input('id_palco_evento'));
+        $id_palco_evento = $palco_evento_search->id;
+        $palco_evento = PalcoEvento::find($id_palco_evento);
         if (is_null($palco_evento)) {
             return $this->sendError('El palco evento indicado no existe');
         }
@@ -90,6 +97,8 @@ class PalcoPreventController extends BaseController
         if (is_null($moneda)) {
             return $this->sendError('La moneda indicada no existe');
         }
+
+        $palco_preventa = new PalcoPrevent;
 
         if(is_null($request->input('precio_venta'))){
             Input::merge(['precio_venta' => 0]);
@@ -107,7 +116,17 @@ class PalcoPreventController extends BaseController
             Input::merge(['status' => 0]);
         }
 
-        $palco_preventa = PalcoPrevent::create($request->all());        
+
+        $palco_preventa->id_palco_evento = $id_palco_evento;
+        $palco_preventa->id_preventa = $request->input('id_preventa');
+        $palco_preventa->precio_venta = $request->input('precio_venta');
+        $palco_preventa->precio_servicio = $request->input('precio_servicio');
+        $palco_preventa->impuesto = $request->input('impuesto');
+        $palco_preventa->status = $request->input('status');
+        $palco_preventa->codigo_moneda = $request->input('codigo_moneda');
+
+        $palco_preventa->save();
+              
         return $this->sendResponse($palco_preventa->toArray(), 'Palco en preventa creado con éxito');
 
     }

@@ -21,7 +21,8 @@ class ImagenesAuditorioController extends BaseController
      */
     public function index()
     {
-        $img_auditorio = ImagenesAuditorio::paginate(15);
+        $img_auditorio = ImagenesAuditorio::with('auditorio')
+                        ->with('imagen')->paginate(15);
         return $this->sendResponse($img_auditorio->toArray(), 'Imagenes de auditorios devueltas con éxito');
     }
 

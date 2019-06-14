@@ -161,7 +161,7 @@ class ImagenEventoController extends BaseController
             return $this->sendError('Imagenes por evento no encontradas');
         }
         ImagenEvento::where('id_evento','=',$id)->delete();
-        return $this->sendResponse($grupo_vendors_pto->toArray(), 'Imagenes por evento eliminadas con éxito');
+        return $this->sendResponse($imagen_evento->toArray(), 'Imagenes por evento eliminadas con éxito');
     }
 
      public function img_evento_search($id_evento, $id_imagen){

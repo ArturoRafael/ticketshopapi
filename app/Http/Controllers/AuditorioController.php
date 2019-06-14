@@ -73,6 +73,7 @@ class AuditorioController extends BaseController
     {
         
         $auditorio = Auditorio::with('tribunas')
+                    ->with('eventos')
                     ->with('pais')
                     ->with('departamento')
                     ->with('ciudad')

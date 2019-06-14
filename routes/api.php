@@ -19,7 +19,9 @@ use Illuminate\Http\Request;
 	Route::get('buscarTipoCosto','TipoCostoController@buscarTipoCosto');
 
 	Route::apiResource('descuentoevento','DescuentoEventoController');
+	
 	Route::apiResource('preventum','PreVentumController');
+	Route::get('buscarPreventa','PreVentumController@buscarPreventa');
 	
 	Route::apiResource('moneda','MonedaController');
 	Route::get('buscarMoneda','MonedaController@buscarMoneda');

@@ -26,9 +26,37 @@ class PreVentumController extends BaseController
 
 
     /**
+     * Buscar Preventa por nombre.
+     *@bodyParam nombre string Nombre del punto de venta.
+     *@response{
+     *    "nombre" : "Preventa New",
+     * }
+     * @return \Illuminate\Http\Response
+     */
+    public function buscarPreventa(Request $request)
+    {
+       
+       $input = $request->all();
+       
+       if(isset($input["nombre"]) && $input["nombre"] != null){
+            
+            $input = $request->all();
+            $preventa = Preventum::where('nombre','like', '%'.strtolower($input["nombre"]).'%')
+                ->get();
+            return $this->sendResponse($preventa->toArray(), 'Todas las preventas filtradas');
+       }else{
+            
+            $preventa = Preventum::get();
+            return $this->sendResponse($preventa->toArray(), 'Todas las preventas devueltas'); 
+       }
+
+        
+    }
+
+    /**
      * Agrega un nuevo elemento a la tabla preventa
      *
-     *@bodyParam nombre string Nombre de la preventa.
+     *@bodyParam nombre string required Nombre de la preventa.
      *@bodyParam id_evento int required Id del evento.
      *@bodyParam fecha_inicio date Fecha de inicio.
      *@bodyParam fecha_fin date Fecha de finalización. 
@@ -92,7 +120,7 @@ class PreVentumController extends BaseController
     /**
      * Actualiza un elemento a la tabla preventa
      *
-     *@bodyParam nombre string Nombre de la preventa.
+     *@bodyParam nombre string required Nombre de la preventa.
      *@bodyParam id_evento int required Id del evento.
      *@bodyParam fecha_inicio date Fecha de inicio.
      *@bodyParam fecha_fin date Fecha de finalización. 

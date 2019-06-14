@@ -37,7 +37,8 @@ class BoletasPreventController extends BaseController
     /**
      * Agrega un nuevo elemento a la tabla boletas_prevent
      *
-     *@bodyParam id_boleta int required ID de la boleta.
+     *@bodyParam id_evento int required ID del evento.
+     *@bodyParam id_puesto int required ID del puesto.
      *@bodyParam id_preventa int required ID de la preventa.
      *@bodyParam precio_venta float required Precio de venta de la boleta.
      *@bodyParam precio_servicio float Precio del servicio.
@@ -46,7 +47,8 @@ class BoletasPreventController extends BaseController
      *@bodyParam codigo_moneda string required Codigo de la moneda.     
      *
      *@response{
-     *       "id_boleta" : 2,
+     *       "id_evento" : 3,
+     *       "id_puesto" : 3,
      *       "id_preventa" : 2,
      *       "precio_venta" : 0,
      *       "precio_servicio" : 0,
@@ -61,7 +63,8 @@ class BoletasPreventController extends BaseController
     public function store(Request $request)
     {
        $validator = Validator::make($request->all(), [
-            'id_boleta'=> 'required|integer',
+            'id_evento'=> 'required|integer',
+            'id_puesto'=> 'required|integer',
             'id_preventa' => 'required|integer',
             'precio_venta' => 'required',
             'precio_servicio' => 'nullable',
@@ -73,15 +76,21 @@ class BoletasPreventController extends BaseController
             return $this->sendError('Error de validación.', $validator->errors());       
         }
 
-        $boleta_preventa_search = BoletasPrevent::find($request->input('id_boleta'));
+        $boleta_evento_search =  BoletaEvento::where('id_evento', $request->input('id_evento'))
+                                ->where('id_puesto', $request->input('id_puesto'))
+                                ->first();
+        if (!$boleta_evento_search) {
+
+            return $this->sendError('La boleta del evento indicada no existe');
+        }
+
+        $id_boleta = $boleta_evento_search->id;
+
+        $boleta_preventa_search = BoletasPrevent::find($id_boleta);
         if (!is_null($boleta_preventa_search)) {
             return $this->sendError('Boleta de la preventa ya se encuentra asignada');
         }
-
-        $boleta_evento = BoletaEvento::find($request->input('id_boleta'));
-        if (is_null($boleta_evento)) {
-            return $this->sendError('La boleta del evento indicado no existe');
-        }
+        
 
         $preventa = Preventum::find($request->input('id_preventa'));
         if (is_null($preventa)) {
@@ -102,7 +111,19 @@ class BoletasPreventController extends BaseController
         }
 
 
-        $boleta_preventa = BoletasPrevent::create($request->all());        
+        $boleta_preventa = new BoletasPrevent;
+
+        $boleta_preventa->id_boleta = $id_boleta;
+        $boleta_preventa->id_preventa = $request->input('id_preventa');
+        $boleta_preventa->precio_venta = $request->input('precio_venta');
+        $boleta_preventa->precio_servicio = $request->input('precio_servicio');
+        $boleta_preventa->impuesto = $request->input('impuesto');
+        $boleta_preventa->status = $request->input('status');
+        $boleta_preventa->codigo_moneda = $request->input('codigo_moneda');
+
+        $boleta_preventa->save();
+
+              
         return $this->sendResponse($boleta_preventa->toArray(), 'Boleta de la preventa creada con éxito');
 
     }
@@ -132,8 +153,7 @@ class BoletasPreventController extends BaseController
     /**
      * Actualiza un elemento a la tabla boletas_prevent.
      *
-     * [Se filtra por el ID de la Boleta]
-     *@bodyParam id_boleta int required ID de la Boleta.
+     * [Se filtra por el ID de la boleta_evento]
      *@bodyParam id_preventa int required ID de la prevent.
      *@bodyParam precio_venta float required Precio de eventa de la boleta del evento.
      *@bodyParam precio_servicio float Precio del servicio.
@@ -197,7 +217,7 @@ class BoletasPreventController extends BaseController
         }
 
         $boleta_preventa_search->impuesto = $input['impuesto'];
-        $boleta_preventa_search->id_puesto = $input['id_preventa'];
+        $boleta_preventa_search->id_preventa = $input['id_preventa'];
         $boleta_preventa_search->precio_venta = $input['precio_venta'];
         $boleta_preventa_search->precio_servicio = $input['precio_servicio'];
 
@@ -206,10 +226,10 @@ class BoletasPreventController extends BaseController
     }
 
     
-    /*
+    /**
      * Elimina un elemento de la tabla boletas_prevent
      *
-     * [Se filtra por el ID]
+     * [Se filtra por el ID boleta_evento]
      *
      * @param  \App\Models\BoletasPrevent $id
      * @return \Illuminate\Http\Response

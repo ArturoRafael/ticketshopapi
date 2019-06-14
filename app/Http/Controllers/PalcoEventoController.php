@@ -7,7 +7,7 @@ use App\Models\Evento;
 use App\Models\Palco;
 use App\Models\Moneda;
 use Illuminate\Http\Request;
-
+use Validator;
 
 /**
  * @group Administración de Palco Evento

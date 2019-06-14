@@ -60,17 +60,17 @@ class Auditorio extends Eloquent
 
 	public function ciudad()
 	{
-		return $this->hasMany(\App\Models\Ciudad::class, 'id_ciudad');
+		return $this->belongsTo(\App\Models\Ciudad::class, 'id_ciudad');
 	}
 
 	public function departamento()
 	{
-		return $this->hasMany(\App\Models\Departamento::class, 'id_departamento');
+		return $this->belongsTo(\App\Models\Departamento::class, 'id_departamento');
 	}
 
 	public function pais()
 	{
-		return $this->hasMany(\App\Models\Pais::class, 'id_pais');
+		return $this->belongsTo(\App\Models\Pais::class, 'id_pais');
 	}
 
 	public function imagens()
