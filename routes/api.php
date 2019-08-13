@@ -94,7 +94,7 @@ use Illuminate\Http\Request;
 
 	Route::apiResource('pais','PaisController');
 	Route::get('buscarPais','PaisController@buscarPais');
-	Route::get('pais_all','pais_all@buscarPais');
+	Route::get('pais_all','PaisController@pais_all');
 
 	Route::apiResource('departamento','DepartamentoController');
 	Route::get('buscarDepartamento','DepartamentoController@buscarDepartamento');
