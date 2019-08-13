@@ -32,7 +32,6 @@ class Cliente extends Eloquent
 	public $timestamps = false;
 
 	protected $casts = [
-		'tipo_identificacion' => 'bool',
 		'tipo_cliente' => 'bool'
 	];
 

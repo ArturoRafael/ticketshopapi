@@ -72,7 +72,7 @@ class ClienteController extends BaseController
     /**
      * Agrega un nuevo elemento a la tabla cliente
      *@bodyParam Identificacion string required Identificacion del cliente.
-     *@bodyParam tipo_identificacion boolean required Tipo de identificacion del cliente.
+     *@bodyParam tipo_identificacion int required Tipo de identificacion del cliente.
      *@bodyParam nombrerazon string required Nombre razon del cliente.
      *@bodyParam direccion string required Direccion del cliente.
      *@bodyParam ciudad string Ciudad del cliente.
@@ -100,7 +100,7 @@ class ClienteController extends BaseController
     
        $validator = Validator::make($request->all(), [
             'Identificacion'=> 'required' ,
-            'tipo_identificacion' => 'required|boolean',
+            'tipo_identificacion' => 'required|integer',
             'nombrerazon' => 'required',
             'direccion' => 'required',
             'tipo_cliente' => 'required|boolean',
@@ -138,7 +138,7 @@ class ClienteController extends BaseController
      *
      * [Se filtra por el ID]
      *@bodyParam Identificacion string required Identificacion del cliente.
-     *@bodyParam tipo_identificacion boolean required Tipo de identificacion del cliente.
+     *@bodyParam tipo_identificacion int required Tipo de identificacion del cliente.
      *@bodyParam nombrerazon string required Nombre razon del cliente.
      *@bodyParam direccion string required Direccion del cliente.
      *@bodyParam ciudad string Ciudad del cliente.
@@ -167,7 +167,7 @@ class ClienteController extends BaseController
 
         $validator = Validator::make($request->all(), [
             'Identificacion'=> 'required' ,
-            'tipo_identificacion' => 'required|boolean',
+            'tipo_identificacion' => 'required|integer',
             'nombrerazon' => 'required',
             'direccion' => 'required',
             'tipo_cliente' => 'required|boolean',

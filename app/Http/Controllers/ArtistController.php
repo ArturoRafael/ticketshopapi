@@ -81,7 +81,7 @@ class ArtistController extends BaseController
     public function listado_detalle_artistas()
     {
         
-        $artist = Artist::with('genero')->paginate(15);
+        $artist = Artist::with('imagens')->with('genero')->paginate(15);
         $lista_artist = compact('artist');
         return $this->sendResponse($lista_artist, 'Artistas devueltos con éxito');
     }
@@ -130,7 +130,7 @@ class ArtistController extends BaseController
     public function show($id)
     {
         //
-         $artist = Artist::find($id);
+         $artist = Artist::with('imagens')->with('genero')->find($id);
 
 
         if (is_null($artist)) {
