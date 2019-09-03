@@ -15,6 +15,12 @@ use Validator;
  */
 class CiudadController extends BaseController
 {
+    
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['only' => ['store', 'update', 'destroy']]);        
+    }
+
     /**
      * Lista de la tabla ciudades paginados.
      *
@@ -38,6 +44,20 @@ class CiudadController extends BaseController
          $ciudad = Ciudad::with('departamento')->get();
 
         return $this->sendResponse($ciudad->toArray(), 'Ciudades devueltas con éxito');
+    }
+
+
+    /**
+     * Lista de todas las ciudades por departamento.
+     * Se debe enviar el ID del departamento por GET
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function ciudades_departamento(Request $request)
+    {
+        $departamento = $request->get('departamento');
+        $ciudades = Ciudad::with('departamento')->where('id_departamento', $departamento)->get();
+        return $this->sendResponse($ciudades->toArray(), 'Ciudades devueltas con éxito');
     }
 
     /**

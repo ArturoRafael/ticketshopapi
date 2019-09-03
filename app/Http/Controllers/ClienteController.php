@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use App\Models\Pais;
+use App\Models\Departamento;
+use App\Models\Ciudad;
 use Validator;
 use Illuminate\Support\Facades\Input;
 
@@ -14,6 +17,12 @@ use Illuminate\Support\Facades\Input;
  */
 class ClienteController extends BaseController
 {
+    
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['only' => ['store', 'update', 'destroy']]);        
+    }
+
     /**
      * Lista de la tabla cliente paginados.
      *
@@ -21,7 +30,7 @@ class ClienteController extends BaseController
      */
     public function index()
     {
-         $cliente = Cliente::paginate(15);
+         $cliente = Cliente::with('pais')->with('ciudad')->with('departamento')->paginate(15);
 
         return $this->sendResponse($cliente->toArray(), 'Clientes devueltos con éxito');
     }
@@ -34,7 +43,7 @@ class ClienteController extends BaseController
      */
     public function clientes_all()
     {
-         $cliente = Cliente::get();
+         $cliente = Cliente::with('pais')->with('ciudad')->with('departamento')->get();
 
         return $this->sendResponse($cliente->toArray(), 'Clientes devueltos con éxito');
     }
@@ -57,11 +66,12 @@ class ClienteController extends BaseController
             
             $input = $request->all();
             $cliente = Cliente::where('clientes.nombrerazon','like', '%'.strtolower($input["nombre"]).'%')
+                ->with('pais')->with('ciudad')->with('departamento')
                 ->get();
             return $this->sendResponse($cliente->toArray(), 'Todos los Clientes filtrados');
        }else{
             
-            $cliente = Cliente::get();
+            $cliente = Cliente::with('pais')->with('ciudad')->with('departamento')->get();
             return $this->sendResponse($cliente->toArray(), 'Todos los Clientes devueltos'); 
        }
 
@@ -75,8 +85,9 @@ class ClienteController extends BaseController
      *@bodyParam tipo_identificacion int required Tipo de identificacion del cliente.
      *@bodyParam nombrerazon string required Nombre razon del cliente.
      *@bodyParam direccion string required Direccion del cliente.
-     *@bodyParam ciudad string Ciudad del cliente.
-     *@bodyParam departamento string Departamento del cliente.
+     *@bodyParam id_pais int ID del pais del cliente.
+     *@bodyParam id_ciudad int ID de la ciudad del cliente.
+     *@bodyParam id_departamento int ID del Ddpartamento del cliente.
      *@bodyParam tipo_cliente boolean required Tipo de cliente.
      *@bodyParam email string required Email del cliente.
      *@bodyParam telefono string required Telefono del cliente.
@@ -85,8 +96,9 @@ class ClienteController extends BaseController
      *       "tipo_identificacion" : 1,
      *       "nombrerazon": "Company",
      *       "direccion": "Street 22",
-     *       "ciudad" : null,
-     *       "departamento": null,
+     *       "id_pais" : 1,
+     *       "id_ciudad" : 1,
+     *       "id_departamento": 1,
      *       "tipo_cliente": 1,
      *       "email": "cliente@example.com",
      *       "telefono": "5788722330092"
@@ -103,12 +115,30 @@ class ClienteController extends BaseController
             'tipo_identificacion' => 'required|integer',
             'nombrerazon' => 'required',
             'direccion' => 'required',
+            'id_ciudad' => 'nullable|integer',
+            'id_departamento' => 'nullable|integer',
+            'id_pais' => 'nullable|integer',
             'tipo_cliente' => 'required|boolean',
             'email' => 'required|email',
             'telefono' => 'required',           
         ]);
         if($validator->fails()){
             return $this->sendError('Error de validación.', $validator->errors());       
+        }
+
+        $pais = Pais::find($request->input('id_pais'));
+        if (is_null($pais)) {
+            return $this->sendError('El País indicado no existe');
+        }
+
+        $departamento = Departamento::find($request->input('id_departamento'));
+        if (is_null($departamento)) {
+            return $this->sendError('El Departamento indicado no existe');
+        }
+
+        $ciudad = Ciudad::find($request->input('id_ciudad'));
+        if (is_null($ciudad)) {
+            return $this->sendError('La Ciudad indicada no existe');
         }
         
         $cliente = Cliente::create($request->all());        
@@ -126,7 +156,7 @@ class ClienteController extends BaseController
     public function show($id)
     {
         //
-        $cliente = Cliente::find($id);
+        $cliente = Cliente::with('pais')->with('ciudad')->with('departamento')->find($id);
         if (is_null($cliente)) {
             return $this->sendError('Cliente no encontrado');
         }
@@ -141,8 +171,9 @@ class ClienteController extends BaseController
      *@bodyParam tipo_identificacion int required Tipo de identificacion del cliente.
      *@bodyParam nombrerazon string required Nombre razon del cliente.
      *@bodyParam direccion string required Direccion del cliente.
-     *@bodyParam ciudad string Ciudad del cliente.
-     *@bodyParam departamento string Departamento del cliente.
+     *@bodyParam id_pais int ID del pais del cliente.
+     *@bodyParam id_ciudad int ID de la ciudad del cliente.
+     *@bodyParam id_departamento int ID del Ddpartamento del cliente.
      *@bodyParam tipo_cliente boolean required Tipo de cliente.
      *@bodyParam email string required Email del cliente.
      *@bodyParam telefono string required Telefono del cliente.
@@ -151,8 +182,9 @@ class ClienteController extends BaseController
      *       "tipo_identificacion" : 1,
      *       "nombrerazon": "Company B.C.",
      *       "direccion": "Street 25",
-     *       "ciudad" : null,
-     *       "departamento": "Hotel Royal A-0065",
+     *       "id_pais" : 1,
+     *       "id_ciudad" : 1,
+     *       "id_departamento": 1,
      *       "tipo_cliente": 1,
      *       "email": "cliente@example.com",
      *       "telefono": "5788722330092"
@@ -170,6 +202,9 @@ class ClienteController extends BaseController
             'tipo_identificacion' => 'required|integer',
             'nombrerazon' => 'required',
             'direccion' => 'required',
+            'id_ciudad' => 'nullable|integer',
+            'id_departamento' => 'nullable|integer',
+            'id_pais' => 'nullable|integer',
             'tipo_cliente' => 'required|boolean',
             'email' => 'required|email',
             'telefono' => 'required',          
@@ -177,6 +212,21 @@ class ClienteController extends BaseController
 
         if($validator->fails()){
             return $this->sendError('Error de validación', $validator->errors());       
+        }
+
+        $pais = Pais::find($request->input('id_pais'));
+        if (is_null($pais)) {
+            return $this->sendError('El País indicado no existe');
+        }
+
+        $departamento = Departamento::find($request->input('id_departamento'));
+        if (is_null($departamento)) {
+            return $this->sendError('El Departamento indicado no existe');
+        }
+
+        $ciudad = Ciudad::find($request->input('id_ciudad'));
+        if (is_null($ciudad)) {
+            return $this->sendError('La Ciudad indicada no existe');
         }
 
         $cliente = Cliente::find($id);
@@ -187,8 +237,9 @@ class ClienteController extends BaseController
         $cliente->tipo_identificacion = $input['tipo_identificacion'];
         $cliente->nombrerazon = $input['nombrerazon'];
         $cliente->direccion = $input['direccion']; 
-        $cliente->ciudad = $input['ciudad'];
-        $cliente->departamento = $input['departamento'];   
+        $cliente->id_pais = $input['id_pais'];
+        $cliente->id_ciudad = $input['id_ciudad'];
+        $cliente->id_departamento = $input['id_departamento'];   
         $cliente->tipo_cliente = $input['tipo_cliente'];
         $cliente->email = $input['email']; 
         $cliente->telefono = $input['telefono'];        

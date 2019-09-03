@@ -14,6 +14,12 @@ use Validator;
  */
 class ImagenesAuditorioController extends BaseController
 {
+    
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['only' => ['store', 'update', 'destroy']]);        
+    }
+
     /**
      * Listado de las imagenes por auditorios.
      *

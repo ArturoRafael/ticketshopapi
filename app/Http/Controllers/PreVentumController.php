@@ -13,6 +13,13 @@ use Validator;
  */
 class PreVentumController extends BaseController
 {
+    
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['only' => ['store', 'edit', 'update', 'destroy']]);
+    }
+
+
     /**
      * Lista de la tabla preventa paginada.
      *

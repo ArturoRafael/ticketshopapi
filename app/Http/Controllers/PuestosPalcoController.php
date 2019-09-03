@@ -14,6 +14,13 @@ use Validator;
  */
 class PuestosPalcoController extends BaseController
 {
+     
+
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['only' => ['store', 'update', 'destroy']]);        
+    }
+
      /**
      * Listado de los Puestos por Palcos.
      *

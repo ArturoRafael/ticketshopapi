@@ -16,6 +16,12 @@ use Validator;
  */
 class DepartamentoController extends BaseController
 {
+    
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['only' => ['store', 'update', 'destroy']]);        
+    }
+
     /**
      * Lista de la tabla departamento paginado.
      *
@@ -29,7 +35,7 @@ class DepartamentoController extends BaseController
     }
 
     /**
-     * Lista de todos los departamento.
+     * Lista de todos los departamentos.
      *
      * @return \Illuminate\Http\Response
      */
@@ -38,6 +44,21 @@ class DepartamentoController extends BaseController
          $departamento = Departamento::with('pais')->get();
 
         return $this->sendResponse($departamento->toArray(), 'Departamentos devueltos con éxito');
+    }
+
+
+    /**
+     * Lista de todos los departamentos por país.
+     *
+     * Se debe enviar el ID del pais por GET
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function departamentos_pais(Request $request)
+    {
+        $pais = $request->get('pais');
+        $departamentos = Departamento::with('pais')->where('id_pais', $pais)->get();
+        return $this->sendResponse($departamentos->toArray(), 'Departamentos devueltos con éxito');
     }
 
 
