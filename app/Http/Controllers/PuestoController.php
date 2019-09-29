@@ -87,6 +87,30 @@ class PuestoController extends BaseController
 
 
     /**
+     * Buscar Puestos por fila.
+     * [Se filtra por ID de la fila]
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function puestos_fila($id_fila)
+    {
+       
+        $fila = Fila::find($id_fila);
+
+        if (!$fila) {
+            return $this->sendError('Fila no encontrada');
+        }       
+            
+        $puesto = Puesto::with('localidad')
+            ->with('fila')
+            ->where('id_fila', $id_fila)
+            ->get();
+        return $this->sendResponse($puesto->toArray(), 'Todos los Puestos filtrados por fila');
+        
+    }
+
+
+    /**
      * Agrega un nuevo elemento a la tabla puesto
      *@bodyParam numero string Numero del puesto.
      *@bodyParam id_localidad int required Id de la localidad.

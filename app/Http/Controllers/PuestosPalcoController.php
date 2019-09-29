@@ -85,7 +85,8 @@ class PuestosPalcoController extends BaseController
      */
     public function show($id)
     {
-        $puesto_palco = PuestosPalco::where('id_palco','=',$id)->get();
+        $puesto_palco = PuestosPalco::with('palco')
+                               ->with('puesto')->where('id_palco','=',$id)->get();
         if (count($puesto_palco) == 0) {
             return $this->sendError('Puestos por palco no encontrados');
         }

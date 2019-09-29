@@ -108,7 +108,7 @@ class EventoController extends BaseController
      *@bodyParam id_temporada int Id de la temporada del evento.
      *@bodyParam status int Status del evento.
      *@bodyParam fecha_inicio_venta_internet date Fecha de inicio de la venta por internet. Example: 2019-01-01
-     *@bodyParam fecha_inicio_venta_puntos int required Cantidad de puntos de la ventas desde la fecha de inicio.
+     *@bodyParam fecha_inicio_venta_puntos date Fecha donde va a empezar la venta de la boletería desde los puntos de venta.
      *@bodyParam monto_minimo double Monto mínimo del evento.
      *@response{
      *       "fecha_evento" : "2019-01-01",
@@ -125,7 +125,7 @@ class EventoController extends BaseController
      *       "id_temporada" : 1,
      *       "status": 0,
      *       "fecha_inicio_venta_internet": null,
-     *       "fecha_inicio_venta_puntos": 12,
+     *       "fecha_inicio_venta_puntos": null,
      *       "monto_minimo": 10.10,
      *     }
      *
@@ -139,7 +139,7 @@ class EventoController extends BaseController
             'nombre' => 'required',
             'id_auditorio' => 'required',
             'id_cliente' => 'required',
-            'fecha_inicio_venta_puntos' => 'required|integer'      
+            'fecha_inicio_venta_puntos' => 'nullable|date'      
         ]);
         if($validator->fails()){
             return $this->sendError('Error de validación.', $validator->errors());       
@@ -260,7 +260,7 @@ class EventoController extends BaseController
      *@bodyParam id_temporada int Id de la temporada del evento.
      *@bodyParam status int Status del evento.
      *@bodyParam fecha_inicio_venta_internet date Fecha de inicio de la venta por internet. Example: 2019-01-01
-     *@bodyParam fecha_inicio_venta_puntos int required Cantidad de puntos de la ventas desde la fecha de inicio.
+     *@bodyParam fecha_inicio_venta_puntos date Fecha donde va a empezar la venta de la boletería desde los puntos de venta.
      *@bodyParam monto_minimo double Monto mínimo del evento.
      *@response{
      *       "fecha_evento" : "2019-01-03",
@@ -277,7 +277,7 @@ class EventoController extends BaseController
      *       "id_temporada" : null,
      *       "status": 1,
      *       "fecha_inicio_venta_internet": "2019-01-01",
-     *       "fecha_inicio_venta_puntos": 12,
+     *       "fecha_inicio_venta_puntos": "2019-01-04",
      *       "monto_minimo": 150.10
      *     }
      *
@@ -293,7 +293,7 @@ class EventoController extends BaseController
             'nombre' => 'required',
             'id_auditorio' => 'required',
             'id_cliente' => 'required',
-            'fecha_inicio_venta_puntos' => 'required|integer'      
+            'fecha_inicio_venta_puntos' => 'nullable|date'      
         ]);
         if($validator->fails()){
             return $this->sendError('Error de validación.', $validator->errors());       
@@ -623,8 +623,8 @@ class EventoController extends BaseController
                 ->join('temporada', 'evento.id_temporada', '=', 'temporada.id')
                 ->join('auditorio', 'evento.id_auditorio', '=', 'auditorio.id')                
                 ->join('clientes', 'evento.id_cliente', '=', 'clientes.id')
-                ->where('evento.id','=', $id)
-                ->select('evento.fecha_evento', 'evento.nombre','evento.hora_inicio','evento.hora_apertura', 'evento.hora_finalizacion', 'evento.codigo_pulep','evento.domicilios','evento.venta_linea','evento.status','evento.fecha_inicio_venta_internet','evento.fecha_inicio_venta_puntos','tipo_evento.nombre AS tipo_evento', 'evento.monto_minimo','temporada.nombre AS nombre_temporada','temporada.status AS status_temporada', 'auditorio.id AS id_auditorio','auditorio.nombre AS auditorio', 'auditorio.ciudad AS ciudad_auditorio', 'auditorio.departamento AS departamento_auditorio', 'auditorio.pais AS pais_auditorio', 'auditorio.direccion', 'auditorio.latitud', 'auditorio.longitud', 'auditorio.aforo', 'clientes.Identificacion AS identificacion_cliente', 'clientes.tipo_identificacion', 'clientes.nombrerazon', 'clientes.direccion AS direccion_cliente', 'clientes.ciudad AS ciudad_cliente', 'clientes.departamento AS departamento_cliente', 'clientes.email', 'clientes.telefono', 'clientes.tipo_cliente')
+                ->where('evento.id', $id)
+                ->select('evento.fecha_evento', 'evento.nombre','evento.hora_inicio','evento.hora_apertura', 'evento.hora_finalizacion', 'evento.codigo_pulep','evento.domicilios','evento.venta_linea','evento.status','evento.fecha_inicio_venta_internet','evento.fecha_inicio_venta_puntos','tipo_evento.nombre AS tipo_evento', 'evento.monto_minimo','temporada.nombre AS nombre_temporada','temporada.status AS status_temporada', 'auditorio.id AS id_auditorio','auditorio.nombre AS auditorio', 'auditorio.id_ciudad AS ciudad_auditorio', 'auditorio.id_departamento AS departamento_auditorio', 'auditorio.id_pais AS pais_auditorio', 'auditorio.direccion', 'auditorio.latitud', 'auditorio.longitud', 'auditorio.aforo', 'clientes.Identificacion AS identificacion_cliente', 'clientes.tipo_identificacion', 'clientes.nombrerazon', 'clientes.direccion AS direccion_cliente', 'clientes.id_ciudad AS ciudad_cliente', 'clientes.id_departamento AS departamento_cliente', 'clientes.email', 'clientes.telefono', 'clientes.tipo_cliente')
                 ->get();
 
         $preventas = \DB::table('evento')                

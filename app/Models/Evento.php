@@ -62,7 +62,8 @@ class Evento extends Eloquent
 
 	protected $dates = [
 		'fecha_evento',		
-		'fecha_inicio_venta_internet'
+		'fecha_inicio_venta_internet',
+		'fecha_inicio_venta_puntos',
 	];
 
 	protected $times = [		

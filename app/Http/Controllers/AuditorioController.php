@@ -6,6 +6,7 @@ use App\Models\Auditorio;
 use App\Models\Pais;
 use App\Models\Departamento;
 use App\Models\Ciudad;
+use App\Models\Tribuna;
 use Illuminate\Http\Request;
 use Validator;
 /**
@@ -43,8 +44,11 @@ class AuditorioController extends BaseController
      */
     public function auditorio_all()
     {
-       
-         $auditorio = Auditorio::with('pais')->with('ciudad')->with('departamento')->get();
+        
+         $auditorio = Auditorio::with('pais')
+                     ->with('ciudad')
+                     ->with('departamento')
+                     ->get();
 
          return $this->sendResponse($auditorio->toArray(), 'Auditorios devueltos con éxito');
     }
@@ -114,6 +118,8 @@ class AuditorioController extends BaseController
      *@bodyParam longitud int Coordenada: Longitud.
      *@bodyParam latitud int Coordenada: Latitud.
      *@bodyParam aforo int Aforo.
+     *@bodyParam url_imagen string Url de la imagen.
+     *@bodyParam codigo_mapeado string Html de la imagen.
      *@response{
      *       "nombre" : "Auditorio 1",
      *       "id_ciudad" : 1,
@@ -122,7 +128,9 @@ class AuditorioController extends BaseController
      *       "direccion": "Street 1-56",
      *       "longitud": null,
      *       "latitud": null,
-     *       "aforo": null
+     *       "aforo": null,
+     *       "url_imagen":null,
+     *       "codigo_mapeado":null
      *     }
      *
      * @param  \Illuminate\Http\Request  $request
@@ -137,9 +145,11 @@ class AuditorioController extends BaseController
             'id_departamento' => 'required|integer',
             'id_pais' => 'required|integer',
             'direccion' => 'required',
-            'longitud' => 'numeric',
-            'latitud' => 'numeric',
-            'aforo' => 'integer'
+            'longitud' => 'nullable|numeric',
+            'latitud' => 'nullable|numeric',
+            'aforo' => 'nullable|integer',
+            'url_imagen' => 'nullable|string',
+            'codigo_mapeado' => 'nullable|string'
         ]);
         if($validator->fails()){
             return $this->sendError('Error de validación.', $validator->errors());       
@@ -187,6 +197,41 @@ class AuditorioController extends BaseController
         return $this->sendResponse($auditorio->toArray(), 'Auditorio devuelto con éxito');
     }
 
+
+    /**
+     * Localidades por auditorio 
+     *
+     * [Se filtra por el ID del auditorio]
+     *
+     * @param  \App\Models\Auditorio  $auditorio
+     * @return \Illuminate\Http\Response
+     */
+    public function localidades_auditorio($id)
+    {
+
+        $auditorio = Auditorio::find($id);
+        if (!$auditorio) {
+            return $this->sendError('Auditorio no encontrado');
+        }
+
+        $auditorios = Tribuna::with('auditorio')
+                      ->with('localidads')
+                      ->where('id_auditorio', $id)
+                      ->first();
+
+        if (is_null($auditorios)) {
+            return $this->sendError('El auditorio no posee localidades');
+        }
+
+        $local_aud = array();
+        
+            
+        array_push($local_aud, ["auditorio" => $auditorios['auditorio'], "localidades" => $auditorios['localidads']]);
+       
+
+        return $this->sendResponse($local_aud, 'Localidades por auditorio devueltas con éxito');
+    }
+
   
    /**
      * Actualiza un elemeto de la tabla auditorio 
@@ -201,6 +246,8 @@ class AuditorioController extends BaseController
      *@bodyParam longitud int Coordenada: Longitud.
      *@bodyParam latitud int Coordenada: Latitud.
      *@bodyParam aforo int Aforo.
+     *@bodyParam url_imagen string Url de la imagen.
+     *@bodyParam codigo_mapeado string Html de la imagen.
      *@response{
      *       "nombre" : "Auditorio GOLD",
      *       "id_ciudad" : 1,
@@ -209,7 +256,9 @@ class AuditorioController extends BaseController
      *       "direccion": "Street 1-56",
      *       "longitud": 222,
      *       "latitud": 765,
-     *       "aforo": 1000
+     *       "aforo": 1000,
+     *       "url_imagen":null,
+     *       "codigo_mapeado":null
      *     }
      *
      * @param  \Illuminate\Http\Request  $request
@@ -228,9 +277,11 @@ class AuditorioController extends BaseController
             'id_departamento' => 'required|integer',
             'id_pais' => 'required|integer',
             'direccion' => 'required',
-            'longitud' => 'numeric',
-            'latitud' => 'numeric',
-            'aforo' => 'integer'           
+            'longitud' => 'nullable|numeric',
+            'latitud' => 'nullable|numeric',
+            'aforo' => 'nullable|integer',
+            'url_imagen' => 'nullable|string',
+            'codigo_mapeado' => 'nullable|string'           
         ]);
 
 
@@ -266,10 +317,19 @@ class AuditorioController extends BaseController
         $auditorio->direccion = $input['direccion'];        
         if (!is_null($request->input('latitud'))) 
             $auditorio->latitud = $input['latitud'];
+        
         if (!is_null($request->input('longitud'))) 
             $auditorio->longitud = $input['longitud'];
+        
         if (!is_null($request->input('aforo'))) 
             $auditorio->aforo = $input['aforo'];
+        
+        if (!is_null($request->input('codigo_mapeado'))) 
+            $auditorio->codigo_mapeado = $input['codigo_mapeado'];
+        
+        if (!is_null($request->input('url_imagen'))) 
+            $auditorio->url_imagen = $input['url_imagen'];
+
          $auditorio->save();
 
         return $this->sendResponse($auditorio->toArray(), 'Auditorio actualizado con éxito');

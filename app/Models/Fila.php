@@ -16,6 +16,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $id_localidad
  * @property string $nombre
  * @property int $numero
+ * @property int $alineacion
  * 
  * @property \App\Models\Localidad $localidad
  * @property \Illuminate\Database\Eloquent\Collection $puestos
@@ -29,13 +30,15 @@ class Fila extends Eloquent
 
 	protected $casts = [
 		'id_localidad' => 'int',
-		'numero' => 'int'
+		'numero' => 'int',
+		'alineacion' => 'int'
 	];
 
 	protected $fillable = [
 		'id_localidad',
 		'nombre',
-		'numero'
+		'numero',
+		'alineacion'
 	];
 
 	public function localidad()

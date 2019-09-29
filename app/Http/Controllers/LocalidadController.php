@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Validator;
 use App\Models\Localidad;
 use App\Models\Tribuna;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-
+use Validator;
 /**
  * @group Administración de Localidad
  *
@@ -85,10 +84,14 @@ class LocalidadController extends BaseController
      *@bodyParam nombre string required Nombre de la localidad.
      *@bodyParam id_tribuna int required Id de la tribuna.
      *@bodyParam puerta_acceso string Puerta de acceso de la loccalidad. Defaults to 0
+     *@bodyParam ruta string Ruta de la localidad.
+     *@bodyParam url_imagen string Url de la imagen.
      * @response {
      *  "nombre": "Localidad New",
      *  "id_tribuna": 1, 
-     *  "puerta_acceso":null     
+     *  "puerta_acceso":null,
+     *  "ruta":null,
+     *  "url_imagen": null     
      * }
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -100,6 +103,8 @@ class LocalidadController extends BaseController
             'nombre' => 'required',            
             'id_tribuna' => 'required',
             'puerta_acceso' => 'alpha_num|max:20',
+            'ruta' => 'nullable|string',
+            'url_imagen' => 'nullable|string'
         ]);
         if($validator->fails()){
             return $this->sendError('Error de validación.', $validator->errors());       
@@ -141,11 +146,15 @@ class LocalidadController extends BaseController
      *@bodyParam nombre string required Nombre de la localidad.
      *@bodyParam id_tribuna int required Id de la tribuna.
      *@bodyParam puerta_acceso string Puerta de acceso de la loccalidad. Defaults to 0
+     *@bodyParam ruta string Ruta de la localidad.
+     *@bodyParam url_imagen string Url de la imagen.
      * [Se filtra por el ID]
      * @response {
      *  "nombre": "Localidad 2",
      *  "id_tribuna": 1, 
-     *  "puerta_acceso":"AA12"     
+     *  "puerta_acceso":"AA12" 
+     *  "ruta":null,
+     *  "url_imagen":null      
      * }
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -157,7 +166,9 @@ class LocalidadController extends BaseController
         $validator = Validator::make($input, [
             'nombre' => 'required',            
             'id_tribuna' => 'required',
-            'puerta_acceso' => 'alpha_num|max:20',           
+            'puerta_acceso' => 'alpha_num|max:20',
+            'ruta' => 'nullable|string',
+            'url_imagen' => 'nullable|string'           
         ]);
 
         if($validator->fails()){
@@ -175,7 +186,9 @@ class LocalidadController extends BaseController
 
         $localidad_search->nombre = $input['nombre'];
         $localidad_search->id_tribuna = $input['id_tribuna'];
-        $localidad_search->puerta_acceso = $input['puerta_acceso'];         
+        $localidad_search->puerta_acceso = $input['puerta_acceso']; 
+        $localidad_search->ruta = $input['ruta'];  
+        $localidad_search->url_imagen = $input['url_imagen'];         
         $localidad_search->save();
 
         return $this->sendResponse($localidad_search->toArray(), 'Localidad actualizada con éxito');

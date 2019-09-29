@@ -84,6 +84,8 @@ use Illuminate\Http\Request;
 	Route::get('artistas_all','ArtistController@artistas_all');
 	Route::get('listado_detalle_artistas','ArtistController@listado_detalle_artistas');
 	Route::get('listadoartistevento','ArtistController@listadoartistevento');
+
+	Route::apiResource('artista_evento','ArtistaEventoController');
 	
 	Route::apiResource('temporada','TemporadaController');
 	Route::get('buscarTemporada','TemporadaController@buscarTemporada');
@@ -97,6 +99,7 @@ use Illuminate\Http\Request;
 	Route::get('buscarAuditorio','AuditorioController@buscarAuditorio');
 	Route::get('auditorio_all','AuditorioController@auditorio_all');
 	Route::get('listado_detalle_auditorios','AuditorioController@listado_detalle_auditorios');
+	Route::get('localidades_auditorio/{id}','AuditorioController@localidades_auditorio');
 
 	Route::apiResource('imagenesauditorio','ImagenesAuditorioController');
 
@@ -166,10 +169,12 @@ use Illuminate\Http\Request;
 	Route::get('buscarFila','FilaController@buscarFila');
 	Route::get('fila_all','FilaController@fila_all');
     Route::get('listado_detalle_filas','FilaController@listado_detalle_filas');
+    Route::get('filas_localidad/{id_localidad}','FilaController@filas_localidad');
 
 	Route::apiResource('puesto','PuestoController');
 	Route::get('buscarPuestos','PuestoController@buscarPuestos');
 	Route::get('puesto_all','PuestoController@puesto_all');
+	Route::get('puestos_fila/{id_fila}','PuestoController@puestos_fila');
 
 	
 	Route::apiResource('localidad','LocalidadController');
